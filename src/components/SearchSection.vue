@@ -58,7 +58,6 @@
           <li><span style="color:orange">definition_svenska: </span>{{word.definition_svenska}}</li> 
           <li><span style="color:orange">synonyms: </span>{{word.synonyms}}</li> 
           <li><span style="color:orange">antonyms: </span>{{word.antonyms}}</li> 
-          <li><span style="color:orange">example_of_use, swedish: </span>{{word.example_of_use}}</li> 
           <li><span style="color:orange">example_of_use, sydsamiska: </span>{{word.example_of_use}}</li> 
           <li><span style="color:orange">link_to_update (will open in a different app): </span>{{word.link_to_update}}</li> 
         </ul>
