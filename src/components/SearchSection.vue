@@ -18,7 +18,7 @@
           <div class="colors-container">
               <picture>
                   <source media="(max-width: 1140px)" srcset="../assets/img/sampi_clrs_mobile.png" >
-                  <source media="(max-width: 576px)" srcset="../assets/img/sampi_clrs_mobile_600.png" >
+                  <source media="(max-width: 576px)" srcset="../assets/img/sampi_clrs_600.png" >
                   <img src="../assets/img/sampi_clrs.png" alt="The colours of the Sami flag">
               </picture>
           </div>
