@@ -245,12 +245,20 @@ div.bkg-container img { /* photo */
 }
 
 
-@media (min-width: 1141px) { 
+@media (min-width: 1641px) { 
     div.bkg-container img { /* photo */
         height: 600px;
         object-fit: contain;
     }
 }
+
+@media (min-width: 1141px) and (max-width: 1640px) { 
+    div.bkg-container img { /* photo */
+        height: 400px;
+        object-fit: contain;
+    }
+}
+
 @media (max-width: 1140px) { 
     div.hero-background { flex-direction: column;  }
     div.bkg-container img { /* photo */
@@ -296,9 +304,20 @@ div.colors-container {
 @media (min-width: 2000px) { div.colors-container picture { transform: scale(1.7);}}
 @media (min-width: 2200px) { div.colors-container picture { transform: scale(2.8);}}
 
-@media (min-width: 1141px) { 
+@media (min-width: 1641px) { 
     div.colors-container { 
         height: 600px; 
+        margin-top: 0px; 
+        opacity: 100%;
+    }
+    .pickgradient:after {
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 90%, #fff 100%);
+    }
+}
+
+@media (min-width: 1141px) and (max-width: 1640px) { 
+    div.colors-container { 
+        height: 400px; 
         margin-top: 0px; 
         opacity: 100%;
     }
