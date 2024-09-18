@@ -49,7 +49,7 @@
       </div>
     </section>
 
-    <section>
+    <!-- <section>
       <div v-for="(word, index) in listWords" :key="index">
         <ul>
           <li><span style="color:orange">word_sydsamiska: </span>{{word.word_sydsamiska}}</li> 
@@ -62,7 +62,7 @@
           <li><span style="color:orange">link_to_update (will open in a different app): </span>{{word.link_to_update}}</li> 
         </ul>
       </div>
-    </section>
+    </section> -->
 </main>
   
 </template>
