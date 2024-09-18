@@ -1,13 +1,4 @@
-<!-- <script setup>
-</script> -->
-
 <template>
-<main class="content">
-    <div class="breadcrumbs">
-      <div class="container">
-          <p>Start > Sydsamiska Ordbok</p>
-      </div>
-    </div>
     <section id="hero-search">
       <h2 class="dont-show">Database Search Panel</h2>
       <div class="hero-background">
@@ -63,7 +54,7 @@
         </ul>
       </div>
     </section> -->
-</main>
+
   
 </template>
 <script>
