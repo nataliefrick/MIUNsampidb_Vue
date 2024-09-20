@@ -1,6 +1,6 @@
 <template>
     <section id="database-app-info">
-        <h2 class="lato-bold">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
+        <h2 class="lato-bold dont-show">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
         <p>Detta projekt... ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
         <h3 class="lato-bold">Bakgrund</h3>
         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
