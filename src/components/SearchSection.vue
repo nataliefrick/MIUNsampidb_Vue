@@ -31,7 +31,7 @@
                       </div>
                       <div class="row-searchform-filter">
                           <input type="radio" id="exact" name="filter_options" value="exact">
-                          <label for="exact">Påbörjar med</label>
+                          <label for="exact">Börjar med</label>
                           <input type="radio" id="contains" name="filter_options" value="contains">
                           <label for="contains">Innehåller</label>
                       </div>
