@@ -23,10 +23,14 @@ p, span,
     color: #404040;
 }
 
+h2, h3 {
+    color: #404040;
+}
+
 .lato-bold {
-font-family: "Lato", sans-serif;
-font-weight: 700;
-font-style: normal;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 .lato-regular-italic {
@@ -283,7 +287,7 @@ div#colors {
     background-color: #087f47;  /* green */
     background-color: #fbd030;  /* yellow */
     background-color: #c1daf3;  /* lt blue */
-    background-color: #0d58a3;  /* dk blue */
+    background-color: #0d58a3;  /* dont use dk blue */
     background-color: #134da2;  /* dk blue */
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;

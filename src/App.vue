@@ -1,6 +1,7 @@
 <template>
   <PageHeader/>
   <RouterView />
+  <PageFooter/>
 </template>
 
 <style scoped>
@@ -9,6 +10,7 @@
 <script>
 import { RouterView } from 'vue-router'
 import PageHeader from "./components/PageHeader.vue"
+import PageFooter from "./components/PageFooter.vue"
 
 export default {
     data() {
@@ -17,7 +19,7 @@ export default {
             recievedMessage: null
         }
     },
-    components: { PageHeader, RouterView },
+    components: { PageHeader, RouterView, PageFooter},
     methods: {}
     }
     // ,

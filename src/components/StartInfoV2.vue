@@ -6,7 +6,6 @@
         </section>
 
         <section class="info">
-            <img src="../assets/img/sampi_clrs_mobile.png" alt="">
             <div class="info-text">
                 <div class="title-w-icon">
                     <img src="../assets/img/divider-5.png" alt="">
@@ -14,9 +13,6 @@
                 </div>
                 <p>Sxed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
             </div>
-        </section>
-
-        <section class="info">
             <div class="info-text">
                 <div class="title-w-icon">
                     <img src="../assets/img/divider-5.png" alt="">
@@ -24,11 +20,6 @@
                 </div>
                 <p>Sxed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
             </div>
-            <img src="../assets/img/sampi_clrs_mobile.png" alt="">
-        </section>
-        
-        <section class="info">
-            <img src="../assets/img/sampi_clrs_mobile.png" alt="">
             <div class="info-text">
                 <div class="title-w-icon">
                     <img src="../assets/img/divider-5.png" alt="">
@@ -81,18 +72,32 @@ span.drop-cap {
 
 section.info {
     display: flex;
-    gap: 3rem;
+    
+    gap: 1rem;
     flex-wrap: nowrap;
-    margin: 5rem 0;
+    
 }
 
-section.info img {
-    width: 300px;
-    height: auto;
-}
+@media (min-width: 501px) { 
+    section.info {
+            max-width: 100%;
+            margin: 5rem 0;
+            flex-direction: row;
+        }
+    }
+
+    @media (max-width: 500px) { 
+        section.info {
+            max-width: 90%;
+            margin: 10% auto;
+            flex-direction: column;
+        }
+    }
 
 div.info-text {
     width: auto;
+    background-color: #eeeeee80;
+    padding: 1rem;
 }
 
 div.title-w-icon {
@@ -102,14 +107,10 @@ div.title-w-icon {
 }
 
 div.title-w-icon img {
-    width: auto;
-    height: 20px;
+    width: 14px;
+    height: auto;
 }
 
 
-
-h2.small {
-    font-size: x-large;
-}
 
 </style>
