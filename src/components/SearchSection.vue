@@ -61,7 +61,7 @@ export default {
         return {
             storeSearchTerms: useSearchTermStore(),
             urlGet: this.useUrl.urlGet,
-            newTerm: "",
+            newTerm: ""
         }
     },
     emit: "setSearchTerm",

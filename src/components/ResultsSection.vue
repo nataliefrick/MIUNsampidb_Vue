@@ -1,6 +1,6 @@
 <template>
     <section id="search-results">
-        <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller "{{ this.store.searchTerm }}"</h2>
+        <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller sökordet "{{ this.store.searchTerm }}"</h2>
         <h2 v-else class="lato-bold results-title">Tyvärr, inga resultat hittades i databasen.</h2>
             
         <Word @updateWord="updateWord(word.id)" v-for="word in words" :word="word" :key="word.id" />
