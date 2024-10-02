@@ -1,12 +1,13 @@
 <template>
     <section id="search-results">
-        <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller sökordet "{{ this.store.searchTerm }}"</h2>
-        <h2 v-else class="lato-bold results-title">Tyvärr, inga resultat hittades i databasen.</h2>
+        <h2 class="lato-bold results-title">{{title}}</h2>
+        <!-- <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller sökterm "{{ this.store.searchTerm }}"</h2>
+        <h2 v-else class="lato-bold results-title">Tyvärr, inga resultat hittades i databasen.</h2> -->
             
         <Word @updateWord="updateWord(word.id)" v-for="word in words" :word="word" :key="word.id" />
     
         <!-- ErrorMessage Printout -->
-        <div v-if="errorMessage"><p class="errormsg green-text">{{errorMessage}} </p></div>
+        <!-- <div v-if="errorMessage"><p class="errormsg green-text">{{errorMessage}} </p></div> -->
     </section>
 </template>
 
@@ -26,9 +27,10 @@ export default {
     data() {
         return {
             words: [],
-            errorMessage: null,
+            // errorMessage: null,
             urlGet: this.useUrl.urlGet, 
-            searchTerm: this.store.searchTerm
+            searchTerm: this.store.searchTerm,
+            title: ""
         }
     },
     created() {
@@ -52,18 +54,52 @@ export default {
     //     }
     // },
     methods: {
+        highlightSearchTerm() {
+            // Create a regex to search for the searchTerm, case-insensitive
+            let regex = new RegExp(this.searchTerm, 'gi');
+            // Loop through each key in the words object
+            Object.keys(this.words).forEach(key => {
+                let value = this.words[key];
+
+                // Check if the value is a string
+                if (typeof value === 'string') {
+                    // Replace occurrences of searchTerm with a <span> around it
+                    this.words[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
+                }
+                // If the value is an object, check its nested properties (optional)
+                else if (typeof value === 'object' && value !== null) {
+                    Object.keys(value).forEach(nestedKey => {
+                        let nestedValue = value[nestedKey];
+                        if (typeof nestedValue === 'string') {
+                            value[nestedKey] = nestedValue.replace(regex, `<span>${this.searchTerm}</span>`);
+                        }
+                    });
+                }
+            });
+        },
         async updateResults() {
-            this.errorMessage = "";
+            this.title = "";
             if(this.store.searchTerm != "") {
                 const response = await fetch(this.urlGet + "/search/" + this.store.searchTerm, { method: "GET" });
-                    const data = await response.json(); // save the data in sent through the response.
-                    if(data.length===0) {
-                    this.errorMessage = "Tyvärr, inga resultat hittades i databasen.";
-                } 
-                this.words = data;
+                let data = await response.json(); // save the data in sent through the response.
+                if(data.length===0) {
+                    this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så du kan kolla igenom dem.";
+                }
+            
+        
+            this.words = data;
+            if (this.words.length > 0) {
+                // this.highlightSearchTerm();
+                this.title = this.words.length + " sökresultat innehåller sökterm '" + this.store.searchTerm + "'. ";
+            } else {
+                this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så du kan kolla igenom dem.";
+                this.getWords();
+            }
             
             } else {
                 this.getWords();
+                this.title = "Din sökterm var tom. Här är alla ord i databasen, så du kan kolla igenom dem.";
+                
             }
             
             // empty form

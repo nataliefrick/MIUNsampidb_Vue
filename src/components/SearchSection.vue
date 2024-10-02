@@ -73,10 +73,10 @@ export default {
             // Only update if there's a new term to submit
             if (this.newTerm) {
                 storeSearchTerms.setTerm(this.newTerm);
-                console.log("Updated search term:", storeSearchTerms.searchTerm);
+                // console.log("Updated search term:", storeSearchTerms.searchTerm);
                 
                 // Reset the input field after submission
-                this.newTerm = "";  // Clear the input for new entry
+                // this.newTerm = "";  // Clear the input for new entry
 
                 // Use nextTick to ensure the store updates are processed before navigating
                 await nextTick();
@@ -261,7 +261,7 @@ export default {
         position:relative;
         width: 100%;
         max-width: 1140px;
-        z-index: 99;
+        z-index: 2;
         display: flex;
     }
 
