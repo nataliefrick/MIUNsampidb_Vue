@@ -184,6 +184,7 @@ import { useUrlGet } from '../stores/urlGet';
         // Emit event to close the modal in the parent component
         this.thankYouMsg=false;
         this.errorMsg=false;
+        this.captcha.userAnswer=null;
         this.$emit('close-modal');
       },
       toggleButtonAction() {
@@ -212,11 +213,9 @@ import { useUrlGet } from '../stores/urlGet';
       async addChange() {
         // check first for content
         if(this.formData.message.length === undefined) {
-          this.errorMessage = "1 Vänligen fyll i meddelandefältet.";
-          console.log(this.errorMessage);
+          this.errorMessage = "Vänligen fyll i meddelandefältet.";
         }
         if(this.formData.message.length > 4 ) {
-          console.log("eneer");
             this.errorMessage='';
             let changeBody = {
               word_id: this.formData.id,
@@ -225,7 +224,6 @@ import { useUrlGet } from '../stores/urlGet';
               telephone: this.formData.telephone,
               message: this.formData.message,
             };
-            console.log(changeBody);
             const response = await fetch(this.urlChange, { 
                 method: "POST",
                 headers: {
@@ -250,8 +248,7 @@ import { useUrlGet } from '../stores/urlGet';
             // window.location.href = "/catalog";
         }
         else {
-          this.errorMessage = "2 Vänligen fyll i meddelandefältet.";
-          console.log(this.errorMessage);
+          this.errorMessage = "Vänligen fyll i meddelandefältet.";
         }
 
     }
