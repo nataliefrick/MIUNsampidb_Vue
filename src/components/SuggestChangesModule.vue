@@ -211,7 +211,7 @@ import { useUrlGet } from '../stores/urlGet';
       
       async addChange() {
         // check first for content
-        if(!this.formData.message) {
+        if(this.formData.message.length === undefined) {
           this.errorMessage = "1 Vänligen fyll i meddelandefältet.";
           console.log(this.errorMessage);
         }
