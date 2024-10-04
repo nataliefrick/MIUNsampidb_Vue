@@ -112,7 +112,7 @@
               <!-- CAPTCHA Section -->
               <div v-else class="captcha flex-row">
                 <div>
-                  <label for="captcha">Vänligen svara:
+                  <label for="captcha">Vänligen svara:  {{ captcha.question }}
                   </label>
                   <input placeholder="?" type="number" v-model="captcha.userAnswer" required />
                 </div>
