@@ -211,8 +211,8 @@ import { useUrlGet } from '../stores/urlGet';
       
       async addChange() {
         // check first for content
-        if(!this.message) {
-          this.errorMessage = "Vänligen fyll i meddelandefältet.";
+        if(!this.formData.message) {
+          this.errorMessage = "1 Vänligen fyll i meddelandefältet.";
           console.log(this.errorMessage);
         }
         if(this.message.length > 4 ) {
@@ -250,7 +250,8 @@ import { useUrlGet } from '../stores/urlGet';
             // window.location.href = "/catalog";
         }
         else {
-          this.errorMessage = "Vänligen fyll i meddelandefältet.";
+          this.errorMessage = "2 Vänligen fyll i meddelandefältet.";
+          console.log(this.errorMessage);
         }
 
     }
