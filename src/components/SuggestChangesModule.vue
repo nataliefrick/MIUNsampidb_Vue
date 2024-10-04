@@ -220,10 +220,10 @@ import { useUrlGet } from '../stores/urlGet';
             this.errorMessage='';
             let changeBody = {
               word_id: this.formData.id,
-              name: this.name,
-              email: this.email,
-              telephone: this.telephone,
-              message: this.message,
+              name: this.formData.name,
+              email: this.formData.email,
+              telephone: this.formData.telephone,
+              message: this.formData.message,
             };
             console.log(changeBody);
             const response = await fetch(this.urlChange, { 
