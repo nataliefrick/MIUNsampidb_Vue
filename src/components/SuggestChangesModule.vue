@@ -212,8 +212,11 @@ import { useUrlGet } from '../stores/urlGet';
       
       async addChange() {
         // check first for content
-        if(this.formData.message.length === undefined) {
-          this.errorMessage = "Vänligen fyll i meddelandefältet.";
+        if(typeof this.formData.message === 'undefined' || this.formData.message.length === undefined) {
+          this.errorMessage = "this.formData.message Vänligen fyll i meddelandefältet.";
+        }
+        if(typeof this.message === 'undefined' || this.message.length === undefined) {
+          this.errorMessage = "this.message Vänligen fyll i meddelandefältet.";
         }
         if(this.formData.message.length > 4 ) {
             this.errorMessage='';
