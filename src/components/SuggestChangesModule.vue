@@ -150,7 +150,7 @@ import { useUrlGet } from '../stores/urlGet';
         },
         errorMessage: '',
         message: '',
-        
+
 
         // Create a local copy of the `word` prop to work with in the form
         formData: {
@@ -211,19 +211,19 @@ import { useUrlGet } from '../stores/urlGet';
       
       async addChange() {
         // check first for content
-        if(!this.formData.message) {
+        if(!this.message) {
           this.errorMessage = "Vänligen fyll i meddelandefältet.";
         }
-        if(this.formData.message.length > 4 ) {
+        if(this.message.length > 4 ) {
             this.errorMessage='';
             let changeBody = {
               word_id: this.formData.id,
-              name: this.formData.name,
-              email: this.formData.email,
-              telephone: this.formData.telephone,
-              message: this.formData.message,
+              name: this.name,
+              email: this.email,
+              telephone: this.telephone,
+              message: this.message,
             };
-
+            console.log(changeBody);
             const response = await fetch(this.urlChange, { 
                 method: "POST",
                 headers: {
