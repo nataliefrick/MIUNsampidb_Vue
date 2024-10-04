@@ -149,7 +149,8 @@ import { useUrlGet } from '../stores/urlGet';
           userAnswer: null
         },
         errorMessage: '',
-
+        message: '',
+        
 
         // Create a local copy of the `word` prop to work with in the form
         formData: {
@@ -158,7 +159,7 @@ import { useUrlGet } from '../stores/urlGet';
         email: '',
         telephone: '',
         message: '',
-
+        
         }
       };
     },
