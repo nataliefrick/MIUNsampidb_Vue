@@ -60,7 +60,7 @@ export default {
     data() {
         return {
             storeSearchTerms: useSearchTermStore(),
-            urlGet: this.useUrl.urlGet,
+            urlGet: this.useUrl.urlGet + "/words",
             newTerm: ""
         }
     },
