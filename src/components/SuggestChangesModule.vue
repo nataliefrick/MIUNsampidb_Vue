@@ -215,7 +215,7 @@ import { useUrlGet } from '../stores/urlGet';
           this.errorMessage = "1 Vänligen fyll i meddelandefältet.";
           console.log(this.errorMessage);
         }
-        if(this.message.length > 4 ) {
+        if(this.formData.message.length > 4 ) {
           console.log("eneer");
             this.errorMessage='';
             let changeBody = {
