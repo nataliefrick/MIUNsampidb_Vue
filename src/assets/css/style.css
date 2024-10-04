@@ -15,7 +15,7 @@ html {
 @media (min-width: 1200px) {}
 
 /* Fonts ---------- */
-p, span,
+p, span, label,
 .lato-regular {
     font-family: "Lato", sans-serif;
     font-weight: 400;
@@ -250,14 +250,14 @@ div.miun-user a {
     div.miun-user a {
         margin-right: 0px;
     }}
-
-span {
+    
+span.nav-label {
     font-size: 18px;
     line-height: 22px;
     margin-left: 6px;
 }
 
-span:hover {
+span.nav-label:hover {
     text-decoration: underline;
     color: #404040;
 }
