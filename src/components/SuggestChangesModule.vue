@@ -213,6 +213,7 @@ import { useUrlGet } from '../stores/urlGet';
         // check first for content
         if(!this.message) {
           this.errorMessage = "Vänligen fyll i meddelandefältet.";
+          console.log(this.errorMessage);
         }
         if(this.message.length > 4 ) {
           console.log("eneer");
