@@ -210,6 +210,9 @@ import { useUrlGet } from '../stores/urlGet';
       
       async addChange() {
         // check first for content
+        if(!this.formData.message) {
+          this.errorMessage = "Vänligen fyll i meddelandefältet.";
+        }
         if(this.formData.message.length > 4 ) {
             this.errorMessage='';
             let changeBody = {
@@ -245,7 +248,6 @@ import { useUrlGet } from '../stores/urlGet';
         }
         else {
           this.errorMessage = "Vänligen fyll i meddelandefältet.";
-          console.log(this.errorMessage);
         }
 
     }
@@ -283,10 +285,6 @@ import { useUrlGet } from '../stores/urlGet';
     position: scrolling;
   }
 
-  /* .modal-content p {
-    width: 70%;
-  } */
-  
   .close-thkyou,
   .close {
     cursor: pointer;
