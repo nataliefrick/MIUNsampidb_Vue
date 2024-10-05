@@ -214,7 +214,7 @@ import { useUrlGet } from '../stores/urlGet';
         // check first for content
         if(typeof this.formData.message === 'undefined' ) {
           this.formData.message = "";
-          this.errorMessage = "undefined Vänligen fyll i meddelandefältet.";
+          this.errorMessage = "Vänligen fyll i meddelandefältet.";
         }
         if(this.formData.message.length > 4 ) {
             this.errorMessage='';
@@ -247,7 +247,7 @@ import { useUrlGet } from '../stores/urlGet';
             this.$emit("addChange"); // reloads the parent page.
         }
         else {
-          this.errorMessage = "Vänligen fyll i meddelandefältet.";
+          this.errorMessage = "Vi behöver mer info, vänligen utveckla ditt meddelande.";
         }
 
     }
