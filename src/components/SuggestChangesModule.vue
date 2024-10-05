@@ -233,7 +233,6 @@ import { useUrlGet } from '../stores/urlGet';
             });
 
             await response.json();
-            // console.log(data);
 
             // empty form
             this.formData.word_id= "";
@@ -245,7 +244,6 @@ import { useUrlGet } from '../stores/urlGet';
             this.thankYouMsg=true;
 
             this.$emit("addChange"); // reloads the parent page.
-            // window.location.href = "/catalog";
         }
         else {
           this.errorMessage = "Vänligen fyll i meddelandefältet.";
