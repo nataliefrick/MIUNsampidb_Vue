@@ -213,7 +213,8 @@ import { useUrlGet } from '../stores/urlGet';
       async addChange() {
         // check first for content
         if(typeof this.formData.message === 'undefined' ) {
-          this.errorMessage = "this.formData.message Vänligen fyll i meddelandefältet.";
+          this.formData.message = "";
+          this.errorMessage = "undefined Vänligen fyll i meddelandefältet.";
         }
         if(this.formData.message.length > 4 ) {
             this.errorMessage='';
