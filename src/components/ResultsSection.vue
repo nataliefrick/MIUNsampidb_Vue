@@ -82,7 +82,7 @@ export default {
         async updateResults() {
             this.title = "";
             if(this.store.searchTerm != "") {
-                const response = await fetch(this.urlGet + "/words/search/" + this.store.searchTerm, { method: "GET" });
+                const response = await fetch(this.urlGet + "/search/" + this.store.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
                 if(data.length===0) {
                     this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så du kan kolla igenom dem.";
