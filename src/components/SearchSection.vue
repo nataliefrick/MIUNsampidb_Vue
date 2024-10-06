@@ -19,12 +19,15 @@
               <h2 class="lato-bold">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
               <h3 class="lato-regular-italic">South Sámi Emotion Words and Cultural Idioms of Distress Database (SSEID)</h3>
               <div class="search">
-                  <div class="row-buttons">
-                      <button class="miun">Svenska</button>
-                      <button class="miun">Norska</button>
-                      <!-- <i class="fa-solid fa-arrow-right-arrow-left button"></i> -->
-                      <button class="miun">Sydsamiska</button>
-                  </div>
+                  <div>
+                      <span class="language">Filtrerar för</span>
+                      <div class="language-filter">
+                        <button class="disabled">Sydsamisk</button>
+                        <span class="colon">:</span>
+                        <button @click="toggleSwe($event)" :class="{'selected': isActiveSwe, 'not-selected': !isActiveSwe}">Svensk</button>
+                        <button @click="toggleNwg($event)" :class="{'selected': isActiveNwg, 'not-selected': !isActiveNwg}">Norsk</button>
+                      </div>
+                    </div>
                   <form @submit.prevent="setSearchTerm()">
                       <div class="row-searchform">
                           <input type="text" placeholder="Ange sökterm" v-model="newTerm">
@@ -48,6 +51,7 @@
 <script>
 // import { defineComponent } from 'vue'
 import { nextTick } from 'vue';  // Import nextTick for better timing of updates
+import { useFilterLanguagesStore } from '../stores/filterlanguages';
 import { useSearchTermStore } from '../stores/searchterms';
 import { useUrlGet } from '../stores/urlGet';
 
@@ -60,12 +64,40 @@ export default {
     data() {
         return {
             storeSearchTerms: useSearchTermStore(),
+            storeFilterLang: useFilterLanguagesStore(),
             urlGet: this.useUrl.urlGet + "/words",
-            newTerm: ""
+            newTerm: "",
+            // selectedLanguages: [ swedish , norweigen],
+            selectedLanguages: [ true, true],
+            isActiveSwe: true, // Default state
+            isActiveNwg: true, // Default state
         }
     },
-    emit: "setSearchTerm",
+    emit: ["setSearchTerm", "setFilterLang"],
     methods: {
+        toggleSwe() {
+            this.isActiveSwe = !this.isActiveSwe; // Toggle the class state
+            this.selectedLanguages[0] = this.isActiveSwe;
+            this.setFilterLang();
+        },
+        toggleNwg() {
+            this.isActiveNwg = !this.isActiveNwg; // Toggle the class state
+            this.selectedLanguages[1] = this.isActiveNwg;
+            this.setFilterLang();
+        },
+        async setFilterLang() {
+            // Access the Pinia store
+            const storeFilterLang = useFilterLanguagesStore();
+            // Only update if there's a new term to submit
+            storeFilterLang.setTerm(this.selectedLanguages);
+            // Use nextTick to ensure the store updates are processed before navigating
+            await nextTick();
+            try {
+                await this.$router.push('/results');  // Navigate to the results page
+            } catch (err) {
+                console.error("Navigation error:", err);  // Log any navigation errors
+            }
+        },
         async setSearchTerm() {
             // Access the Pinia store
             const storeSearchTerms = useSearchTermStore();
@@ -352,6 +384,82 @@ export default {
         }
     }
 
+    span.language {
+        text-transform: uppercase;
+        font-size: x-small;
+    }
+
+    .language-filter {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* .checkbox-btn {
+        display: inline-block;
+        transition: background-color 0.3s;
+        user-select: none;
+        border: 1px solid #134da2;
+        flex: none;
+        font-family: Lato;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 27px;
+        padding: calc(10px + 0.5rem) calc(10px + 1rem);
+        margin-right: 1%;
+        border-radius: 15px;
+
+    } */
+
+    .checkbox-btn input[type="checkbox"] {
+        display: none; /* Hide the actual checkbox */
+    }
+
+    span.colon {
+        margin-right: 1%;
+    }
+
+    /* Default unselected button styling */
+    .selected:hover,
+    .not-selected,
+    .checkbox-btn {
+        background-color: #fff;
+        color: #404040;
+        transition: background-color 0.3s;
+    }
+
+    /* Selected state */
+    .not-selected:hover,
+    .selected,
+    .checkbox-btn:has(input[type="checkbox"]:checked) 
+    {
+        background-color: #134da2;
+        color: #fff;
+        transition: background-color 0.3s;
+
+    } 
+    
+    /* Disabled state */
+    .disabled,
+    .checkbox-btn:has(input[type="checkbox"]:disabled) 
+    {
+        background-color: #c1daf3;
+        border: 1px solid #c1daf3;
+        color: #fff;
+    } 
+
+    /* Hover state - only apply to non-disabled checkboxes */
+    .checkbox-btn:not(.disabled):hover {
+        background-color: #134da2;
+        color: #fff;
+        transition: background-color 0.3s;
+    }
+
+
+    
 
     .row-searchform {
         margin-top: 20px;

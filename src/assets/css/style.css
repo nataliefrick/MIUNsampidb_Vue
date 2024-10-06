@@ -48,6 +48,7 @@ font-style: italic;
 
 button {
     border: 1px solid #134da2;
+    transition: background-color 0.3s;
     flex: none;
     font-family: Lato;
     font-size: 18px;

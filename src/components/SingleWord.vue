@@ -1,6 +1,4 @@
 <template>
-
-
     <!-- <div class="result-card" v-for="(word, index) in listWords" :key="index"> -->
 <div class="result-card">
       <div class="show-more" v-if="moreInfoAvailable">
@@ -26,11 +24,11 @@
           <li class="word"><img src="../assets/img/flag_sampi.jpg" alt="sydsamiska flagga ikon"><span>: {{word.word_sydsamiska}}</span></li>
           <li class="definition lato-regular">{{word.definition_sydsamiska}}</li>
       </ul>
-      <ul class="swe no-bullets"  v-show="word.word_svenska">
+      <ul v-if="this.filter.filter[0]" class="swe no-bullets"  v-show="word.word_svenska">
           <li class="word"><img src="../assets/img/flag_sve.jpg" alt="svenska flagga ikon"><span>: {{word.word_svenska}}</span></li>
           <li class="definition lato-regular">{{word.definition_svenska}}</li>
       </ul>
-      <ul class="nor no-bullets" v-show="word.word_norska">
+      <ul v-if="this.filter.filter[1]" class="nor no-bullets" v-show="word.word_norska">
           <li class="word"><img src="../assets/img/flag_nwg.jpg" alt="norska flagga ikon"><span>: {{word.word_norska}}</span></li>
           <li class="definition lato-regular">{{word.definition_norska}}</li>
       </ul>
@@ -52,6 +50,7 @@
 </template>
 
 <script>
+import { useFilterLanguagesStore } from '../stores/filterlanguages';
 import { useSearchTermStore } from '../stores/searchterms';
 import ModalComponent from './SuggestChangesModule.vue';
 
@@ -59,7 +58,8 @@ export default {
     setup() {
         // const storeSearchTerms = useSearchTermStore()
         const store = useSearchTermStore()
-        return { store }
+        const filter = useFilterLanguagesStore()
+        return { store, filter }
     },
     components: {
         ModalComponent,
@@ -72,6 +72,8 @@ export default {
             showButton: true,
             searchTerm: this.store.searchTerm,
             showModal: false, // Controls whether the modal is visible
+            storeFilterLang: useFilterLanguagesStore(),
+            selectedLanguages: this.filter.filter,
         }
     },
     props: {
@@ -114,15 +116,6 @@ export default {
                     // Replace occurrences of searchTerm with a <span> around it
                     highlightedWord[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
                 }
-                // If the value is an object, check its nested properties (optional)
-                // else if (typeof value === 'object' && value !== null) {
-                //     Object.keys(value).forEach(nestedKey => {
-                //         let nestedValue = value[nestedKey];
-                //         if (typeof nestedValue === 'string') {
-                //             value[nestedKey] = nestedValue.replace(regex, `<span>${this.searchTerm}</span>`);
-                //         }
-                //     });
-                // }
             });
         },
         toggleButtonAction() {
