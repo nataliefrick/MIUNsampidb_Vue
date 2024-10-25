@@ -329,40 +329,36 @@ import { useSearchTermStore } from '../stores/searchterms';
     gap: 20px;
     align-items: flex-start;
   }
-  input.contact-info.project-title,
-  textarea {
-    width: 350px!important;
-  }
+
   textarea {
     min-height: 200px;
+    width: 350px;
   }
+
   @media (max-width: 1025px) { 
+
     div.contact-info {
-      display: flex;
       flex-direction: row;
-      gap: 20px;
-      align-items: flex-start;
-      
     }
+
     div.contact-info div.flex-row {
       flex-direction: column;
       align-items: flex-start;
+      width: 100%;
     }
 
-    input.contact-info.project-title,
-    textarea {
-      width: 340px!important;
-    }
 
-    textarea {
-      min-height: 200px;
-    }
+
+    
 
     div.msg {
       width: 100%;
     }
 
   }
+
+  @media (max-width: 575px) {
+    div.contact-info { flex-direction: column; }}
 
   div.flex-row.no-m {
     margin: 0;
@@ -390,15 +386,28 @@ import { useSearchTermStore } from '../stores/searchterms';
 
   
   input.contact-info {
-    width: 200px;
     margin-top: 0;
     line-height: 2.5em;
   }
 
+  @media (min-width: 1026px) { input.contact-info { width: 200px; }}
+  @media (max-width: 575px) { input.contact-info { width: 90%; }}
+
+  input.contact-info.project-title { width: 350px; }
+  @media (min-width: 576px) and (max-width: 1025px) { 
+    input.contact-info.project-title { width: 360px; }}
+  @media (max-width: 575px) { 
+    input.contact-info.project-title { width: 90%; }}
+
+  @media (min-width: 1026px) { textarea { width: 350px; }}  
+  @media (min-width: 576px) and (max-width: 1025px) { 
+    textarea { min-height: 200px; width: 360px; }}
+  @media (max-width: 575px) { textarea{ width: 90%; }}
+  
   textarea,
   input {
     border: none;
-    width: 100%;
+    /* width: 100%; */
     line-height: 1.2rem;
     padding-left: 10px;
     padding-right: 10px;
@@ -420,7 +429,6 @@ import { useSearchTermStore } from '../stores/searchterms';
     border-top: 1px solid #134da2;
     width: 150px;
     margin-left: 0;
-
   }
 
   div.thank-you-msg {
@@ -452,6 +460,8 @@ import { useSearchTermStore } from '../stores/searchterms';
       margin-top: 20px;
       gap: 25px;
     }
+
+
   }
 
   div.captcha input {
