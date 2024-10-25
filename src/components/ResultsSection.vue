@@ -1,6 +1,16 @@
 <template>
     <section id="search-results">
-        <h2 class="lato-bold results-title">{{title}}</h2>
+        <div class="header-section" >
+            <h2 class="lato-bold results-title">{{title}}</h2>
+            <button v-if="downloadAvailable" class="more" @click="openModal">Ladda ner resultat</button>
+                <!-- Modal Component -->
+                <modal-component 
+                :show="showModal" 
+                @close-modal="closeModal"
+                @submit-form="handleSubmitForm"
+                />
+        </div>
+
         <!-- <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller sökterm "{{ this.store.searchTerm }}"</h2>
         <h2 v-else class="lato-bold results-title">Tyvärr, inga resultat hittades i databasen.</h2> -->
             
@@ -16,6 +26,7 @@
 import Word from "../components/SingleWord.vue";
 import { useSearchTermStore } from '../stores/searchterms';
 import { useUrlGet } from '../stores/urlGet';
+import ModalComponent from './RegisterDownload.vue';
 
 export default {
     setup() {
@@ -31,7 +42,9 @@ export default {
             urlGet: this.useUrl.urlGet + "/words", 
             urlChange: this.useUrl.urlGet + "/changes", 
             searchTerm: this.store.searchTerm,
-            title: ""
+            title: "",
+            downloadAvailable: false,
+            showModal: false, // Controls whether the modal is visible
         }
     },
     created() {
@@ -48,14 +61,20 @@ export default {
         }
     },
     emits: ["addChanges"],
-    components: { Word },
-    // props: {
-    //     word: {
-    //         type: Object,  // Expecting an Object
-    //         required: true
-    //     }
-    // },
+    components: { ModalComponent, Word },
     methods: {
+        openModal() {
+            this.showModal = true; // Show the modal
+        },
+        closeModal() {
+            this.showModal = false; // Hide the modal
+        },
+        handleSubmitForm(updatedWord) {
+            // Handle form submission (e.g., save the updated word data)
+            // this.word = updatedWord;
+            console.log(updatedWord);
+            this.closeModal(); // Close the modal after submission
+        },
         highlightSearchTerm() {
             // Create a regex to search for the searchTerm, case-insensitive
             let regex = new RegExp(this.searchTerm, 'gi');
@@ -85,7 +104,7 @@ export default {
                 const response = await fetch(this.urlGet + "/search/" + this.store.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
                 if(data.length===0) {
-                    this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så du kan kolla igenom dem.";
+                    this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så kan du kolla igenom dem.";
                 }
             
         
@@ -93,14 +112,15 @@ export default {
             if (this.words.length > 0) {
                 // this.highlightSearchTerm();
                 this.title = this.words.length + " sökresultat innehåller sökterm '" + this.store.searchTerm + "'. ";
+                this.downloadAvailable=true;
             } else {
-                this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så du kan kolla igenom dem.";
+                this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så kan du kolla igenom dem.";
                 this.getWords();
             }
             
             } else {
                 this.getWords();
-                this.title = "Din sökterm var tom. Här är alla ord i databasen, så du kan kolla igenom dem.";
+                this.title = "Din sökterm var tom. Här är alla ord i databasen, så kan du kolla igenom dem.";
                 
             }
             
@@ -139,6 +159,12 @@ section#search-results {
 
 h2.results-title {
     margin-left: 20px;
+}
+
+#search-results div.header-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 

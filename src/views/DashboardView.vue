@@ -1,13 +1,10 @@
 <script setup>
 import Breadcrumbs from '../components/BreadcrumbsSection.vue'
-import Search from '../components/SearchSection.vue'
-import Start from '../components/StartInfoV2.vue'
 </script>
 
 <template>
     <main class="content">
         <Breadcrumbs />
-        <Search />
-        <Start />
+        <p style="text-align: center; margin: 3rem 0; font-weight: bold; color: green; font-size: 2rem;" >Welcome to the Dashboard</p>
     </main>
 </template>

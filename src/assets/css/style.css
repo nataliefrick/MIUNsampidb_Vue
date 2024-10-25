@@ -27,6 +27,16 @@ h2, h3 {
     color: #404040;
 }
 
+@media (max-width: 575px) {
+    p {
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
 .lato-bold {
     font-family: "Lato", sans-serif;
     font-weight: 700;
@@ -134,20 +144,12 @@ button.no-style {
     background-color: #fff;
 }
 
-/* Topbar ---------- */
-
-#topbar {
-    background-color:#404040;
-    width: 100%;
-    height: 33px;
-}
 
 
 /* Header ---------- */
 header {
     background-color: #fff;
     border-bottom: 1px solid #40404020;
-    
 }
 
 div#header {
@@ -168,12 +170,33 @@ div.container {
     width: 100%;
     max-width: 1140px;
 }
-@media (max-width: 1190px) { .container { margin-left: 50px; margin-right: 50px;}}
-@media (min-width: 1140px) { .container { max-width: 1140px; }}
-@media (min-width: 992px)  { .container { max-width: 960px;  }}
-@media (min-width: 768px)  { .container { max-width: 720px;  }}
-@media (min-width: 576px)  { .container { max-width: 540px;  }}
-@media (max-width: 350px) { .container { margin-left: 0!important; width: 90%!important;}}
+@media (max-width: 1190px) { 
+    .container { 
+        margin-left: 50px; 
+        margin-right: 50px;
+}}
+@media (min-width: 1140px) { 
+    .container { 
+        max-width: 1140px; 
+}}
+@media (min-width: 992px)  { 
+    .container { 
+        max-width: 960px;  
+}}
+@media (min-width: 768px)  {  
+    .container { 
+        max-width: 720px;  
+}}
+@media (min-width: 576px)  { 
+    .container { 
+        max-width: 540px;  
+}}
+@media (max-width: 350px) { 
+    .container { 
+        margin-left: auto!important; 
+        margin-right: auto!important; 
+        width: 90%!important;
+}}
 
 div.menu {
     align-items: center;
@@ -242,12 +265,13 @@ div.miun-user a {
     display: flex;
 }
 
-@media (max-width: 576px) { 
+@media (min-width: 576px) { 
     nav.sampi-db-nav a,
     div.miun-user a {
         margin-right: 50px;
     }}
-@media (max-width: 575px) { nav.sampi-db-nav a,
+@media (max-width: 575px) { 
+    nav.sampi-db-nav a,
     div.miun-user a {
         margin-right: 0px;
     }}

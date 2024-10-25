@@ -67,8 +67,7 @@ export default {
             storeFilterLang: useFilterLanguagesStore(),
             urlGet: this.useUrl.urlGet + "/words",
             newTerm: "",
-            // selectedLanguages: [ swedish , norweigen],
-            selectedLanguages: [ true, true],
+            selectedLanguages: [ true, true ], // [ swe, nor ],
             isActiveSwe: true, // Default state
             isActiveNwg: true, // Default state
         }
@@ -105,10 +104,6 @@ export default {
             // Only update if there's a new term to submit
             if (this.newTerm) {
                 storeSearchTerms.setTerm(this.newTerm);
-                // console.log("Updated search term:", storeSearchTerms.searchTerm);
-                
-                // Reset the input field after submission
-                // this.newTerm = "";  // Clear the input for new entry
 
                 // Use nextTick to ensure the store updates are processed before navigating
                 await nextTick();
@@ -132,12 +127,8 @@ export default {
 </script>
 
 <style scoped>
-    /* Database search panel ---------- */
-    /* Database search panel: background ---------- */
     div.hero-background {
         display: flex;
-        /* position: relative;
-        z-index: 0; */
     }
 
     div.bkg-container img { /* photo */
@@ -322,7 +313,7 @@ export default {
 
         section.hero-search-container {
             margin: 0;
-            text-align: center;
+            /* text-align: center; */
         }
 
         section.hero-search-container h2 {

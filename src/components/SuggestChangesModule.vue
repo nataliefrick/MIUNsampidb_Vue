@@ -3,7 +3,7 @@
       <div class="modal-content">
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
-            <div class="sampi-db-logo">
+            <div class="sampi-db-logo module">
                 <img src="../assets/img/Gaskeuniversiteete_logotyp_CMYK.png" alt="Mittuniversitet logotypen - sydsamiska version">
             </div>
             <div v-if="thankYouMsg" class="thank-you-msg">
@@ -185,7 +185,7 @@ import { useUrlGet } from '../stores/urlGet';
         this.thankYouMsg=false;
         this.errorMsg=false;
         this.captcha.userAnswer=null;
-        this.$emit('close-modal');
+        this.$emit('closeModal');
       },
       toggleButtonAction() {
           if (this.toggleButton) {
@@ -262,24 +262,35 @@ import { useUrlGet } from '../stores/urlGet';
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
     z-index: 3;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
   }
-  
+
   .modal-content {
     max-width: 680px;
     max-height: 880px;
+    height: 80vh;
     overflow-y: auto;
     background-color: white;
     padding: 20px 40px;
     border-radius: 5px;
     position: relative;
   }
+
+  @media (min-width: 1201px) { 
+  .modal-content { 
+    width: 80%;
+
+  }}
+  @media (max-width: 1200px) { 
+  .modal-content { 
+    width: 60%; 
+  }}
 
   .scrolling-content {
     position: scrolling;
@@ -311,6 +322,17 @@ import { useUrlGet } from '../stores/urlGet';
     
 
   } 
+
+  @media (max-width: 575px) {
+    div.sampi-db-logo.module {
+        margin: 0 auto;
+    }
+
+    div.sampi-db-logo.module img {
+        width: 137px;
+        height: auto;
+    }
+  }
 
   div.modal h2 {
       margin-top: 50px;
@@ -397,6 +419,13 @@ import { useUrlGet } from '../stores/urlGet';
     margin: 1.5em 0;
   }
 
+  @media (max-width: 1025px) { 
+    div.contact-info div.flex-row {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
   .word {
     align-content: space-around;
     align-items: center;
@@ -432,7 +461,7 @@ import { useUrlGet } from '../stores/urlGet';
   textarea,
   input {
     border: none;
-    line-height: 1.5rem;
+    line-height: 1.2rem;
     padding-left: 10px;
     padding-right: 10px;
     background-color: #134da220;
@@ -486,6 +515,14 @@ import { useUrlGet } from '../stores/urlGet';
     margin: 1rem 0;
     justify-content: space-between;
     align-items: center;
+  }
+
+  @media (max-width: 575px) {
+    div.captcha.flex-row {
+      flex-direction: column;
+      margin-top: 20px;
+      gap: 25px;
+    }
   }
 
   div.captcha input {
