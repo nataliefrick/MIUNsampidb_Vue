@@ -153,7 +153,6 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
       },
 
       downloadJsonAsExcel(data, searchTerm, fileName = 'miun_emotionalwords_data', title = 'Databas för sydsamiska känsloord och kulturella uttryck för lidande') {
-        console.log(searchTerm);
          // Specify columns to exclude
           const excludeColumns = ['id', 'created_at', 'updated_at'];
 
