@@ -6,6 +6,8 @@
                 <!-- Modal Component -->
                 <modal-component 
                 :show="showModal" 
+                :words="words" 
+                :searchTerm="this.store.searchTerm" 
                 @close-modal="closeModal"
                 @submit-form="handleSubmitForm"
                 />
@@ -41,7 +43,7 @@ export default {
             // errorMessage: null,
             urlGet: this.useUrl.urlGet + "/words", 
             urlChange: this.useUrl.urlGet + "/changes", 
-            searchTerm: this.store.searchTerm,
+            searchTerm: "this.store.searchTerm",
             title: "",
             downloadAvailable: false,
             showModal: false, // Controls whether the modal is visible

@@ -7,8 +7,8 @@
                 <img src="../assets/img/Gaskeuniversiteete_logotyp_CMYK.png" alt="Mittuniversitet logotypen - sydsamiska version">
             </div>
             <div v-if="thankYouMsg" class="thank-you-msg">
-                <span class="lato-bold">Tack för ditt bidrag till vår forskning!</span>
-                <span class="lato-regular">Om du har lämnat dina kontaktuppgifter kommer vi att höra av oss snart.</span>
+                <span class="lato-regular">En Excel-fil med data baserad på din sökterm kommer snart att laddas ner till datorns nedladdningsmapp.</span>
+                <span class="lato-regular italics margin-top-sm">Vid publicering av dessa data, vänligen citera följande: 'Mittuniversitetet......</span>
                 <span class="close-thkyou" @click="closeModal">&times;</span>
               </div>
 
@@ -16,63 +16,62 @@
               <h2 class="lato-bold">Registrerar ditt projekt</h2>
               <p>Vi vill gärna veta mer om ditt projekt och hur vår data kommer att användas! Vänligen fyll i dina kontaktuppgifter och en beskrivning av projektet där datan kommer att användas.
               </p>
-              
                 
-                <!-- form ----------------- -->
-                <form @submit.prevent="submitForm">
-                  <div class="contact-info">
-                    <div class="flex-row">
-                      <h3 class="lato-bold">Kontaktuppgifter</h3>
-                      <div class="flex-col">
-                          <label for="name">Namn</label>
-                          <input class="contact-info" type="text" v-model="formData.name" required/><!-- required -->
-                      </div>
-                      <div class="flex-col">
-                        <label for="title">Title</label>
-                        <input class="contact-info" type="text" v-model="formData.title" />
-                      </div>
-                      <div class="flex-col">
-                        <label for="institution">Arbetsplats/institution</label>
-                        <input class="contact-info" type="text" v-model="formData.institution" />
-                      </div>
-              
-                      <div class="flex-col">
-                        <label for="email">Epost</label>
-                        <input class="contact-info" type="email" v-model="formData.email" required />
-                      </div>
-              
-                      <div class="flex-col">
-                        <label for="telephone">Telefon</label>
-                        <input class="contact-info" type="tel" v-model="formData.telephone" required />
-                      </div>
-                    </div>
-
-                    <!-- Text area for messages -->
-                  <div class="msg flex-row">
-                    <h3 class="lato-bold">Projektet</h3>
+              <!-- form ----------------- -->
+              <form @submit.prevent="submitForm">
+                <div class="contact-info">
+                  <div class="flex-row">
+                    <h3 class="lato-bold">Kontaktuppgifter</h3>
                     <div class="flex-col">
-                        <label for="projectTitle">Projektrubrik</label>
-                        <input class="contact-info project-title" type="text" v-model="formData.projectTitle" required />
+                        <label for="name">Namn</label>
+                        <input class="contact-info" type="text" v-model="formData.name" required/><!-- required -->
                     </div>
                     <div class="flex-col">
-                      <label for="description">Beskrivning</label>
-                      <textarea  class="lato-regular" placeholder="Vänligen skriv en kort beskrivning av projektet och den beräknade tidsramen för publicering." v-model="formData.description" rows="4" required></textarea>
+                      <label for="title">Title</label>
+                      <input class="contact-info" type="text" v-model="formData.title" />
+                    </div>
+                    <div class="flex-col">
+                      <label for="institution">Arbetsplats/institution</label>
+                      <input class="contact-info" type="text" v-model="formData.institution" />
+                    </div>
+            
+                    <div class="flex-col">
+                      <label for="email">Epost</label>
+                      <input class="contact-info" type="email" v-model="formData.email" required />
+                    </div>
+            
+                    <div class="flex-col">
+                      <label for="telephone">Telefon</label>
+                      <input class="contact-info" type="tel" v-model="formData.telephone" required />
                     </div>
                   </div>
+
+                  <!-- Text area for messages -->
+                <div class="msg flex-row">
+                  <h3 class="lato-bold">Projektet</h3>
+                  <div class="flex-col">
+                      <label for="projectTitle">Projektrubrik</label>
+                      <input class="contact-info project-title" type="text" v-model="formData.projectTitle" required />
+                  </div>
+                  <div class="flex-col">
+                    <label for="description">Beskrivning</label>
+                    <textarea  class="lato-regular" placeholder="Vänligen skriv en kort beskrivning av projektet och den beräknade tidsramen för publicering." v-model="formData.description" rows="4" required></textarea>
+                  </div>
                 </div>
-                  <!-- CAPTCHA Section -->
-                  <div class="captcha flex-row">
-                    <div>
-                      <label for="captcha">Vänligen svara:  {{ captcha.question }}
-                      </label>
-                      <input placeholder="?" type="number" v-model="captcha.userAnswer" required />
-                    </div>
-                    <div v-if="errorMessage" class="lato-bold errorMessage">
-                      {{ errorMessage }}
-                    </div>    
-                    <button type="submit">Ladda ner data</button>
-                  </div> 
-                </form>
+              </div>
+                <!-- CAPTCHA Section -->
+                <div class="captcha flex-row">
+                  <div>
+                    <label for="captcha">Vänligen svara:  {{ captcha.question }}
+                    </label>
+                    <input placeholder="?" type="number" v-model="captcha.userAnswer" required />
+                  </div>
+                  <div v-if="errorMessage" class="lato-bold errorMessage">
+                    {{ errorMessage }}
+                  </div>    
+                  <button type="submit">Ladda ner data</button>
+                </div> 
+              </form>
             </div>
         </div>
       </div>
@@ -81,18 +80,19 @@
   
 <script>
 import { useUrlGet } from '../stores/urlGet';
-import { useSearchTermStore } from '../stores/searchterms';
+import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
+
   export default {
     setup() {
         // const storeSearchTerms = useSearchTermStore()
         const useUrl = useUrlGet()
-        const store = useSearchTermStore()
-        return { useUrl, store }
+        
+        return { useUrl }
     },
-    props: ['show'], // Accepting `word` as a prop and controlling `show` for modal visibility
+    props: ['show', 'searchTerm', 'words'], // Accepting `word` as a prop and controlling `show` for modal visibility
     data() {
       return {
-        urlChange: this.useUrl.urlGet + "/changes", 
+        urlRegister: this.useUrl.urlGet + "/downloads", 
         toggleButton: false,
         showButton: true,
         showData: false,
@@ -108,17 +108,14 @@ import { useSearchTermStore } from '../stores/searchterms';
         errorMessage: '',
         message: '',
 
-        searchTerm: this.store.searchTerm,
-        
         formData: {
-        name: '',
-        title:'',
-        institution: '',
-        email: '',
-        telephone: '',
-        projectTitle: '',
-        description: '',
-        
+          name: '',
+          title:'',
+          institution: '',
+          email: '',
+          telephone: '',
+          projectTitle: '',
+          description: '',
         }
       };
     },
@@ -140,16 +137,70 @@ import { useSearchTermStore } from '../stores/searchterms';
         this.captcha.userAnswer=null;
         this.$emit('closeModal');
       },
+
       async submitForm() {
         this.errorMessage = '';
         if (parseInt(this.captcha.userAnswer) === this.captcha.correctAnswer) {
           this.errorMessage = '';
+          this.thankYouMsg = true,
+          this.downloadJsonAsExcel(this.words, this.searchTerm);
           // alert('Form submitted successfully!');
           this.addChange();
         } else {
           this.errorMessage = 'Fel CAPTCHA-svar. Försök igen.';
           this.generateCaptcha();  // Generate new CAPTCHA on failure
         }
+      },
+
+      downloadJsonAsExcel(data, searchTerm, fileName = 'miun_emotionalwords_data', title = 'Databas för sydsamiska känsloord och kulturella uttryck för lidande') {
+        console.log(searchTerm);
+         // Specify columns to exclude
+          const excludeColumns = ['id', 'created_at', 'updated_at'];
+
+        // Define custom headers
+          const customHeaders = {
+              word_sydsamiska: 'Samiska',
+              definition_sydsamiska: 'Definitionen på Samiska',
+              word_svenska: 'Svenska',
+              definition_svenska: 'Definitionen på Svenska',
+              word_norska: 'Norska',
+              definition_norska: 'Definitionen på Norska',
+              synonyms: 'Synonymer',
+              antonyms: 'Antonymer',
+              example_of_use: 'Exempel på användning',
+              sources: 'Källor',
+              arousal_level: 'Upphetsnings- eller aktiveringsnivå',
+              frequency_id: 'Användningsfrekvens',
+              // Add more mappings as needed
+          };
+
+
+          // Rename data keys to match custom headers
+          const formattedData = data.map(item => {
+              const formattedItem = {};
+              Object.keys(item).forEach(key => {
+                  if (!excludeColumns.includes(key)) {
+                    formattedItem[customHeaders[key] || key] = item[key];
+                  }
+              });
+              return formattedItem;
+          });
+
+          // Convert data to worksheet with headers starting at A3
+          const worksheet = XLSX.utils.json_to_sheet(formattedData, { origin: 'A5' });
+
+          // Add title at A1 and two empty rows at A2 and A3
+          XLSX.utils.sheet_add_aoa(worksheet, [[title]], { origin: 'A1' });
+          XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: 'A2' });
+          XLSX.utils.sheet_add_aoa(worksheet, [['Sökord: ' + searchTerm]], { origin: 'A3' });
+          XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: 'A4' });
+          
+          // Create workbook and append worksheet
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+          
+          // Download the file
+          XLSX.writeFile(workbook, `${fileName}.xlsx`);
       },
       
       async addChange() {
@@ -164,20 +215,21 @@ import { useSearchTermStore } from '../stores/searchterms';
               telephone: this.formData.telephone,
               projectTitle: this.formData.projectTitle,
               description: this.formData.description,
+              searchTerm: this.searchTerm,
+              words: this.words
             };
-            // const response = await fetch(this.urlChange, { 
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify(registerBody)
-            // });
+            const response = await fetch(this.urlRegister, { 
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(registerBody)
+            });
 
-            // await response.json();
-            console.log(registerBody);
+            await response.json();
+            // console.log(registerBody);
+
             // empty form
-
-
             this.formData.name = "";
             this.formData.title = "";
             this.formData.institution = "";
@@ -200,6 +252,8 @@ import { useSearchTermStore } from '../stores/searchterms';
 </script>
   
 <style scoped>
+  .margin-top-sm {margin-top: 1rem;}
+  .italics { font-style: italic; }
   /* Basic styling for the modal */
   .modal {
     display: flex;
