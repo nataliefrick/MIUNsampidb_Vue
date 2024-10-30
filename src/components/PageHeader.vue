@@ -2,6 +2,7 @@
 <header>
     <div id="topbar">
         <div class="topbar">
+            <RouterLink v-if="user" to="/dashboard" class="dash-link">Dashboard</RouterLink>
             <span v-if=user>Inloggade som {{ user }}</span>
         </div>
     </div> <!-- Top black bar -->
@@ -60,6 +61,20 @@ div.topbar span {
     font-size: 0.7rem;
 }
 
+.dash-link {
+    color: #fff;
+    text-decoration: none;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 0.7rem;
+    margin: 0 20px;
+}
+
+.dash-link:hover {
+    color: #fbd030; 
+}
+
 @media (min-width: 576px) { 
     div.topbar span{
         margin-right: 50px;
@@ -103,8 +118,6 @@ div.topbar span {
             this.closeModal(); // Close the modal after submission
         },
     }
-
-
-    }
+}
         
 </script>
