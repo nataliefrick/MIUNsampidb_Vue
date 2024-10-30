@@ -33,13 +33,13 @@
           <li class="definition lato-regular">{{word.definition_norska}}</li>
       </ul>
       <ul class="more-info no-bullets" v-if="showMoreInfo">
-            <li v-show="word.synonyms">Synonyms: {{word.synonyms}}</li>
-            <li v-show="word.antonyms">Antonyms: {{word.antonyms}}</li>
-            <li v-show="word.example_of_use">Example of use: {{word.example_of_use}}</li>
+            <li v-show="word.synonyms"><strong>Synonyms:</strong> {{word.synonyms}}</li>
+            <li v-show="word.antonyms"><strong>Antonyms:</strong> {{word.antonyms}}</li>
+            <li v-show="word.example_of_use"><strong>Example of use:</strong> {{word.example_of_use}}</li>
 
             <!-- <li v-show="word.sources">Källa: {{word.sources}}</li> -->
-            <li v-show="word.arousal_level">Arousel: {{word.arousal_level}}</li>
-            <li v-show="word.frequency_id">Frequency of use: {{word.frequency_id}}</li>
+            <li v-show="word.arousal_level"><strong>Arousel:</strong> {{word.arousal_level}}</li>
+            <li v-show="word.frequency_id"><strong>Frequency of use:</strong> {{word.frequency_id}}</li>
 
             <li v-show="word.link_to_update">{{word.link_to_update}}</li>
       </ul>
@@ -161,6 +161,14 @@ div.result-card ul {
 div.show-more {
     display: flex;
     justify-content: flex-end;
+}
+
+ul.more-info li {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-style: italic;
+    margin: 4px 0;
 }
 
 /* button.less  {

@@ -25,7 +25,7 @@
                   <div class="flex-row">
                       <label for="password">Lösenord</label>
                       <div class="password">
-                        <input id="password" v-model="password" type="current-password"><i id="eye" class="fa-regular fa-eye" @click=togglePassword()></i>
+                        <input id="password" v-model="password" type="password"><i id="eye" class="fa-regular fa-eye" @click=togglePassword()></i>
                         
                       </div>
                   </div>
@@ -164,10 +164,10 @@ import { nextTick } from 'vue';  // Import nextTick for better timing of updates
       },
       togglePassword() {
             var passwordEl = document.getElementById("password");
-            if (passwordEl.type === "current-password") {
+            if (passwordEl.type === "password") {
                 passwordEl.type = "text";
             } else {
-                passwordEl.type = "current-password";
+                passwordEl.type = "password";
             }
             var eyeEl = document.getElementById("eye");
             eyeEl.classList.toggle("fa-eye");
