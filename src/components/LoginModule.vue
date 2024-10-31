@@ -92,7 +92,7 @@ import { nextTick } from 'vue';  // Import nextTick for better timing of updates
               }
       },
       async loginUser() {
-        console.log("loginAttempt");
+        
           // check first for content
           if(this.email.length > 2 ) {
               let userBody = {

@@ -106,6 +106,7 @@ div.topbar span {
         },
         methods : {
         openModal() {
+            console.log("loginAttempt");
             this.showModal = true; // Show the modal
         },
         closeModal() {
