@@ -5,7 +5,7 @@
         <button class="more" @click="openModal">Föreslå ändringar</button>
 
             <!-- Modal Component -->
-            <modal-component 
+            <ModalComponent 
             :word="word" 
             :show="showModal" 
             @close-modal="closeModal"
@@ -99,25 +99,25 @@ export default {
             console.log(updatedWord);
             this.closeModal(); // Close the modal after submission
         },
-        highlightSearchTerm() {
-            // Create a copy of the words object to avoid mutating the prop directly
-            // let highlightedWord = { ...this.word }; // Shallow copy
-            let highlightedWord = this.word; // Shallow copy
+        // highlightSearchTerm() {
+        //     // Create a copy of the words object to avoid mutating the prop directly
+        //     // let highlightedWord = { ...this.word }; // Shallow copy
+        //     let highlightedWord = this.word; // Shallow copy
 
-            // Create a regex to search for the searchTerm, case-insensitive
-            let regex = new RegExp(this.searchTerm, 'gi');
+        //     // Create a regex to search for the searchTerm, case-insensitive
+        //     let regex = new RegExp(this.searchTerm, 'gi');
 
-            // Loop through each key in the words object
-            Object.keys(highlightedWord).forEach(key => {
-                let value = highlightedWord[key];
+        //     // Loop through each key in the words object
+        //     Object.keys(highlightedWord).forEach(key => {
+        //         let value = highlightedWord[key];
 
-                // Check if the value is a string
-                if (typeof value === 'string') {
-                    // Replace occurrences of searchTerm with a <span> around it
-                    highlightedWord[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
-                }
-            });
-        },
+        //         // Check if the value is a string
+        //         if (typeof value === 'string') {
+        //             // Replace occurrences of searchTerm with a <span> around it
+        //             highlightedWord[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
+        //         }
+        //     });
+        // },
         toggleButtonAction() {
             if (this.toggleButton) {
                 this.showMoreInfo = false;
