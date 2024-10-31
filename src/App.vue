@@ -1,5 +1,6 @@
 <template>
   <PageHeader/>
+  <Breadcrumbs />
   <RouterView />
   <PageFooter/>
 </template>
@@ -11,6 +12,7 @@
 import { RouterView } from 'vue-router'
 import PageHeader from "./components/PageHeader.vue"
 import PageFooter from "./components/PageFooter.vue"
+import Breadcrumbs from './components/BreadcrumbsSection.vue'
 
 export default {
     data() {
@@ -30,7 +32,7 @@ export default {
         } 
       }
     },
-    components: { PageHeader, RouterView, PageFooter},
+    components: { PageHeader, Breadcrumbs, RouterView, PageFooter},
     methods: {
         checkLoginStatus() {
           if (this.isLoggedIn) {

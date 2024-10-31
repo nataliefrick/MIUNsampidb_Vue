@@ -36,6 +36,10 @@
 </template>
 
 <style scoped>
+header {
+  position: relative;
+  z-index: 10; /* Adjust this value as needed */
+}
 /* Topbar ---------- */
 
 #topbar {
