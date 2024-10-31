@@ -38,7 +38,7 @@
 <style scoped>
 header {
   position: relative;
-  z-index: 10; /* Adjust this value as needed */
+  z-index: 3; /* Adjust this value as needed */
 }
 /* Topbar ---------- */
 
