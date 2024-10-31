@@ -11,7 +11,6 @@
 import { RouterView } from 'vue-router'
 import PageHeader from "./components/PageHeader.vue"
 import PageFooter from "./components/PageFooter.vue"
-// import { useUserStore } from '@/stores/user';
 
 export default {
     data() {
@@ -49,8 +48,6 @@ export default {
       }
     },
     mounted () {
-        // const userStore = useUserStore();
-        // userStore.loadUserFromStorage();  // Load user data from local storage
         this.checkLoginStatus();  // Check login status when the component mounts
     }
 }

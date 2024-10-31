@@ -23,7 +23,7 @@
 import Word from "../components/DashSingleWord.vue";
 import { useUrlGet } from '../stores/urlGet';
 import ModalComponent from './DashWordModule.vue';
-import EventBus from '../util/event-bus';
+// import EventBus from '../util/event-bus';
 export default {
     setup() {
         const useUrl = useUrlGet()
@@ -64,11 +64,11 @@ export default {
     },
     mounted() {
         this.getWords();
-        EventBus.on('word-added', this.refreshWords);
+        // EventBus.on('word-added', this.refreshWords);
     },
 
     beforeUnmount() {
-        EventBus.off('word-added', this.refreshWords);
+        // EventBus.off('word-added', this.refreshWords);
     }
 
 }

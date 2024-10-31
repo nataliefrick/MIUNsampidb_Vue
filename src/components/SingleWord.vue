@@ -2,13 +2,13 @@
     <!-- <div class="result-card" v-for="(word, index) in listWords" :key="index"> -->
 <div class="result-card">
       <div class="show-more" v-if="moreInfoAvailable">
-        <button class="more" @click="openModal">Föreslå ändringar</button>
+        <button class="more" @click="openChangesModal">Föreslå ändringar</button>
 
             <!-- Modal Component -->
             <ModalComponent 
             :word="word" 
             :show="showModal" 
-            @close-modal="closeModal"
+            @close-modal="closeChangesModal"
             @submit-form="handleSubmitForm"
             />
           <button class="more" @click="toggleButtonAction($event)" v-if="showButton">
@@ -87,17 +87,17 @@ export default {
                 }
     },
     methods : {
-        openModal() {
+        openChangesModal() {
             this.showModal = true; // Show the modal
         },
-        closeModal() {
+        closeChangesModal() {
             this.showModal = false; // Hide the modal
         },
         handleSubmitForm(updatedWord) {
             // Handle form submission (e.g., save the updated word data)
             // this.word = updatedWord;
             console.log(updatedWord);
-            this.closeModal(); // Close the modal after submission
+            this.closeChangesModal(); // Close the modal after submission
         },
         // highlightSearchTerm() {
         //     // Create a copy of the words object to avoid mutating the prop directly

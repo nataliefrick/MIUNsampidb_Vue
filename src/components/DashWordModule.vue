@@ -87,7 +87,7 @@
   
 <script>
 import { useUrlGet } from '../stores/urlGet';
-import EventBus from '../util/event-bus';
+// import EventBus from '../util/event-bus';
   export default {
     setup() {
         // const storeSearchTerms = useSearchTermStore()
@@ -176,7 +176,7 @@ import EventBus from '../util/event-bus';
             this.$emit("addNewWord"); // reloads the parent page.
 
             // Emit event to notify DashWordsSection
-            EventBus.emit('word-added');
+            // EventBus.emit('word-added');
             this.closeModal(); // Close the modal
         }
         else {

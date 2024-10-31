@@ -17,13 +17,13 @@
                     <img src="../assets/img/Gaskeuniversiteete_logotyp_CMYK.png" alt="Mittuniversitet logotypen - sydsamiska version">
                 </div>
                 <nav class="sampi-db-nav">
-                    <button v-if="user" @click="openModal" class="m-link m-login no-style"><i class="fa-regular fa-user" aria-label="Logga ut"></i><span class="nav-label lato-bold">Logga ut</span></button>
-                    <button v-else @click="openModal" class="m-link m-login no-style"><i class="fa-regular fa-user" aria-label="Logga in"></i><span class="nav-label lato-bold">Logga in</span></button>
+                    <button v-if="user" @click="openLoginModal" class="m-link m-login no-style"><i class="fa-regular fa-user" aria-label="Logga ut"></i><span class="nav-label lato-bold">Logga ut</span></button>
+                    <button v-else @click="openLoginModal" class="m-link m-login no-style"><i class="fa-regular fa-user" aria-label="Logga in"></i><span class="nav-label lato-bold">Logga in</span></button>
 
                     <!-- Modal Component -->
-                    <modal-component 
+                    <ModalComponent 
                     :show="showModal" 
-                    @close-modal="closeModal"
+                    @close-modal="closeLoginModal"
                     @submit-form="handleSubmitForm"
                     /> 
                 </nav>
@@ -105,19 +105,22 @@ div.topbar span {
             ModalComponent,
         },
         methods : {
-        openModal() {
+        openLoginModal() {
             console.log("loginAttempt");
             this.showModal = true; // Show the modal
         },
-        closeModal() {
+        closeLoginModal() {
             this.showModal = false; // Hide the modal
         },
         handleSubmitForm(updatedWord) {
             // Handle form submission (e.g., save the updated word data)
             // this.word = updatedWord;
             console.log(updatedWord);
-            this.closeModal(); // Close the modal after submission
+            this.closeLoginModal(); // Close the modal after submission
         },
+        mounted() {
+            console.log("Header component mounted");
+        }
     }
 }
         

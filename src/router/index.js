@@ -22,4 +22,11 @@ const router = createRouter({
   ]
 })
 
+// Add the beforeEach hook here
+router.beforeEach((to, from, next) => {
+  console.log(`Navigating to ${to.name} from ${from.name}`);
+  next();
+});
+
+
 export default router

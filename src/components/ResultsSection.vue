@@ -2,13 +2,13 @@
     <section id="search-results">
         <div class="header-section" >
             <h2 class="lato-bold results-title">{{title}}</h2>
-            <button v-if="downloadAvailable" class="more" @click="openModal">Ladda ner resultat</button>
+            <button v-if="downloadAvailable" class="more" @click="openRegisterModal">Ladda ner resultat</button>
                 <!-- Modal Component -->
                 <modal-component 
                 :show="showModal" 
                 :words="words" 
                 :searchTerm="this.store.searchTerm" 
-                @close-modal="closeModal"
+                @close-modal="closeRegisterModal"
                 @submit-form="handleSubmitForm"
                 />
         </div>
@@ -65,17 +65,17 @@ export default {
     emits: ["addChanges"],
     components: { ModalComponent, Word },
     methods: {
-        openModal() {
+        openRegisterModal() {
             this.showModal = true; // Show the modal
         },
-        closeModal() {
+        closeRegisterModal() {
             this.showModal = false; // Hide the modal
         },
         handleSubmitForm(updatedWord) {
             // Handle form submission (e.g., save the updated word data)
             // this.word = updatedWord;
             console.log(updatedWord);
-            this.closeModal(); // Close the modal after submission
+            this.closeRegisterModal(); // Close the modal after submission
         },
         highlightSearchTerm() {
             // Create a regex to search for the searchTerm, case-insensitive
