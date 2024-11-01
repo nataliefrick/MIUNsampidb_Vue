@@ -23,7 +23,7 @@
 import Word from "../components/DashSingleWord.vue";
 import { useUrlGet } from '../stores/urlGet';
 import ModalComponent from './DashWordModule.vue';
-// import EventBus from '../util/event-bus';
+import EventBus from '../util/event-bus';
 export default {
     setup() {
         const useUrl = useUrlGet()
@@ -35,9 +35,10 @@ export default {
             urlGet: this.useUrl.urlGet + "/words", 
             urlChange: this.useUrl.urlGet + "/changes", 
             showModal: false, // Controls whether the modal is visible
+            existingWord: false
         }
     },
-    emits: ["addNewWord"],
+    emits: ["addNewWord", "updateWord"],
     components: { ModalComponent, Word },
     methods: {
         async getWords() {
@@ -64,11 +65,11 @@ export default {
     },
     mounted() {
         this.getWords();
-        // EventBus.on('word-added', this.refreshWords);
+        EventBus.on('change-to-database', this.refreshWords);
     },
 
     beforeUnmount() {
-        // EventBus.off('word-added', this.refreshWords);
+        EventBus.off('change-to-database', this.refreshWords);
     }
 
 }

@@ -1,18 +1,20 @@
 <template>
     <div v-if="show" class="modal">
       <div class="modal-content">
+        <!-- <p>just checking: {{ displayText }}</p> -->
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
             <div class="sampi-db-logo module">
                 <img src="../assets/img/Gaskeuniversiteete_logotyp_CMYK.png" alt="Mittuniversitet logotypen - sydsamiska version">
             </div>
             <div v-if="thankYouMsg" class="thank-you-msg">
-                <span class="lato-bold">Klart!</span>
+                <span class="lato-bold">{{ message }}</span>
                 <span class="close-thkyou" @click="closeModal">&times;</span>
-              </div>
+            </div>
 
             <div v-else>
-                <h2 class="lato-bold">Lägga till ett ord</h2>
+                <h2 v-if="existingWord" class="lato-bold">Uppdatera</h2>
+                <h2 v-else class="lato-bold">Lägga till ett ord</h2>
               
                 <!-- form ----------------- -->
                 <form @submit.prevent="submitForm">
@@ -63,21 +65,35 @@
                     <div class="flex-col">
                       <label for="arousal_level">Arousal Level:</label>
                       <select v-model="formData.arousal_level" name="arousal_level">
-                          <option value="low">Low</option>
-                          <option value="medium">Medium</option>
-                          <option value="high">High</option>
+                          <option value=1>Low</option>
+                          <option value=2>Medium</option>
+                          <option value=3>High</option>
                       </select>
                     </div>
                     <div class="flex-col">
                       <label for="frequency_id">Frequency:</label>
                       <select v-model="formData.frequency_id" name="frequency_id">
-                          <option value="low">Low</option>
-                          <option value="medium">Medium</option>
-                          <option value="high">High</option>
+                          <option value=1>Low</option>
+                          <option value=2>Medium</option>
+                          <option value=3>High</option>
                       </select>
                     </div>
                   </div>
-                    <button type="submit">Lägga till</button>
+                  <div>
+                    <div class="submit-section" v-if="existingWord">
+                      <div class="submit-section" v-if="!areYouSure">
+                        <button type="submit">Spara</button>
+                        <span class="close" @click="closeModal">&times;</span>
+                        <button @click="justChecking()">Radera</button>
+                      </div>
+                      <div class="are-you-sure" v-if="areYouSure">
+                        <span class="red-text">Är du säker du vill radera?</span>
+                        <button @click="deleteWord()">Ja</button>
+                        <button @click="undo()">Nej</button>
+                      </div>
+                    </div>
+                    <button v-else type="submit">Spara</button>
+                  </div>
                 </form>
             </div>
         </div>
@@ -87,34 +103,25 @@
   
 <script>
 import { useUrlGet } from '../stores/urlGet';
-// import EventBus from '../util/event-bus';
+import EventBus from '../util/event-bus';
   export default {
     setup() {
         // const storeSearchTerms = useSearchTermStore()
         const useUrl = useUrlGet()
         return { useUrl }
     },
-    props: ['word', 'show'], // Accepting `word` as a prop and controlling `show` for modal visibility
     data() {
       return {
         urlChange: this.useUrl.urlGet + "/words", 
         toggleButton: false,
         showButton: true,
         showData: false,
-        thankYouMsg: false,
         errorMsg: false,
-        captcha: {
-          num1: 0,
-          num2: 0,
-          question: '',
-          correctAnswer: 0,
-          userAnswer: null
-        },
         errorMessage: '',
+        thankYouMsg: false,
         message: '',
-
-
-        // Create a local copy of the `word` prop to work with in the form
+        existingWord: false,
+        areYouSure: false,
         formData: {
           word_sydsamiska: '',
           definition_sydsamiska: '',
@@ -131,23 +138,111 @@ import { useUrlGet } from '../stores/urlGet';
         }
       };
     },
+    props: {
+      word: {
+        type: Object,
+        default: null // or any default value you want
+      },
+      show: {
+        type: Boolean,
+        required: true
+      }
+    },
+    computed: {
+      displayText() {
+        // Check if word has been passed in, otherwise display a fallback message
+        // this.word
+        // this.areYouSure
+        // this.existingWord
+
+        return `  Existing Word: ${this.existingWord}    AreYouSure: ${this.areYouSure }`;
+        // return this.word ? `Word: ${JSON.stringify(this.word)}` : "No word provided";
+      }
+    },
+    created() {
+      // Copy the word prop into formData when the component is created
+      this.formData = { ...this.word };
+    },
+    watch: {
+      // Watch for changes in word and update formData accordingly
+      word: {
+        handler(newVal) {
+          this.formData = { ...newVal };
+          this.existingWord = true;
+        },
+        immediate: true // Update immediately if the word prop is already set
+      }
+    },
     methods: {
       closeModal() {
         // Emit event to close the modal in the parent component
         this.thankYouMsg=false;
         this.errorMsg=false;
+        this.existingWord=false;
+        this.areYouSure=false;
         this.$emit('closeModal');
+        // Emit event to notify DashWordsSection
+        EventBus.emit('change-to-database');
       },
       async submitForm() {
+        if (this.existingWord) {
+          this.updateWord();
+        } else {
           this.addNewWord();
+        }
       },
-      
+      undo() {
+        this.areYouSure = false;
+      },
+      justChecking() {
+        this.areYouSure = true;
+      },
+      async deleteWord() {
+        const response = await fetch(this.urlChange + "/" + this.formData.id,  {
+              method: "DELETE",
+              headers: {
+                  "Content-Type": "application/json"
+              }
+        });
+
+          await response.json();
+          this.message="Ordet är nu raderat från databasen.";
+          
+          // Emit event to notify DashWordsSection
+          EventBus.emit('change-to-database');
+          this.areYouSure=false;
+          this.thankYouMsg=true;
+          this.existingWord=false;
+          this.areYouSure=false;
+          this.$emit("deleteWord"); // reloads the parent page.
+      },
+      async updateWord() {
+          let dataBody = this.formData;
+          // console.log(JSON.stringify(dataBody));
+          const response = await fetch(this.urlChange + "/" + this.formData.id,  {
+              method: "PUT",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify(dataBody)
+          });
+
+          await response.json();
+          
+          // Emit event to notify DashWordsSection
+          EventBus.emit('change-to-database');
+          this.thankYouMsg=true;
+          this.message="Ordet har uppdaterats i databasen";
+          this.existingWord=false;
+          this.areYouSure=false;
+          this.$emit("updateWord"); // reloads the parent page.
+          
+      },
       async addNewWord() {
         // check first for content
         if(this.formData.word_sydsamiska.length > 3 ) {
             this.errorMessage='';
             let dataBody = this.formData;
-            console.log(dataBody);
             const response = await fetch(this.urlChange, { 
                 method: "POST",
                 headers: {
@@ -157,7 +252,7 @@ import { useUrlGet } from '../stores/urlGet';
             });
 
             await response.json();
-
+            
             // empty form
             this.formData.word_sydsamiska= "";
             this.formData.definition_sydsamiska= "";
@@ -173,23 +268,44 @@ import { useUrlGet } from '../stores/urlGet';
             this.formData.frequency_id= "";
             this.thankYouMsg=true;
 
-            this.$emit("addNewWord"); // reloads the parent page.
-
+            
             // Emit event to notify DashWordsSection
-            // EventBus.emit('word-added');
-            this.closeModal(); // Close the modal
+            EventBus.emit('change-to-database');
+            
+            this.thankYouMsg=true;
+            this.message="Ordet finns nu i databasen";
+            this.existingWord=false;
+            this.areYouSure=false;
+            // "Ordet " + { dataBody.word_sydsamiska } +" finns nu i databasen";
+            this.$emit("addNewWord"); // reloads the parent page.
         }
         else {
           this.errorMessage = "Vi behöver mer info, vänligen kolla formuläret.";
         }
-
-    }
-
-    },
-  };
+      }
+  }
+};
 </script>
   
 <style scoped>
+  span.red-text {
+    color: red;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  div.are-you-sure {
+    justify-content: flex-end;
+  }
+  div.are-you-sure,
+  div.submit-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  div.submit-section {
+    justify-content: space-between;
+  }
 
   div.flex-row img {
       width: auto;
