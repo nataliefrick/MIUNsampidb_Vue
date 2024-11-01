@@ -34,8 +34,8 @@
                           <button @click="setSearchTerm" class="white-text no-style" to="/results"><i class="fa-solid fa-magnifying-glass"></i></button>
                       </div>
                       <div class="row-searchform-filter">
-                          <input type="radio" id="startsWith" name="filterOptions" value="starts">
-                          <label for="startsWith">Börjar med</label>
+                          <!-- <input type="radio" id="startsWith" name="filterOptions" value="starts">
+                          <label for="startsWith">Börjar med</label> -->
                           <input type="radio" id="contains" name="filterOptions" value="contains">
                           <label for="contains">Innehåller</label>
                       </div>

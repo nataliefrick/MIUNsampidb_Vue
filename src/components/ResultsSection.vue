@@ -77,29 +77,29 @@ export default {
             console.log(updatedWord);
             this.closeRegisterModal(); // Close the modal after submission
         },
-        highlightSearchTerm() {
-            // Create a regex to search for the searchTerm, case-insensitive
-            let regex = new RegExp(this.searchTerm, 'gi');
-            // Loop through each key in the words object
-            Object.keys(this.words).forEach(key => {
-                let value = this.words[key];
+        // highlightSearchTerm() {
+        //     // Create a regex to search for the searchTerm, case-insensitive
+        //     let regex = new RegExp(this.searchTerm, 'gi');
+        //     // Loop through each key in the words object
+        //     Object.keys(this.words).forEach(key => {
+        //         let value = this.words[key];
 
-                // Check if the value is a string
-                if (typeof value === 'string') {
-                    // Replace occurrences of searchTerm with a <span> around it
-                    this.words[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
-                }
-                // If the value is an object, check its nested properties (optional)
-                else if (typeof value === 'object' && value !== null) {
-                    Object.keys(value).forEach(nestedKey => {
-                        let nestedValue = value[nestedKey];
-                        if (typeof nestedValue === 'string') {
-                            value[nestedKey] = nestedValue.replace(regex, `<span>${this.searchTerm}</span>`);
-                        }
-                    });
-                }
-            });
-        },
+        //         // Check if the value is a string
+        //         if (typeof value === 'string') {
+        //             // Replace occurrences of searchTerm with a <span> around it
+        //             this.words[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
+        //         }
+        //         // If the value is an object, check its nested properties (optional)
+        //         else if (typeof value === 'object' && value !== null) {
+        //             Object.keys(value).forEach(nestedKey => {
+        //                 let nestedValue = value[nestedKey];
+        //                 if (typeof nestedValue === 'string') {
+        //                     value[nestedKey] = nestedValue.replace(regex, `<span>${this.searchTerm}</span>`);
+        //                 }
+        //             });
+        //         }
+        //     });
+        // },
         async updateResults() {
             this.title = "";
             if(this.store.searchTerm != "") {
