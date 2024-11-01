@@ -13,8 +13,8 @@
 
     <div id="filter">
         <form @submit.prevent="filterWords()">
-            <span>filter for words</span>
             <div class="row-searchform">
+                <label>Filtrerar </label>
                 <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
                 <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>

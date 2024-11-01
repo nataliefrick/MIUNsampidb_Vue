@@ -2,12 +2,12 @@
 <div>
     <ul class="dasboard single-word no-bullets">
         <li>{{word.word_sydsamiska}}</li>
-        <!-- <li>{{word.definition_sydsamiska}}</li> -->
         <li>{{word.word_svenska}}</li>
-        <!-- <li>{{word.definition_svenska}}</li> -->
         <li>{{word.word_norska}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openSeeWordModal()></i>
-        <!-- <li>{{word.definition_norska}}</li>
+        <!-- <li>{{word.definition_sydsamiska}}</li>
+        <li>{{word.definition_svenska}}</li>
+        <li>{{word.definition_norska}}</li>
         <li>{{word.synonyms}}</li>
         <li>{{word.antonyms}}</li>
         <li>{{word.example_of_use}}</li>
