@@ -91,7 +91,9 @@
                     <div class="flex-row">
                       <div class="flex-col">
                           <label for="name">Namn</label>
-                          <input class="contact-info" type="name" v-model="formData.name" /><!-- required -->
+                          <input class="contact-info" type="name" v-model="formData.name" placeholder="För- och efternamn"
+                          @blur="validateName" /><!-- required -->
+                          <p v-if="nameError" style="color: red;">Var vänlig och fyll i både för- och efternamn.</p>
                       </div>
               
                       <div class="flex-col">
@@ -150,6 +152,7 @@ import { useUrlGet } from '../stores/urlGet';
         },
         errorMessage: '',
         message: '',
+        nameError: false,
 
 
         // Create a local copy of the `word` prop to work with in the form
@@ -173,6 +176,10 @@ import { useUrlGet } from '../stores/urlGet';
       this.generateCaptcha();
     },
     methods: {
+      validateName() {
+        // Check if the input contains at least two words
+        this.nameError = !/^\S+\s+\S+/.test(this.name);
+      },
       generateCaptcha() {
         this.captcha.num1 = Math.floor(Math.random() * 10) + 1;
         this.captcha.num2 = Math.floor(Math.random() * 10) + 1;
@@ -200,16 +207,18 @@ import { useUrlGet } from '../stores/urlGet';
       },
       async submitForm() {
         this.errorMessage = '';
-        if (parseInt(this.captcha.userAnswer) === this.captcha.correctAnswer) {
-          this.errorMessage = '';
-          // alert('Form submitted successfully!');
-          this.addChange();
-        } else {
-          this.errorMessage = 'Fel CAPTCHA-svar. Försök igen.';
-          this.generateCaptcha();  // Generate new CAPTCHA on failure
+        // this.validateName();
+        if (!this.nameError) {
+          if (parseInt(this.captcha.userAnswer) === this.captcha.correctAnswer) {
+            this.errorMessage = '';
+            // alert('Form submitted successfully!');
+            this.addChange();
+          } else {
+            this.errorMessage = 'Fel CAPTCHA-svar. Försök igen.';
+            this.generateCaptcha();  // Generate new CAPTCHA on failure
+          }
         }
       },
-      
       async addChange() {
         // check first for content
         if(typeof this.formData.message === 'undefined' ) {

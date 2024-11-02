@@ -132,10 +132,6 @@ import EventBus from '../util/event-bus';
     computed: {
       displayText() {
         // Check if word has been passed in, otherwise display a fallback message
-        // this.word
-        // this.areYouSure
-        // this.existingDownload
-
         return `Download: ${JSON.stringify(this.download)}`;
         // return this.word ? `Word: ${JSON.stringify(this.word)}` : "No word provided";
       }
@@ -143,6 +139,7 @@ import EventBus from '../util/event-bus';
     created() {
       // Copy the download prop into formData when the component is created
       this.formData = { ...this.download };
+      this.formatCreatedAtDate();
     },
     watch: {
       // Watch for changes in word and update formData accordingly
@@ -155,6 +152,13 @@ import EventBus from '../util/event-bus';
       }
     },
     methods: {
+      formatCreatedAtDate() {
+        if (this.formData.created_at) {
+          // Create a new Date object and format it to YYYY-MM-DD
+          const date = new Date(this.formData.created_at);
+          this.formData.created_at = date.toISOString().split('T')[0];
+        }
+      },
       closeModal() {
         // Emit event to close the modal in the parent component
         this.thankYouMsg=false;

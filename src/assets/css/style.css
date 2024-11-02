@@ -15,7 +15,7 @@ html {
 @media (min-width: 1200px) {}
 
 /* Fonts ---------- */
-p, span, label,
+p, span, label, span.label
 .lato-regular {
     font-family: "Lato", sans-serif;
     font-weight: 400;
