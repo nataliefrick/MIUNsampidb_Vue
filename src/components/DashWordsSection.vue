@@ -53,6 +53,7 @@ export default {
     components: { ModalComponent, Word },
     methods: {
         async getWords() {
+            console.log(this.urlGet);
             const response = await fetch(this.urlGet, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.words = data;

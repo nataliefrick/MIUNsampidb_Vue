@@ -18,31 +18,31 @@
               <h2 class="lato-bold">Föreslagen ändring av ord i databasen</h2>
               <div class="data-on-file">
                 <div class="flex-row space-inbetween">
-                  <h3>Förslaget till ordet: <em>placeholder</em></h3>
+                  <h3>Förslaget till ordet: <em>{{change.word_sydsamiska}}</em></h3>
                   <!-- <h3>Förslaget till ordet: <em>{{ formData.word_id}}</em></h3> -->
                   <div class="flex-col">
                     <span class="label">Datum</span>
-                    <span class="data">{{formatDate(formData.created_at)}}</span>
+                    <span class="data">{{formatDate(change.created_at)}}</span>
                   </div>
                 </div>
-                    <span class="data">{{formData.message}}</span>
+                    <span class="data">{{change.message}}</span>
                     <hr>
                     <h3>Kontaktperson</h3>
                     <div class="flex-row space-inbetween">
                       <div class="flex-col">
                           <span class="label">Namn</span>
-                          <span v-if=formData.name class="data">{{formData.name}}</span><span v-else class="data">inte angiven</span>
+                          <span v-if=change.name class="data">{{change.name}}</span><span v-else class="data">inte angiven</span>
                       </div>
                       <div class="flex-col">
                         <span class="label">E-post</span>
-                        <span v-if="formData.email" class="data">
-                          {{formData.email}}
+                        <span v-if="change.email" class="data">
+                          {{change.email}}
                         </span><span v-else class="data">inte angiven</span>
                       </div>
                       <div class="flex-col">
                           <span class="label">Telefon</span>
-                          <span v-if="formData.telephone" class="data">
-                            {{formData.telephone}}
+                          <span v-if="change.telephone" class="data">
+                            {{change.telephone}}
                           </span><span v-else class="data">inte angiven</span>
                       </div>
                     </div>
@@ -106,14 +106,14 @@ import EventBus from '../util/event-bus';
         existingChange: false,
         areYouSure: false,
         formData: {
-            email: '',
-            id: '',
-            message: '',
-            name: '',
+          id: '',
+            // email: '',
+            // message: '',
+            // name: '',
             checked_by: '',
             status: '',
-            telephone: '',
-            word_id: '',
+            // telephone: '',
+            // word_id: '',
         },
       };
     },
