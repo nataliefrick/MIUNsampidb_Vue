@@ -151,10 +151,6 @@ import EventBus from '../util/event-bus';
     computed: {
       displayText() {
         // Check if word has been passed in, otherwise display a fallback message
-        // this.word
-        // this.areYouSure
-        // this.existingWord
-
         return `  Existing Word: ${this.existingWord}    AreYouSure: ${this.areYouSure }`;
         // return this.word ? `Word: ${JSON.stringify(this.word)}` : "No word provided";
       }
@@ -218,7 +214,7 @@ import EventBus from '../util/event-bus';
       },
       async updateWord() {
           let dataBody = this.formData;
-          // console.log(JSON.stringify(dataBody));
+          console.log(JSON.stringify(dataBody));
           const response = await fetch(this.urlChange + "/" + this.formData.id,  {
               method: "PUT",
               headers: {

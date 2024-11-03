@@ -91,8 +91,7 @@
                     <div class="flex-row">
                       <div class="flex-col">
                           <label for="name">Namn</label>
-                          <input class="contact-info" type="name" v-model="formData.name" placeholder="För- och efternamn"
-                          @blur="validateName" /><!-- required -->
+                          <input class="contact-info" type="name" v-model="formData.name" placeholder="För- och efternamn"/>
                           <p v-if="nameError" style="color: red;">Var vänlig och fyll i både för- och efternamn.</p>
                       </div>
               
@@ -176,10 +175,7 @@ import { useUrlGet } from '../stores/urlGet';
       this.generateCaptcha();
     },
     methods: {
-      validateName() {
-        // Check if the input contains at least two words
-        this.nameError = !/^\S+\s+\S+/.test(this.name);
-      },
+      
       generateCaptcha() {
         this.captcha.num1 = Math.floor(Math.random() * 10) + 1;
         this.captcha.num2 = Math.floor(Math.random() * 10) + 1;
@@ -207,16 +203,13 @@ import { useUrlGet } from '../stores/urlGet';
       },
       async submitForm() {
         this.errorMessage = '';
-        // this.validateName();
-        if (!this.nameError) {
-          if (parseInt(this.captcha.userAnswer) === this.captcha.correctAnswer) {
-            this.errorMessage = '';
-            // alert('Form submitted successfully!');
-            this.addChange();
-          } else {
-            this.errorMessage = 'Fel CAPTCHA-svar. Försök igen.';
-            this.generateCaptcha();  // Generate new CAPTCHA on failure
-          }
+        if (parseInt(this.captcha.userAnswer) === this.captcha.correctAnswer) {
+          this.errorMessage = '';
+          // alert('Form submitted successfully!');
+          this.addChange();
+        } else {
+          this.errorMessage = 'Fel CAPTCHA-svar. Försök igen.';
+          this.generateCaptcha();  // Generate new CAPTCHA on failure
         }
       },
       async addChange() {

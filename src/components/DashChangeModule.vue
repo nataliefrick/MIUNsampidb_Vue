@@ -1,9 +1,9 @@
 <template>
 <!-- , created_at, email, id, message, name, checked_by, status, telephone, word_id -->
-<!-- <p>just checking: {{ displayText }}</p> -->
 
 <div v-if="show" class="modal">
-      <div class="modal-content">
+  <div class="modal-content">
+        <!-- <p>incoming data: {{ displayText }}</p> -->
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
             <div class="sampi-db-logo module">
@@ -61,6 +61,10 @@
                         <span class="label">Senaste uppdatering</span>
                         <span class="data">{{formatDate(formData.updated_at)}}</span>
                       </div>
+                      <div class="flex-col" v-else>
+                        <span class="label">Senaste uppdatering</span>
+                        <span class="data">-</span>
+                      </div>
                       <div class="flex-col">
                         <label for="checked_by">Ansvarig</label>
                         <input v-model="formData.checked_by" name="checked_by">
@@ -107,13 +111,13 @@ import EventBus from '../util/event-bus';
         areYouSure: false,
         formData: {
           id: '',
-            // email: '',
-            // message: '',
-            // name: '',
-            checked_by: '',
-            status: '',
-            // telephone: '',
-            // word_id: '',
+          // email: '',
+          // message: '',
+          // name: '',
+          checked_by: '',
+          status: '',
+          // telephone: '',
+          // word_id: '',
         },
       };
     },
@@ -135,7 +139,18 @@ import EventBus from '../util/event-bus';
     },
     created() {
       // Copy the change prop into formData when the component is created
-      this.formData = { ...this.change };
+      // this.formData = { ...this.change }; 
+      this.formData = { 
+          id: this.change.id,
+          email: this.change.email,
+          message: this.change.message,
+          name: this.change.name,
+          checked_by: this.change.checked_by,
+          status: this.change.status,
+          telephone: this.change.telephone,
+          word_id: this.change.word_id,
+          created_at: this.change.created_at,
+      };
       this.formatCreatedAtDate();
     },
     watch: {
@@ -205,7 +220,7 @@ import EventBus from '../util/event-bus';
           let dataBody = this.formData;
           console.log(JSON.stringify(dataBody));
           const response = await fetch(this.urlChange + "/" + this.formData.id,  {
-              method: "PATCH",
+              method: "PUT",
               headers: {
                   "Content-Type": "application/json"
               },

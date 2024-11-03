@@ -5,7 +5,7 @@
 <!-- <p>just checking: {{ displayText }}</p> -->
     <ul class="dasboard single-word no-bullets">
         <li>{{formatDate(change.created_at)}}</li>
-        <li>{{change.word_id}}</li>
+        <li>{{change.word_sydsamiska}}</li>
         <li>{{truncatedMessageByWords}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openChangeModal()></i>
     </ul>
