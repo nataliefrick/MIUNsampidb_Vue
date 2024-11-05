@@ -1,6 +1,6 @@
 <template>
-    <div v-if="show" class="modal">
-      <div class="modal-content">
+    <div v-if="show" class="modal" @click="closeModal">
+      <div class="modal-content" @click.stop>
         <!-- <p>just checking: {{ displayText }}</p> -->
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
@@ -24,9 +24,9 @@
                           <label for="name">Ord på sydsamiska</label>
                           <input class="contact-info" type="text" v-model="formData.word_sydsamiska" required/><!-- required -->
                       </div>
-                      <div class="flex-col">
+                      <div class="flex-col flex-grow">
                         <label for="email">Definition</label>
-                        <input class="contact-info" type="text" v-model="formData.definition_sydsamiska" name="definition_sydsamiska"/>
+                        <input class="definition" type="text" v-model="formData.definition_sydsamiska" name="definition_sydsamiska"/>
                       </div>
                     </div>
               
@@ -36,9 +36,9 @@
                           <label for="name">Ord på svenska</label>
                           <input class="contact-info" type="text" v-model="formData.word_svenska" name="word_svenska" />
                       </div>
-                      <div class="flex-col">
+                      <div class="flex-col flex-grow">
                         <label for="email">Definition</label>
-                        <input class="contact-info" type="text" v-model="formData.definition_svenska" name="definition_svenska"/>
+                        <input class="definition" type="text" v-model="formData.definition_svenska" name="definition_svenska"/>
                       </div>
                     </div>
               
@@ -48,15 +48,16 @@
                           <label for="name">Ord på norska</label>
                           <input class="contact-info" type="text" v-model="formData.word_norska" name="word_norska" />
                       </div>
-                      <div class="flex-col">
+                      <div class="flex-col flex-grow">
                         <label for="email">Definition</label>
-                        <input class="contact-info" type="text" v-model="formData.definition_norska" name="definition_norska"/>
+                        <input class="definition" type="text" v-model="formData.definition_norska" name="definition_norska"/>
                       </div>
                     </div>
                     <div class="flex-col">
                       <label for="example_of_use">Example of Use:</label>
                       <textarea id="example_of_use" v-model="formData.example_of_use" rows="4"></textarea>
                     </div>
+                    <div class="spacer"></div>
                     <div class="flex-col">
                     <label for="sources">Sources:</label>
                     <textarea v-model="formData.sources" name="sources" rows="4"></textarea>
@@ -283,8 +284,13 @@ import EventBus from '../util/event-bus';
 };
 </script>
   
+
 <style scoped>
-  span.red-text {
+div.spacer {
+  margin: 20px;
+}
+
+span.red-text {
     color: red;
     font-weight: bold;
     margin-right: 10px;
@@ -420,10 +426,16 @@ import EventBus from '../util/event-bus';
   }
 
   @media (max-width: 1025px) { 
-    div.contact-info div.flex-row {
+    div.flex-row {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    /* div.contact-info div.flex-row {
       flex-direction: column;
       align-items: center;
-    }
+    } */
   }
 
   p.label { margin-top: 20px; margin-bottom: 4px;}
@@ -438,6 +450,12 @@ import EventBus from '../util/event-bus';
   div.msg {
     margin: 2em 0;
   }
+
+  select {
+    height: 2rem!important;
+  }
+
+  select,
   textarea,
   input {
     border: none;
@@ -446,7 +464,7 @@ import EventBus from '../util/event-bus';
     padding-right: 10px;
     background-color: #134da220;
   }
-
+  
   input.contact-info:focus,
   input[type='text']:focus,
   textarea:focus {
@@ -454,7 +472,31 @@ import EventBus from '../util/event-bus';
     }
 
   input.contact-info {
-    width: 200px;
+    width: 84%;
+    margin-top: 0;
+    line-height: 2.5em;
+  }
+
+  @media (max-width: 1025px) { 
+    input.contact-info {
+      /* width: 85%; */
+      flex-grow: 1;
+    }
+  }
+
+  .flex-grow {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  @media (max-width: 1025px) { 
+    .flex-grow {
+      width: 100%;
+    }
+  }
+
+
+  input.definition {
     margin-top: 0;
     line-height: 2.5em;
   }

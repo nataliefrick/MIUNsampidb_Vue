@@ -1,8 +1,8 @@
 <template>
 <!-- created_at, description, email, id, institution, name, notes, projectTitle, searchTerm, telephone, title -->
 
-<div v-if="show" class="modal">
-      <div class="modal-content">
+<div v-if="show" class="modal" @click="closeModal">
+      <div class="modal-content" @click.stop>
         <!-- <p>just checking: {{ displayText }}</p> -->
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
@@ -17,65 +17,79 @@
             <div v-else>
                 <h2 class="lato-bold">Nedladdning</h2>
                 <!-- form ----------------- -->
-                <form @submit.prevent="submitForm">
+                <div class="data-on-file">
+                  <div class="flex-row space-inbetween align-center">
                     <div class="flex-col">
-                        <label for="name">Datum</label>
-                        <input class="contact-info" type="date" v-model="formData.created_at" disabled/>
+                      <span class="label">ProjektTitel</span>
+                      <span class="data">{{download.projectTitle}}</span>
                     </div>
                     <div class="flex-col">
-                        <label for="email">Institution</label>
-                        <input class="contact-info" type="text" v-model="formData.institution" name="institution" disabled/>
+                      <span class="label">Datum</span>
+                      <span class="data">{{formatDate(download.created_at)}}</span>
+                  </div>
+                </div>
+
+                <div class="flex-col">
+                  <span class="label">Beskrivning</span>
+                  <span class="data">{{download.description}}</span>
+                </div>  
+                <div class="spacer"></div>
+                <div class="flex-col">
+                  <span class="label">Sökfilter</span>
+                  <span class="data">{{download.searchTerm}}</span>
+                </div>  
+                <hr>
+                <h3 class="lato-bold">Kontaktperson</h3>
+                <div class="flex-row flex-start gap-inbetween">
+                  <div class="flex-col">
+                    <span class="label">Namn</span>
+                    <span class="data">{{download.name}}</span>
+                  </div> 
+                  <div class="flex-col">
+                    <span class="label">Titel</span>
+                    <span class="data">{{download.title}}</span>
+                  </div> 
+                  <div class="flex-col">
+                      <span class="label">Institution</span>
+                      <span class="data">{{download.institution}}</span>
                     </div>
-                    <span>Projekt</span>
-                        <div class="flex-col">
-                            <label for="name">ProjektTitel</label>
-                            <input class="contact-info" type="text" v-model="formData.projectTitle" name="projectTitle" disabled/>
-                        </div>
-                        <div class="flex-col">
-                            <label for="email">Beskrivning</label>
-                            <textarea v-model="formData.description" name="description" rows="4" disabled></textarea>
-                        </div>
-                        <div class="flex-col">
-                            <label for="name">Sökfilter</label>
-                            <input class="contact-info" type="text" v-model="formData.searchTerm" name="searchTerm" disabled/>
-                        </div>
-                    <span>Kontaktperson</span>
-                        <div class="flex-col">
-                            <label for="name">Namn</label>
-                            <input class="contact-info" type="text" v-model="formData.namn" name="namn" disabled/>
-                        </div>
-                        <div class="flex-col">
-                            <label for="name">Titel</label>
-                            <input class="contact-info" type="text" v-model="formData.title" name="title" disabled/>
-                        </div>
-                        <div class="flex-col">
-                        <label for="email">Epost</label>
-                        <input class="contact-info" type="email" v-model="formData.email" name="email" disabled/>
-                        </div>
-                        <div class="flex-col">
-                        <label for="telephone">Telefon</label>
-                        <input class="contact-info" type="text" v-model="formData.telephone" name="telephone" disabled/>
-                        </div>
-                    <span>MIUN anteckningar</span>
+                </div>
+                <div class="flex-row flex-start gap-inbetween">
+                  <div class="flex-col">
+                    <span class="label">E-post</span>
+                    <span class="data">{{download.email}}</span>
+                  </div> 
+                  <div class="flex-col">
+                    <span class="label">Telefon</span>
+                    <span class="data">{{download.telephone}}</span>
+                  </div> 
+                </div>
+
+              </div>
+
+
+                  <form @submit.prevent="submitForm">
+                    <div class="notes">
                         <div class="flex-col">
                             <label for="notes">Anteckningar</label>
                             <textarea v-model="formData.notes" name="notes" rows="4"></textarea>
                         </div>
+                        <div>
+                        </div>
+                      </div>
+                      <div class="submit-section">
+                        <div class="submit-section" v-if="!areYouSure">
+                          <button type="submit">Spara</button>
+                          <span class="close" @click="closeModal">&times;</span>
+                          <button @click="justChecking()">Radera</button>
+                        </div>
+                        <div class="are-you-sure" v-if="areYouSure">
+                          <span class="red-text">Är du säker du vill radera?</span>
+                          <button @click="deleteDownload()">Ja</button>
+                          <button @click="undo()">Nej</button>
+                        </div>
+                      </div>
 
-                  <div>
-                    <div class="submit-section">
-                      <div class="submit-section" v-if="!areYouSure">
-                        <button type="submit">Spara</button>
-                        <span class="close" @click="closeModal">&times;</span>
-                        <button @click="justChecking()">Radera</button>
-                      </div>
-                      <div class="are-you-sure" v-if="areYouSure">
-                        <span class="red-text">Är du säker du vill radera?</span>
-                        <button @click="deleteDownload()">Ja</button>
-                        <button @click="undo()">Nej</button>
-                      </div>
-                    </div>
-                  </div>
                 </form>
             </div>
         </div>
@@ -152,6 +166,13 @@ import EventBus from '../util/event-bus';
       }
     },
     methods: {
+      formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = String(date.getFullYear()); // Get last two digits of the year
+            return `${year}-${month}-${day}`;
+      },
       formatCreatedAtDate() {
         if (this.formData.created_at) {
           // Create a new Date object and format it to YYYY-MM-DD
@@ -269,6 +290,57 @@ import EventBus from '../util/event-bus';
 </script>
   
 <style scoped>
+div.spacer {
+  margin: 20px;
+}
+
+  hr {
+    width: 20%;
+    margin: 25px 0;
+  }
+
+  textarea.text-notes {
+    width: 400px;
+  }
+
+  
+  @media (max-width: 1025px) { 
+    textarea.text-notes {
+      width: 100%;
+    }
+  }
+
+  .right-col {
+    gap: 20px;
+  }
+
+  div.notes {
+    border: 1px solid #eee;
+    padding: 1rem 2rem;
+  }
+
+  @media (max-width: 1025px) { 
+    div.notes {
+      padding: 1rem;
+    }
+  }
+
+  div.notes,
+  div.data-on-file {
+    margin: 1rem 0;
+  }
+  
+  div.data-on-file {
+    padding: 1rem 2rem 2rem 2rem;
+    background-color: #eee;
+  }
+
+  span.label {
+    text-transform: uppercase;
+    font-size: 0.6em;
+    color: grey;
+  }
+
   span.red-text {
     color: red;
     font-weight: bold;
@@ -283,6 +355,7 @@ import EventBus from '../util/event-bus';
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin: 20px 0!important;
   }
   div.submit-section {
     justify-content: space-between;
@@ -404,10 +477,29 @@ import EventBus from '../util/event-bus';
     margin: 1.5em 0;
   }
 
+  .space-inbetween {
+    justify-content: space-between;
+    margin-right: 1rem!important;
+  }
+
+  .align-center {
+    align-items: center
+  }
+
+  .flex-start {
+      justify-content: flex-start;
+  }
+
+  div.flex-row.flex-start.gap-inbetween {
+      column-gap: 50px!important;
+  }
+
   @media (max-width: 1025px) { 
+    div.flex-row,
     div.contact-info div.flex-row {
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
+      gap: 2rem;
     }
   }
 

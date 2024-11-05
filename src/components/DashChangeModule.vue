@@ -1,8 +1,8 @@
 <template>
 <!-- , created_at, email, id, message, name, checked_by, status, telephone, word_id -->
 
-<div v-if="show" class="modal">
-  <div class="modal-content">
+<div v-if="show" class="modal" @click="closeModal">
+  <div class="modal-content" @click.stop>
         <!-- <p>incoming data: {{ displayText }}</p> -->
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
@@ -18,7 +18,7 @@
               <h2 class="lato-bold">Föreslagen ändring av ord i databasen</h2>
               <div class="data-on-file">
                 <div class="flex-row space-inbetween">
-                  <h3>Förslaget till ordet: <em>{{change.word_sydsamiska}}</em></h3>
+                  <h3 class="lato-bold">Förslaget till ordet: <em>{{change.word_sydsamiska}}</em></h3>
                   <!-- <h3>Förslaget till ordet: <em>{{ formData.word_id}}</em></h3> -->
                   <div class="flex-col">
                     <span class="label">Datum</span>
@@ -27,7 +27,7 @@
                 </div>
                     <span class="data">{{change.message}}</span>
                     <hr>
-                    <h3>Kontaktperson</h3>
+                    <h3 class="lato-bold">Kontaktperson</h3>
                     <div class="flex-row space-inbetween">
                       <div class="flex-col">
                           <span class="label">Namn</span>
@@ -49,7 +49,7 @@
                   </div>
               <form @submit.prevent="submitForm">
                 <div class="notes">
-                <h3>Anteckningar</h3>
+                <h3 class="lato-bold">Anteckningar</h3>
                   <div class="flex-row">
                     <div class="flex-col">
                       <label for="status">Status</label>
@@ -297,9 +297,17 @@ import EventBus from '../util/event-bus';
     width: 400px;
   }
 
+  @media (max-width: 1025px) { 
+    textarea.text-notes {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
   .right-col {
     gap: 20px;
   }
+
   div.notes {
     border: 1px solid #eee;
     padding: 1rem 2rem 0 2rem;
@@ -313,6 +321,13 @@ import EventBus from '../util/event-bus';
   div.data-on-file {
     padding: 1rem 2rem 2rem 2rem;
     background-color: #eee;
+  }
+
+  
+  @media (max-width: 1025px) { 
+    div.notes {
+      padding: 1rem;
+    }
   }
 
   span.label {
@@ -452,6 +467,12 @@ import EventBus from '../util/event-bus';
     flex-direction: column;
   }
 
+  @media (max-width: 1025px) { 
+     div.flex-col {
+      width: 100%;
+    }
+  }
+
   div.flex-row {
     display: flex;
     flex-direction: row;
@@ -464,9 +485,12 @@ import EventBus from '../util/event-bus';
   }
 
   @media (max-width: 1025px) { 
+    div.flex-row, 
     div.contact-info div.flex-row {
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
+      gap: 2rem;
+      width: 100%;
     }
   }
 
