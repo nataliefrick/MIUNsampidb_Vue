@@ -1,11 +1,20 @@
 <template>
     <div class="breadcrumbs">
       <div class="container">
-          <p>Start  >  Databas  >  Sök</p>
+          <p>Start  >  Databas  >  {{ currentPath }}</p>
       </div>
     </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    currentPath() {
+      return this.$route.meta.breadcrumb;
+    }
+  }
+};
+</script>
 
 <style scoped>
 div.breadcrumbs {

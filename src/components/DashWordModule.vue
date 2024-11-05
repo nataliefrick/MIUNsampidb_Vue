@@ -54,17 +54,17 @@
                       </div>
                     </div>
                     <div class="flex-col">
-                      <label for="example_of_use">Example of Use:</label>
+                      <label for="example_of_use">Exampel på användning:</label>
                       <textarea id="example_of_use" v-model="formData.example_of_use" rows="4"></textarea>
                     </div>
                     <div class="spacer"></div>
                     <div class="flex-col">
-                    <label for="sources">Sources:</label>
+                    <label for="sources">Källor:</label>
                     <textarea v-model="formData.sources" name="sources" rows="4"></textarea>
                   </div>
                   <div class="flex-row">
                     <div class="flex-col">
-                      <label for="arousal_level">Arousal Level:</label>
+                      <label for="arousal_level">Arousal Level (Aktiveringsnivå):</label>
                       <select v-model="formData.arousal_level" name="arousal_level">
                           <option value=1>Low</option>
                           <option value=2>Medium</option>
@@ -72,7 +72,7 @@
                       </select>
                     </div>
                     <div class="flex-col">
-                      <label for="frequency_id">Frequency:</label>
+                      <label for="frequency_id">Frekvens:</label>
                       <select v-model="formData.frequency_id" name="frequency_id">
                           <option value=1>Low</option>
                           <option value=2>Medium</option>

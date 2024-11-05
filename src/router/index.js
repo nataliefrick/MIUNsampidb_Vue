@@ -7,16 +7,25 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      meta: {
+        breadcrumb: 'Sök'
+      },
       component: HomeView
     },
     {
       path: '/results',
       name: 'results',
+      meta: {
+        breadcrumb: 'Sök > Resultat'
+      },
       component: () => import('../views/ResultsView.vue')
     },
     {
       path: '/dashboard',
       name: 'dashboard',
+      meta: {
+        breadcrumb: 'Dashboard'
+      },
       component: () => import('../views/DashboardView.vue'),
     }
   ]
