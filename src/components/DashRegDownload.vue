@@ -1,10 +1,10 @@
 <template>
 <div>
     <ul class="dasboard single-word no-bullets">
-        <li>{{formatDate(download.created_at)}}</li>
-        <li>{{download.institution}}</li>
-        <li>{{download.name}}</li>
-        <li>{{download.projectTitle}}</li>
+        <li class="lato-regular">{{formatDate(download.created_at)}}</li>
+        <li class="lato-regular">{{download.institution}}</li>
+        <li class="lato-regular">{{download.name}}</li>
+        <li class="lato-regular">{{download.projectTitle}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openDownloadModal()></i>
     </ul>
     <!-- Modal Component -->
@@ -14,6 +14,7 @@
         @close-modal="closeModal"
         @submit-form="handleSubmitForm"
         />
+    <hr>
 </div>
 </template>
 
@@ -60,19 +61,46 @@ export default {
 
 
 <style scoped>
+div:hover {
+    background-color: #eee;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+}
+
 ul.dasboard.single-word {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
     margin-bottom: 0.4%;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #404040;
+    font-size: 0.9rem;
+    
 }
 
 ul.dasboard.single-word li {
-    
     padding: 0 6px;    
-    width: 80px;
+    min-width: 80px;
+    width: 20%;
     overflow: hidden;
+}
+
+ul.dasboard.single-word i {
+    color: #134da2;
+    margin: 0 auto;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+ul.dasboard.single-word i:hover {
+    color: #fff;
+    background-color: #134da2;
 }
 
 ul.no-bullets {

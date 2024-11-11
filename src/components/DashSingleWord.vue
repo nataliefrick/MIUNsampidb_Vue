@@ -5,16 +5,6 @@
         <li>{{word.word_svenska}}</li>
         <li>{{word.word_norska}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openSeeWordModal()></i>
-        <!-- <li>{{word.definition_sydsamiska}}</li>
-        <li>{{word.definition_svenska}}</li>
-        <li>{{word.definition_norska}}</li>
-        <li>{{word.synonyms}}</li>
-        <li>{{word.antonyms}}</li>
-        <li>{{word.example_of_use}}</li>
-        <li>{{word.sources}}</li>
-        <li>{{word.arousal_level}}</li>
-        <li>{{word.frequency_id}}</li>
-        <li>{{word.link_to_update}}</li> -->
     </ul>
     <!-- Modal Component -->
         <ModalComponent 
@@ -62,19 +52,48 @@ export default {
 
 
 <style scoped>
+div:hover {
+    background-color: #eee;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+}
+
 ul.dasboard.single-word {
     display: flex;
     align-items: center;
+    width: 100%;
     justify-content: flex-start;
     flex-direction: row;
     margin-bottom: 0.4%;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #404040;
+    font-size: 0.9rem;
 }
 
 ul.dasboard.single-word li {
-    
     padding: 0 6px;    
-    width: 80px;
     overflow: hidden;
+    min-width: 80px;
+    width: 25%;
+
+}
+
+
+ul.dasboard.single-word i {
+    color: #134da2;
+    margin: 0 auto;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+ul.dasboard.single-word i:hover {
+    color: #fff;
+    background-color: #134da2;
 }
 
 ul.no-bullets {

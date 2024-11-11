@@ -449,9 +449,6 @@ export default {
         transition: background-color 0.3s;
     }
 
-
-    
-
     .row-searchform {
         margin-top: 20px;
         display: flex;

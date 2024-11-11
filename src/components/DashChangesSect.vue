@@ -1,22 +1,24 @@
 <template>
 <section id="changes">
-    <h2>Section: Suggest Changes</h2>
-    <p>this section shows all the entries for suggested changes to the database words. </p>
+    <h3 class="lato-bold">Externa Förslag på Ändringar i Data</h3>
+    <p>Den här sektionen visar de senaste 3 externa föreslagna ändringarna av orden i databasen.</p>
     <div id="filter">
         <form @submit.prevent="filterWords()">
-            <div class="row-searchform">
-                <label>Filtrerar </label>
-                <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
-                <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <span>filter function does not work</span>
+            <div class="flex-row">
+                <div class="searchform">
+                    <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
+                    <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <button class="see-all">Se alla</button>
             </div>
         </form>
     </div>
     <div class="header">
-        <div class="column"><span>Datum</span></div>
-        <div class="column"><span>Ord</span></div>
-        <div class="column"><span>Meddelande</span></div>
+        <div class="col-1"><span>Datum</span></div>
+        <div class="col-2"><span>Ord</span></div>
+        <div class="col-3"><span>Meddelande</span></div>
     </div>
+    <hr>
     <Change v-for="change in changes" :change="change" :key="change.id" />
 </section>
 </template>
@@ -106,26 +108,92 @@ export default {
 
 
 <style scoped>
-section#changes {
-    background-color: #eee;
-    width: 400px;
-    margin: 1rem auto;
-    padding: 1rem;
+hr {
+    border: none;
+    border-top: 1px solid #134da250;
 }
 
-section#changes div {
+section#changes {
+    width: 100%;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 1451px) { section#changes { max-width: 600px; margin: 2%; }}
+@media (max-width: 1450px) { section#changes { width: 80%; margin: 2% auto; }}
+
+div.flex-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+}
+
+.searchform {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.searchform input[type='text'] {
+        height: 32px;
+        border: 1px solid #134da250;
+        font-size: 16px;
+        padding-left: 1rem;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        width: 80%;
+    }
+
+.searchform input[type='text']:focus {
+    outline: 1px solid #134da250;     /* oranges! yey */
+}
+
+.searchform i {
+    padding: 12px;
+    height: 100%;
+    background-color: #134da2;
+    border: 1px solid transparent;
+    color: #fff;
+    font-size: 18px;
+    margin: none;
+    margin-right: 0;
+}
+
+.searchform i:hover {
+    color: #134da2;
+    background-color: #c1daf3;
+}
+
+button.see-all {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    padding: calc(10px + 0.25rem) calc(10px + 0.5rem);
+    border-radius: 10px;
 }
 
 div.header {
+    display: flex;
+    flex-direction: row;
     justify-content: flex-start!important;
+    margin-top: 2rem;
 }
 
-div.header div.column {
-    width: 80px;
+div.header div.col-1,
+div.header div.col-2 {
+    min-width: 60px;
+    width: 15%;
+    padding: 4px 6px;
+}
+
+div.header div.col-3 {
+    min-width: 80px;
+    width: 50%;
     padding: 4px 6px;
 }
 
@@ -133,11 +201,4 @@ div.header div.column span {
     font-weight: bold;
     font-size: 0.9em;
 }
-
-div.header img {
-    width: 25px;
-    height: auto;
-    margin-top: 3px;
-    margin-right: 8px;
-} 
 </style>

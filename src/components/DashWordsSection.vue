@@ -1,8 +1,8 @@
 <template>
 <section id="words">
-    <div>
-        <h2>Section: Words in database</h2>
-        <i class="fa-solid fa-plus" @click=openModal()></i>  <!-- add new word -->
+    <div class="title">
+        <h3 class="lato-bold">Översikt över ord i databasen</h3>
+        <button class="see-all button-icon">Ny ord <i class="fa-solid fa-leaf" @click=openModal()></i></button> <!-- add new word -->
     </div>
     <!-- Modal Component -->
         <ModalComponent 
@@ -10,13 +10,15 @@
         @close-modal="closeModal"
         @submit-form="handleSubmitForm"
         />
-
+        <p>Här kan du administrera alla ord i databasen. Sektionen visar de senaste 10 orden som lagts till.</p>
     <div id="filter">
         <form @submit.prevent="filterWords()">
-            <div class="row-searchform">
-                <label>Filtrerar </label>
-                <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
-                <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <div class="flex-row">
+                <div class="searchform">
+                    <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
+                    <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <button class="see-all">Se alla</button>
             </div>
         </form>
     </div>
@@ -113,11 +115,14 @@ export default {
 
 <style scoped>
 section#words {
-    background-color: #eee;
-    width: 400px;
-    margin: 1rem auto;
+    width: 100%;
+    background-color: #fff;
     padding: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
+
+@media (min-width: 1451px) { section#words { max-width: 600px; margin: 2%; }}
+@media (max-width: 1450px) { section#words { width: 80%; margin: 2% auto; }}
 
 section#words div {
     display: flex;
@@ -126,12 +131,86 @@ section#words div {
     align-items: center;
 }
 
+div.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+form {
+    width: 100%;
+}
+
+section#words div.searchform {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.searchform input[type='text'] {
+        height: 32px;
+        border: 1px solid #134da250;
+        font-size: 16px;
+        padding-left: 1rem;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        width: 80%;
+    }
+
+.searchform input[type='text']:focus {
+    outline: 1px solid #134da250;     /* oranges! yey */
+}
+
+.searchform i {
+    padding: 12px;
+    height: 100%;
+    background-color: #134da2;
+    border: 1px solid transparent;
+    color: #fff;
+    font-size: 18px;
+    margin: none;
+    margin-right: 0;
+}
+
+.searchform i:hover {
+    color: #134da2;
+    background-color: #c1daf3;
+}
+
+button {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    padding: calc(10px + 0.25rem) calc(10px + 0.5rem);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+button i {
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    
+}
+
+button:hover i,
+button:hover {
+    color: #fff;
+}
+
 div.header {
+    display: flex;
+    flex-direction: row;
     justify-content: flex-start!important;
+    margin-top: 2rem;
 }
 
 div.header div.column {
-    width: 80px;
+    min-width: 80px;
+    width: 25%;
     padding: 4px 6px;
 }
 

@@ -21,6 +21,15 @@
     </template>
     
     <style scoped>
+
+    footer {
+        background-image: url("../assets/img/hoofprints2.png");
+        background-position: top right;
+        background-repeat: no-repeat;
+        background-size: 60%;
+        background-blend-mode: darken;
+        width: 100%;
+    }
     div#divider {
         height: 30px;
         width: 100%;
@@ -33,6 +42,7 @@
     div#footer {
         padding: 2%;
         margin: 0 auto;
+        
     }
 
     @media (min-width: 901px) { 

@@ -4,9 +4,9 @@
 
 <!-- <p>just checking: {{ displayText }}</p> -->
     <ul class="dasboard single-word no-bullets">
-        <li>{{formatDate(change.created_at)}}</li>
-        <li>{{change.word_sydsamiska}}</li>
-        <li>{{truncatedMessageByWords}}</li>
+        <li class="col-1">{{formatDate(change.created_at)}}</li>
+        <li class="col-2">{{change.word_sydsamiska}}</li>
+        <li class="col-3">{{truncatedMessageByWords}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openChangeModal()></i>
     </ul>
     <!-- Modal Component -->
@@ -16,6 +16,7 @@
         @close-modal="closeModal"
         @submit-form="handleSubmitForm"
         />
+        <hr>
 </div>
 </template>
 
@@ -76,19 +77,54 @@ export default {
 
 
 <style scoped>
+div:hover {
+    background-color: #eee;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+}
+
 ul.dasboard.single-word {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
     margin-bottom: 0.4%;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #404040;
+    font-size: 0.9rem;
 }
 
 ul.dasboard.single-word li {
-    
     padding: 0 6px;    
-    width: 80px;
     overflow: hidden;
+}
+
+ul.dasboard.single-word li.col-1,
+ul.dasboard.single-word li.col-2 {
+    min-width: 60px;
+    width: 15%;
+}
+
+ul.dasboard.single-word li.col-3 {
+    min-width: 80px;
+    width: 50%;
+}
+
+ul.dasboard.single-word i {
+    color: #134da2;
+    margin: 0 auto;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+ul.dasboard.single-word i:hover {
+    color: #fff;
+    background-color: #134da2;
 }
 
 ul.no-bullets {
@@ -96,5 +132,6 @@ ul.no-bullets {
     padding: 0; 
     margin: 0; 
 }
+
 
 </style>
