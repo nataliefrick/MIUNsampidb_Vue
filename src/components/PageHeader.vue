@@ -86,7 +86,7 @@ div.topbar span {
 
 @media (max-width: 575px) { 
     div.topbar span {
-        margin-right: auto;
+        margin-right: 1rem;
         margin-left: auto;
 }}
 </style>

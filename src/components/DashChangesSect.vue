@@ -17,7 +17,7 @@
     <div class="header">
         <div class="col-1"><span>Datum</span></div>
         <div class="col-2"><span>Ord</span></div>
-        <div class="col-3"><span>Meddelande</span></div>
+        <div class="col-3 sm-screen-hide"><span>Meddelande</span></div>
     </div>
     <hr>
     <Change v-for="change in changes" :change="change" :key="change.id" />
@@ -118,6 +118,12 @@ export default {
 
 
 <style scoped>
+@media (max-width: 500px) {
+    .sm-screen-hide {
+        display: none;
+    }
+}
+
 hr {
     border: none;
     border-top: 1px solid #134da250;
@@ -139,6 +145,12 @@ div.flex-row {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+@media (max-width: 500px) {
+    div.flex-row {
+        gap: 1rem;
+    }
 }
 
 section#changes div.filter {
@@ -212,6 +224,15 @@ div.header div.col-2 {
     min-width: 60px;
     width: 15%;
     padding: 4px 6px;
+}
+
+
+@media (max-width: 500px) {
+    div.header div.col-1,
+    div.header div.col-2 {
+        width: 30%;
+    }
+
 }
 
 div.header div.col-3 {

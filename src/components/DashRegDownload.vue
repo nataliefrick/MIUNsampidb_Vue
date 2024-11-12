@@ -2,9 +2,9 @@
 <div>
     <ul class="dasboard single-word no-bullets">
         <li class="lato-regular">{{formatDate(download.created_at)}}</li>
-        <li class="lato-regular">{{download.institution}}</li>
-        <li class="lato-regular">{{download.name}}</li>
-        <li class="lato-regular">{{download.projectTitle}}</li>
+        <li class="lato-regular sm-screen-hide">{{download.institution}}</li>
+        <li class="lato-regular sm-screen-hide">{{download.name}}</li>
+        <li class="lato-regular sm-screen-large">{{download.projectTitle}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openDownloadModal()></i>
     </ul>
     <!-- Modal Component -->
@@ -61,6 +61,12 @@ export default {
 
 
 <style scoped>
+@media (max-width: 500px) {
+    .sm-screen-hide {
+        display: none;
+    }
+}
+
 div:hover {
     background-color: #eee;
 }
@@ -89,6 +95,13 @@ ul.dasboard.single-word li {
     min-width: 80px;
     width: 20%;
     overflow: hidden;
+}
+
+@media (max-width: 500px) {
+    .sm-screen-large {
+        min-width: 80px;
+        width: 50%!important;
+    }
 }
 
 ul.dasboard.single-word i {

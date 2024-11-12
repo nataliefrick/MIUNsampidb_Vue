@@ -332,7 +332,7 @@ span.red-text {
 
   .modal-content {
     max-width: 680px;
-    max-height: 880px;
+    max-height: 760px;
     height: 80vh;
     overflow-y: auto;
     background-color: white;

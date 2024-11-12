@@ -16,8 +16,8 @@
     </div>
     <div class="header">
         <div class="column"><span>Datum</span></div>
-        <div class="column"><span>Institution</span></div>
-        <div class="column"><span>Namn</span></div>
+        <div class="column sm-screen-hide"><span>Institution</span></div>
+        <div class="column sm-screen-hide"><span>Namn</span></div>
         <div class="column"><span>Projekttitel</span></div>
     </div>
     <hr>
@@ -26,6 +26,12 @@
 </template>
 
 <style scoped>
+@media (max-width: 500px) {
+    .sm-screen-hide {
+        display: none;
+    }
+}
+
 hr {
     border: none;
     border-top: 1px solid #134da250;
@@ -46,6 +52,12 @@ div.flex-row {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+@media (max-width: 500px) {
+    div.flex-row {
+        gap: 1rem;
+    }
 }
 
 section#downloads div.filter {

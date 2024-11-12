@@ -119,7 +119,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
 section#words {
     width: 100%;
@@ -138,12 +137,20 @@ section#words div {
     align-items: center;
 }
 
+div.title { gap: 1rem; }
+
 div.flex-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+@media (max-width: 500px) {
+    div.flex-row {
+        gap: 1rem;
+    }
 }
 
 form {

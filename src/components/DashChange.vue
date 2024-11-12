@@ -6,7 +6,7 @@
     <ul class="dasboard single-word no-bullets">
         <li class="col-1">{{formatDate(change.created_at)}}</li>
         <li class="col-2">{{change.word_sydsamiska}}</li>
-        <li class="col-3">{{truncatedMessageByWords}}</li>
+        <li class="col-3 sm-screen-hide">{{truncatedMessageByWords}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openChangeModal()></i>
     </ul>
     <!-- Modal Component -->
@@ -77,6 +77,12 @@ export default {
 
 
 <style scoped>
+@media (max-width: 500px) {
+    .sm-screen-hide {
+        display: none;
+    }
+}
+
 div:hover {
     background-color: #eee;
 }
@@ -108,6 +114,15 @@ ul.dasboard.single-word li.col-1,
 ul.dasboard.single-word li.col-2 {
     min-width: 60px;
     width: 15%;
+}
+
+@media (max-width: 500px) {
+    ul.dasboard.single-word li.col-1,
+    ul.dasboard.single-word li.col-2 {
+        min-width: 60px;
+        width: 30%;
+    }
+
 }
 
 ul.dasboard.single-word li.col-3 {
