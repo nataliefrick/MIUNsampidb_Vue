@@ -2,7 +2,7 @@
 <section id="words">
     <div class="title">
         <h3 class="lato-bold">Översikt över ord i databasen</h3>
-        <button class="see-all button-icon">Ny ord <i class="fa-solid fa-leaf" @click=openModal()></i></button> <!-- add new word -->
+        <button class="see-all button-icon">Nytt ord<i class="fa-solid fa-leaf" @click=openModal()></i></button> <!-- add new word -->
     </div>
     <!-- Modal Component -->
         <ModalComponent 
@@ -10,17 +10,18 @@
         @close-modal="closeModal"
         @submit-form="handleSubmitForm"
         />
-        <p>Här kan du administrera alla ord i databasen. Sektionen visar de senaste 10 orden som lagts till.</p>
-    <div id="filter">
+        <p>Här kan du administrera alla ord i databasen. Sektionen visar de senaste 3 orden som lagts till.</p>
+    <div class="filter">
         <form @submit.prevent="filterWords()">
             <div class="flex-row">
                 <div class="searchform">
                     <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
                     <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
-                <button class="see-all">Se alla</button>
+                <button @click=getWords() class="see-all">Se alla</button>
             </div>
         </form>
+        <span v-if="this.title">{{ this.title }}</span>
     </div>
     <div class="header">
         <div class="column"><img src="../assets/img/flag_sampi.jpg" alt="sydsamiska flagga ikon"></div>
@@ -48,16 +49,27 @@ export default {
             urlChange: this.useUrl.urlGet + "/changes", 
             showModal: false, // Controls whether the modal is visible
             existingWord: false,
-            searchTerm: ""
+            searchTerm: "",
+            title: ""
         }
     },
     emits: ["addNewWord", "updateWord"],
     components: { ModalComponent, Word },
     methods: {
         async getWords() {
+            this.title = "";
+            this.searchTerm = "";
             const response = await fetch(this.urlGet, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.words = data;
+            this.title = "Visar alla ord i databasen.";
+        },
+
+        async getlast3Words() {
+            const response = await fetch(this.urlGet + "/latest", { method: "GET" });
+            const data = await response.json(); // save the data in sent through the response.
+            this.words = data;
+            this.title = "";
         },
         openModal() {
             this.showModal = true; // Show the modal
@@ -73,27 +85,22 @@ export default {
             // Fetch the updated list of words from the database
             this.getWords();
         },
+
         async filterWords() {
-            this.title = "";
             if(this.searchTerm != "") {
-                const response = await fetch(this.urlGet + "/search/" + this.searchTerm, { method: "GET" });
-                let data = await response.json(); // save the data in sent through the response.
+                const response = await fetch(this.urlGet + "/filter/" + this.searchTerm, { method: "GET" });
+                let data = await response.json(); 
                 if(data.length===0) {
-                    this.title = "sökterm gav inga resultat.";
+                    this.title = "Sökterm gav inga resultat.";
                 }
-            
         
             this.words = data;
             if (this.words.length > 0) {
-                this.title = this.words.length + " sökresultat.";
+                this.title = this.words.length + " sökresultat";
             } else {
                 this.title = "Sökterm gav inga resultat.";
-                this.getWords();
+                // this.getWords();
             }
-            
-            } else {
-                this.getWords();
-                this.title = "Visar alla ord i databasen.";
                 
             }
             
@@ -101,7 +108,7 @@ export default {
 
     },
     mounted() {
-        this.getWords();
+        this.getlast3Words();
         EventBus.on('change-to-database', this.refreshWords);
     },
 
@@ -143,6 +150,17 @@ form {
     width: 100%;
 }
 
+section#words div.filter {
+    flex-direction: column;
+    gap: 1rem;
+}
+
+div.filter span {
+    font-size: 0.8em;
+    color: #087f47;
+    text-align: center;
+}
+
 section#words div.searchform {
     display: flex;
     flex-direction: row;
@@ -172,8 +190,9 @@ section#words div.searchform {
     border: 1px solid transparent;
     color: #fff;
     font-size: 18px;
-    margin: none;
+    margin: 0;
     margin-right: 0;
+    
 }
 
 .searchform i:hover {

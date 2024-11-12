@@ -69,26 +69,21 @@
 
 
                   <form @submit.prevent="submitForm">
-                    <div class="notes">
-                        <div class="flex-col">
-                            <label for="notes">Anteckningar</label>
-                            <textarea v-model="formData.notes" name="notes" rows="4"></textarea>
-                        </div>
-                        <div>
-                        </div>
-                      </div>
-                      <div class="submit-section">
-                        <div class="submit-section" v-if="!areYouSure">
-                          <button type="submit">Spara</button>
-                          <span class="close" @click="closeModal">&times;</span>
-                          <button @click="justChecking()">Radera</button>
-                        </div>
-                        <div class="are-you-sure" v-if="areYouSure">
-                          <span class="red-text">Är du säker du vill radera?</span>
-                          <button @click="deleteDownload()">Ja</button>
-                          <button @click="undo()">Nej</button>
-                        </div>
-                      </div>
+                    <div class="flex-col">
+                        <label for="notes">Anteckningar</label>
+                        <textarea v-model="formData.notes" name="notes" rows="4"></textarea>
+                    </div>
+                        
+                    <div class="submit-section" v-if="!areYouSure">
+                      <span class="delete-button" @click="justChecking()">Radera</span>
+                      <button type="submit">Spara</button>
+                      <span class="close" @click="closeModal">&times;</span>
+                    </div>
+                    <div class="are-you-sure" v-if="areYouSure">
+                      <span class="red-text">Är du säker du vill radera?</span>
+                      <button @click="deleteDownload()">Ja</button>
+                      <button @click="undo()">Nej</button>
+                    </div>
 
                 </form>
             </div>
@@ -343,12 +338,12 @@ div.spacer {
 
   span.red-text {
     color: red;
-    font-weight: bold;
     margin-right: 10px;
   }
   div.are-you-sure {
     justify-content: flex-end;
   }
+
   div.are-you-sure,
   div.submit-section {
     width: 100%;
@@ -357,8 +352,10 @@ div.spacer {
     align-items: center;
     margin: 20px 0!important;
   }
+
   div.submit-section {
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 1rem;
   }
 
   div.flex-row img {
@@ -553,6 +550,16 @@ div.spacer {
     color: #134da2;
   }
 
+  span.delete-button {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  span.delete-button:hover {
+    text-decoration: none;
+    color: red;
+    cursor: pointer;
+  }
 
 
 </style>

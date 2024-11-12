@@ -1,17 +1,18 @@
 <template>
 <section id="changes">
-    <h3 class="lato-bold">Externa Förslag på Ändringar i Data</h3>
+    <h3 class="lato-bold">Externa förslag på ändringar i data</h3>
     <p>Den här sektionen visar de senaste 3 externa föreslagna ändringarna av orden i databasen.</p>
-    <div id="filter">
-        <form @submit.prevent="filterWords()">
+    <div class="filter">
+        <form @submit.prevent="filterChanges()">
             <div class="flex-row">
                 <div class="searchform">
                     <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
                     <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
-                <button class="see-all">Se alla</button>
+                <button @click=getChanges() class="see-all">Se alla</button>
             </div>
         </form>
+        <span v-if="this.title">{{ this.title }}</span>
     </div>
     <div class="header">
         <div class="col-1"><span>Datum</span></div>
@@ -37,7 +38,8 @@ export default {
             changes: [],
             urlChanges: this.useUrl.urlGet + "/changes", 
             showModal: false, // Controls whether the modal is visible
-            searchTerm: ""
+            searchTerm: "",
+            title: ""
             // existingWord: false,
         }
     },
@@ -50,9 +52,21 @@ export default {
     },
     methods: {
         async getChanges() {
+            this.title = "";
+            this.searchTerm = "";
             const response = await fetch(this.urlChanges, { method: "GET" });
             this.changes = await response.json(); // save the data in sent through the response.
+            this.title = "Visar alla förslag i databasen.";
         },
+
+        
+        async getlast3Changes() {
+            const response = await fetch(this.urlChanges + "/latest", { method: "GET" });
+            const data = await response.json(); // save the data in sent through the response.
+            this.changes = data;
+            this.title = "";
+        },
+
         openModal() {
             this.showModal = true; // Show the modal
         },
@@ -68,34 +82,30 @@ export default {
             this.getChanges();
         },
         async filterChanges() {
-            this.title = "";
             if(this.searchTerm != "") {
-                const response = await fetch(this.urlChanges + "/search/" + this.searchTerm, { method: "GET" });
+                const response = await fetch(this.urlChanges + "/filter/" + this.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
+                console.log(data);
                 if(data.length===0) {
-                    this.title = "sökterm gav inga resultat.";
+                    this.title = "Sökterm gav inga resultat.";
                 }
             
         
             this.changes = data;
             if (this.changes.length > 0) {
-                this.title = this.changes.length + " sökresultat.";
+                this.title = this.changes.length + " sökresultat";
             } else {
                 this.title = "Sökterm gav inga resultat.";
                 this.getChanges();
             }
             
-            } else {
-                this.getChanges();
-                this.title = "Visar alla ord i databasen.";
-                
-            }
+            } 
             
         },
 
     },
     mounted() {
-        this.getChanges();
+        this.getlast3Changes();
         EventBus.on('change-to-database', this.refreshData);
     },
 
@@ -131,6 +141,19 @@ div.flex-row {
     width: 100%;
 }
 
+section#changes div.filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+div.filter span {
+    font-size: 0.8em;
+    color: #087f47;
+    text-align: center;
+}
+
 .searchform {
     display: flex;
     flex-direction: row;
@@ -160,7 +183,7 @@ div.flex-row {
     border: 1px solid transparent;
     color: #fff;
     font-size: 18px;
-    margin: none;
+    margin: 0;
     margin-right: 0;
 }
 

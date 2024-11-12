@@ -47,40 +47,40 @@
                       </div>
                     </div>
                   </div>
+
+
+
               <form @submit.prevent="submitForm">
-                <div class="notes">
-                <h3 class="lato-bold">Anteckningar</h3>
+
+                  <div class="flex-col full-row">
+                      <label for="status">Anteckningar</label>
+                      <textarea class="text-notes" rows="4" v-model="formData.status" name="status" placeholder="inprogress, completed, etc."></textarea>
+                  </div>
+
                   <div class="flex-row">
                     <div class="flex-col">
-                      <label for="status">Status</label>
-                      <textarea class="text-notes" rows="4" v-model="formData.status" name="status" placeholder="inprogress, completed, etc."></textarea>
+                      <label for="checked_by">Ansvarig</label>
+                      <input v-model="formData.checked_by" name="checked_by">
                     </div>
-
-                    <div class="flex-col right-col">
-                      <div class="flex-col" v-if="formData.updated_at">
-                        <span class="label">Senaste uppdatering</span>
-                        <span class="data">{{formatDate(formData.updated_at)}}</span>
-                      </div>
-                      <div class="flex-col" v-else>
-                        <span class="label">Senaste uppdatering</span>
-                        <span class="data">-</span>
-                      </div>
-                      <div class="flex-col">
-                        <label for="checked_by">Ansvarig</label>
-                        <input v-model="formData.checked_by" name="checked_by">
-                      </div>
+                    <div class="flex-col" v-if="formData.updated_at">
+                      <span class="label">Senaste uppdatering</span>
+                      <span class="data">{{formatDate(formData.updated_at)}}</span>
+                    </div>
+                    <div class="flex-col" v-else>
+                      <span class="label">Senaste uppdatering</span>
+                      <span class="data">-</span>
                     </div>
                   </div>
+
                   <div class="submit-section" v-if="!areYouSure">
-                      <button type="submit">Spara</button>
-                      <span class="close" @click="closeModal">&times;</span>
-                      <button @click="justChecking()">Radera</button>
-                    </div>
-                    <div class="are-you-sure" v-if="areYouSure">
+                    <!-- <span class="close" @click="closeModal">&times;</span> -->
+                    <span class="delete-button" @click="justChecking()">Radera</span>
+                    <button type="submit">Spara</button>
+                  </div>
+                  <div class="are-you-sure" v-if="areYouSure">
                       <span class="red-text">Är du säker du vill radera?</span>
                       <button @click="deleteChange()">Ja</button>
                       <button @click="undo()">Nej</button>
-                    </div>
                   </div>
               </form>
           </div>
@@ -294,7 +294,7 @@ import EventBus from '../util/event-bus';
   }
 
   textarea.text-notes {
-    width: 400px;
+    width: 97%;
   }
 
   @media (max-width: 1025px) { 
@@ -308,12 +308,6 @@ import EventBus from '../util/event-bus';
     gap: 20px;
   }
 
-  div.notes {
-    border: 1px solid #eee;
-    padding: 1rem 2rem 0 2rem;
-  }
-
-  div.notes,
   div.data-on-file {
     margin: 1rem 0;
   }
@@ -324,12 +318,6 @@ import EventBus from '../util/event-bus';
   }
 
   
-  @media (max-width: 1025px) { 
-    div.notes {
-      padding: 1rem;
-    }
-  }
-
   span.label {
     text-transform: uppercase;
     font-size: 0.6em;
@@ -338,12 +326,12 @@ import EventBus from '../util/event-bus';
 
   span.red-text {
     color: red;
-    font-weight: bold;
     margin-right: 10px;
   }
   div.are-you-sure {
     justify-content: flex-end;
   }
+
   div.are-you-sure,
   div.submit-section {
     width: 100%;
@@ -352,8 +340,10 @@ import EventBus from '../util/event-bus';
     align-items: center;
     margin: 20px 0;
   }
+
   div.submit-section {
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 1rem;
   }
 
   div.flex-row img {
@@ -378,7 +368,7 @@ import EventBus from '../util/event-bus';
 
   .modal-content {
     max-width: 680px;
-    max-height: 880px;
+    max-height: 675px;
     height: 80vh;
     overflow-y: auto;
     background-color: white;
@@ -467,6 +457,11 @@ import EventBus from '../util/event-bus';
     flex-direction: column;
   }
 
+  div.flex-col.full-row {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
   @media (max-width: 1025px) { 
      div.flex-col {
       width: 100%;
@@ -476,7 +471,7 @@ import EventBus from '../util/event-bus';
   div.flex-row {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 1rem;
     align-items: center;
   }
 
@@ -542,6 +537,17 @@ import EventBus from '../util/event-bus';
   .errorMessage,
   div.thank-you-msg span {
     color: #134da2;
+  }
+
+  span.delete-button {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  span.delete-button:hover {
+    text-decoration: none;
+    color: red;
+    cursor: pointer;
   }
 
 

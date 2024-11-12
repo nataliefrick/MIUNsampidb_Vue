@@ -2,16 +2,17 @@
 <section id="downloads">
     <h3 class="lato-bold">Registrerade nedladdningar</h3>
     <p> Den här sektionen visar de senaste 3 registrerade nedladdningarna av data från databasen.</p>
-    <div id="filter">
-        <form @submit.prevent="filterWords()">
+    <div class="filter">
+        <form @submit.prevent="filterDownloads()">
             <div class="flex-row">
                 <div class="searchform">
                     <input type="text" placeholder="Ange sökterm" v-model="searchTerm">
                     <button @click="filterWords" class="white-text no-style"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
-                <button class="see-all">Se alla</button>
+                <button @click=getDownloads() class="see-all">Se alla</button>
             </div>
         </form>
+        <span v-if="this.title">{{ this.title }}</span>
     </div>
     <div class="header">
         <div class="column"><span>Datum</span></div>
@@ -47,6 +48,19 @@ div.flex-row {
     width: 100%;
 }
 
+section#downloads div.filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+div.filter span {
+    font-size: 0.8em;
+    color: #087f47;
+    text-align: center;
+}
+
 .searchform {
     display: flex;
     flex-direction: row;
@@ -76,7 +90,7 @@ div.flex-row {
     border: 1px solid transparent;
     color: #fff;
     font-size: 18px;
-    margin: none;
+    margin: 0;
     margin-right: 0;
 }
 
@@ -128,7 +142,8 @@ export default {
             urlRegister: this.useUrl.urlGet + "/downloads", 
             showModal: false, // Controls whether the modal is visible
             existingWord: false,
-            searchTerm: ""
+            searchTerm: "",
+            title: ""
         }
     },
     emits: ["updateRegDownload"],
@@ -140,10 +155,21 @@ export default {
     },
     methods: {
         async getDownloads() {
+            this.title = "";
+            this.searchTerm = "";
             const response = await fetch(this.urlRegister, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.downloads = data;
+            this.title = "Visar alla registrerade nedladdningar i databasen.";
         },
+
+        async getlast3() {
+            const response = await fetch(this.urlRegister + "/latest", { method: "GET" });
+            const data = await response.json(); // save the data in sent through the response.
+            this.downloads = data;
+            this.title = "";
+        },
+
         openModal() {
             this.showModal = true; // Show the modal
         },
@@ -159,9 +185,8 @@ export default {
             this.getDownloads();
         },
         async filterDownloads() {
-            this.title = "";
             if(this.searchTerm != "") {
-                const response = await fetch(this.urlRegister + "/search/" + this.searchTerm, { method: "GET" });
+                const response = await fetch(this.urlRegister + "/filter/" + this.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
                 if(data.length===0) {
                     this.title = "sökterm gav inga resultat.";
@@ -176,17 +201,13 @@ export default {
                 this.getDownloads();
             }
             
-            } else {
-                this.getDownloads();
-                this.title = "Visar alla ord i databasen.";
-                
-            }
+            } 
             
         },
 
     },
     mounted() {
-        this.getDownloads();
+        this.getlast3();
         EventBus.on('change-to-database', this.refreshWords);
     },
 

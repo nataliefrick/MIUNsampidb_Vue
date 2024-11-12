@@ -83,9 +83,10 @@
                   <div>
                     <div class="submit-section" v-if="existingWord">
                       <div class="submit-section" v-if="!areYouSure">
+                        <span class="delete-button" @click="justChecking()">Radera</span>
                         <button type="submit">Spara</button>
                         <span class="close" @click="closeModal">&times;</span>
-                        <button @click="justChecking()">Radera</button>
+
                       </div>
                       <div class="are-you-sure" v-if="areYouSure">
                         <span class="red-text">Är du säker du vill radera?</span>
@@ -292,7 +293,6 @@ div.spacer {
 
 span.red-text {
     color: red;
-    font-weight: bold;
     margin-right: 10px;
   }
   div.are-you-sure {
@@ -306,7 +306,8 @@ span.red-text {
     align-items: center;
   }
   div.submit-section {
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 1rem;
   }
 
   div.flex-row img {
@@ -516,6 +517,17 @@ span.red-text {
   .errorMessage,
   div.thank-you-msg span {
     color: #134da2;
+  }
+
+  span.delete-button {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  span.delete-button:hover {
+    text-decoration: none;
+    color: red;
+    cursor: pointer;
   }
 
 
