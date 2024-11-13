@@ -72,6 +72,7 @@ export default {
             this.title = "";
         },
         openModal() {
+            console.log("open module");
             this.showModal = true; // Show the modal
         },
         closeModal() {

@@ -46,8 +46,8 @@ div.sections {
   background-blend-mode: lighten;
   width: 100%;
   /* height: 100vh; Set the height of the container */
-  padding: 20px; /* Optional: add padding as needed */
 }
+
 
 
 </style>

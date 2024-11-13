@@ -13,6 +13,7 @@
             </div>
 
             <div v-else>
+              {{ existingWord }}
                 <h2 v-if="existingWord" class="lato-bold">Uppdatera</h2>
                 <h2 v-else class="lato-bold">Lägga till ett ord</h2>
               
