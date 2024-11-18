@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import ModalComponent from './DashWordModule.vue';
+import ModalComponent from './DashWordModuleUpdate.vue';
 
 export default {
     data() {
@@ -38,10 +38,10 @@ export default {
         closeModal() {
             this.showModal = false; // Hide the modal
         },
-        handleSubmitForm(updatedWord) {
+        handleSubmitForm() {
             // Handle form submission (e.g., save the updated word data)
             // this.word = updatedWord;
-            console.log(updatedWord);
+            // console.log(updatedWord);
             this.closeModal(); // Close the modal after submission
         },
     }

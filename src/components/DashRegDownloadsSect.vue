@@ -192,9 +192,9 @@ export default {
             // Handle form submission (e.g., save the updated word data)
             this.closeModal(); // Close the modal after submission
         },
-        refreshWords() {
+        refreshData() {
             // Fetch the updated list of words from the database
-            this.getDownloads();
+            this.getlast3();
         },
         async filterDownloads() {
             if(this.searchTerm != "") {
@@ -220,11 +220,11 @@ export default {
     },
     mounted() {
         this.getlast3();
-        EventBus.on('change-to-database', this.refreshWords);
+        EventBus.on('change-to-database', this.refreshData);
     },
 
     beforeUnmount() {
-        EventBus.off('change-to-database', this.refreshWords);
+        EventBus.off('change-to-database', this.refreshData);
     }
 
 }

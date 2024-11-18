@@ -185,8 +185,7 @@ import EventBus from '../util/event-bus';
         this.existingChange=false;
         this.areYouSure=false;
         this.$emit('closeModal');
-        // Emit event to notify DashWordsSection
-        EventBus.emit('change-to-database');
+        // window.location.reload();
       },
       async submitForm() {
           this.updateChange();

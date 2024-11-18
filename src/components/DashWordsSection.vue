@@ -2,11 +2,12 @@
 <section id="words">
     <div class="title">
         <h3 class="lato-bold">Översikt över ord i databasen</h3>
-        <button class="see-all button-icon">Nytt ord<i class="fa-solid fa-leaf" @click=openModal()></i></button> <!-- add new word -->
+        <button class="see-all button-icon" @click="openModal()">Nytt ord<i class="fa-solid fa-leaf"></i></button> <!-- add new word -->
     </div>
     <!-- Modal Component -->
         <ModalComponent 
-        :show="showModal" 
+        :show="showModal"
+        :existingWord="false" 
         @close-modal="closeModal"
         @submit-form="handleSubmitForm"
         />
@@ -35,7 +36,7 @@
 <script>
 import Word from "../components/DashSingleWord.vue";
 import { useUrlGet } from '../stores/urlGet';
-import ModalComponent from './DashWordModule.vue';
+import ModalComponent from './DashWordModuleAdd.vue';
 import EventBus from '../util/event-bus';
 export default {
     setup() {
@@ -72,7 +73,6 @@ export default {
             this.title = "";
         },
         openModal() {
-            console.log("open module");
             this.showModal = true; // Show the modal
         },
         closeModal() {
@@ -82,9 +82,9 @@ export default {
             // Handle form submission (e.g., save the updated word data)
             this.closeModal(); // Close the modal after submission
         },
-        refreshWords() {
+        refreshData() {
             // Fetch the updated list of words from the database
-            this.getWords();
+            this.getlast3Words();
         },
 
         async filterWords() {
@@ -110,11 +110,11 @@ export default {
     },
     mounted() {
         this.getlast3Words();
-        EventBus.on('change-to-database', this.refreshWords);
+        EventBus.on('change-to-database', this.refreshData);
     },
 
     beforeUnmount() {
-        EventBus.off('change-to-database', this.refreshWords);
+        EventBus.off('change-to-database', this.refreshData);
     }
 
 }

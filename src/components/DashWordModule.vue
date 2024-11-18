@@ -13,7 +13,6 @@
             </div>
 
             <div v-else>
-              {{ existingWord }}
                 <h2 v-if="existingWord" class="lato-bold">Uppdatera</h2>
                 <h2 v-else class="lato-bold">Lägga till ett ord</h2>
               
@@ -167,7 +166,7 @@ import EventBus from '../util/event-bus';
       word: {
         handler(newVal) {
           this.formData = { ...newVal };
-          this.existingWord = true;
+          // this.existingWord = true;
         },
         immediate: true // Update immediately if the word prop is already set
       }
@@ -181,7 +180,8 @@ import EventBus from '../util/event-bus';
         this.areYouSure=false;
         this.$emit('closeModal');
         // Emit event to notify DashWordsSection
-        EventBus.emit('change-to-database');
+        // EventBus.emit('change-to-database');
+        // window.location.reload();
       },
       async submitForm() {
         if (this.existingWord) {
@@ -217,7 +217,6 @@ import EventBus from '../util/event-bus';
       },
       async updateWord() {
           let dataBody = this.formData;
-          console.log(JSON.stringify(dataBody));
           const response = await fetch(this.urlChange + "/" + this.formData.id,  {
               method: "PUT",
               headers: {

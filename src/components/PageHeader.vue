@@ -3,6 +3,7 @@
     <div id="topbar">
         <div class="topbar">
             <RouterLink v-if="user" to="/dashboard" class="dash-link">Dashboard</RouterLink>
+            <RouterLink v-if="user" to="/" class="dash-link">Start</RouterLink>
             <span v-if=user>Inloggade som {{ user }}</span>
         </div>
     </div> <!-- Top black bar -->

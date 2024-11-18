@@ -79,7 +79,7 @@ export default {
         },
         refreshData() {
             // Fetch the updated list of words from the database
-            this.getChanges();
+            this.getlast3Changes();
         },
         async filterChanges() {
             if(this.searchTerm != "") {

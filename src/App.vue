@@ -30,7 +30,6 @@ export default {
         // Watch the computed property isLoggedIn
       checkLoginStatus(newVal) {
         if (newVal) {
-          console.log('User is logged in, refreshing the page...');
           window.location.reload();
         } 
       }
