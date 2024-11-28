@@ -75,33 +75,41 @@ span.drop-cap {
 
 section.info {
     display: flex;
-    
     gap: 1rem;
     flex-wrap: nowrap;
+    justify-content: center;
     
 }
 
-@media (min-width: 501px) { 
+@media (min-width: 981px) { 
     section.info {
-            max-width: 100%;
-            margin: 5rem 0;
-            flex-direction: row;
-        }
+        max-width: 100%;
+        margin: 5rem 0;
+        flex-direction: row;
     }
 
-    @media (max-width: 500px) { 
-        section.info {
-            max-width: 90%;
-            margin: 10% auto;
-            flex-direction: column;
-        }
+    div.info-text {
+        width: 300px;
     }
+}
+
+@media (max-width: 980px) { 
+    section.info {
+        max-width: 90%;
+        margin: 10% auto;
+        flex-direction: column;
+        
+    }
+
+    div.info-text {
+        width: 100%;
+    }
+}
 
 div.info-text {
-    width: auto;
-    max-width: 300px;
     background-color: #eeeeee80;
     padding: 1rem;
+    line-height: 1.5;
 }
 
 div.title-w-icon {
