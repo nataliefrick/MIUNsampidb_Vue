@@ -99,6 +99,7 @@ section.info {
 
 div.info-text {
     width: auto;
+    max-width: 300px;
     background-color: #eeeeee80;
     padding: 1rem;
 }
