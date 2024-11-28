@@ -60,12 +60,6 @@ div#database-app-info {
     }
 }
 
-section.first-paragraph {
-    width: 60%;
-    margin: 0 auto;
-    font-size: large;
-}
-
 span.drop-cap {
     color: #134da2;
     font-size:x-large;
@@ -81,7 +75,16 @@ section.info {
     
 }
 
+section.first-paragraph {
+    font-size: large;
+}
+
 @media (min-width: 981px) { 
+    section.first-paragraph {
+        margin: 0 auto;
+        width: 60%;
+    }
+
     section.info {
         max-width: 100%;
         margin: 5rem 0;
@@ -94,6 +97,12 @@ section.info {
 }
 
 @media (max-width: 980px) { 
+
+    section.first-paragraph {
+        margin: 0 auto;
+        width: 60%;
+    }
+
     section.info {
         max-width: 90%;
         margin: 10% auto;
@@ -102,7 +111,27 @@ section.info {
     }
 
     div.info-text {
-        width: 100%;
+        width: 60%;
+        margin: 0 auto;
+    }
+}
+@media (max-width: 500px) { 
+
+    section.first-paragraph {
+        margin: 2rem auto;
+        width: 85%;
+    }
+
+    section.info {
+        max-width: 90%;
+        margin: 10% auto;
+        flex-direction: column;
+        
+    }
+
+    div.info-text {
+        width: auto;
+        margin: 0 auto;
     }
 }
 
