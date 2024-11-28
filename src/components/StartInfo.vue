@@ -2,7 +2,8 @@
     <div id="database-app-info">
         <section class="first-paragraph">
             <h2 class="lato-bold dont-show">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
-            <p><span class="drop-cap">H</span>ej och välkommen till  <em>Databas för sydsamiska känsloord och kulturella uttryck för lidande.</em> Detta projekt... ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
+            <p><span class="drop-cap">H</span>ej och välkommen till  <em>Databas för sydsamiska känsloord och kulturella uttryck för lidande.</em> Den här databasen är till för dig som vill utforska sydsamiska ord och uttryck kopplade till känslor och psykisk hälsa. Vårt mål är att göra dessa ord tillgängliga för alla som vill lära sig mer om det sydsamiska språket och dess rika kulturella uttryck. <br><br>
+            Använd sökfunktionen för att hitta känsloord eller uttryck på sydsamiska, svenska eller norska samt deras översättningar. Om du saknar ett ord i databasen är du varmt välkommen att bidra – klicka här för att föreslå nya ord! </p>
         </section>
 
         <section class="info">
@@ -11,21 +12,23 @@
                     <img src="../assets/img/divider-5.png" alt="">
                     <h3 class="lato-bold">Bakgrund</h3>
                 </div>
-                <p>Sxed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
+                <p>Den här databasen har sin grund i psykologisk forskning som utforskar kopplingarna mellan flerspråkighet, emotion och psykisk hälsa. Projektet för databasen, ”Feeling in your own words”, finansierades av Forskningsfonden Saepmie vid Gaskeuniversiteete (Mittuniversitetet) och bedrevs under ledning av Marie-France Champoux-Larsson och Anna Leiler som en del av <a href="http://miun.se/albi" target="_blank" rel="noopener noreferrer">ALBi-labbets</a> arbete. </p>
             </div>
             <div class="info-text">
                 <div class="title-w-icon">
                     <img src="../assets/img/divider-5.png" alt="">
                     <h3 class="lato-bold">Hur du får använda</h3>
                 </div>
-                <p>Sxed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
+                <p>Databasen är tillgänglig för användning under följande licens: <br><br>
+                South Sámi Emotion Words and Cultural Idioms of Distress Database (SSEID) © 2025 av Marie-France Champoux-Larsson & Anna Leiler är licensierad under CC BY-NC-ND 4.0. <br><br>
+                Det innebär att du är välkommen att använda innehållet för icke-kommersiella ändamål, så länge du anger källan och inte gör några bearbetningar av materialet. </p>
             </div>
             <div class="info-text">
                 <div class="title-w-icon">
                     <img src="../assets/img/divider-5.png" alt="">
-                    <h3 class="lato-bold">Kontakta oss!</h3>
+                    <h3 class="lato-bold">Till dig som är forskare</h3>
                 </div>
-                <p>Sxed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. </p>
+                <p>Om du som forskare vill få tillgång till hela databasen, är du välkommen att skicka en förfrågan här. Vid användning av databasen i publikationer eller presentationer, vänligen referera till följande: [referens].</p>
             </div>
         </section>
     </div>

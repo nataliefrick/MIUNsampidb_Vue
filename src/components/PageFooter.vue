@@ -6,13 +6,13 @@
             <h3 class="lato-regular-italic">South Sámi Emotion Words and Cultural Idioms of Distress Database (SSEID)</h3>
             <div class="spacer"></div>
 
-            <h3 class="lato-bold researchers">Forskarna</h3>
+            <h3 class="lato-bold researchers">Kontakta oss!</h3>
             <div class="researcher">
-                <span><strong>Marie-France Champoux-Larsson,</strong> Docent | Associate Professor</span>
+                <span><strong>Marie-France Champoux-Larsson,</strong> Docent</span>
                 <a class="email" href="mailto:marie-france.champoux-larsson@miun.se" aria-label="Email Anna"><i class="fa-regular fa-envelope"></i><span>marie-france.champoux-larsson@miun.se</span></a>
             </div>
             <div class="researcher">
-                <span><strong>Anna Leiler,</strong> Leg psykolog</span>
+                <span><strong>Anna Leiler,</strong> fil.dr & leg. psykolog </span>
                 <a class="email" href="mailto:anna.leiler@miun.se" aria-label="Email Anna"><i class="fa-regular fa-envelope"></i><span>anna.leiler@miun.se</span></a>
             </div>
         </div>
