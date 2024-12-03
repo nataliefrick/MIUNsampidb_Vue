@@ -13,7 +13,7 @@
         <li>{{word.example_of_use}}</li>
         <li>{{word.sources}}</li>
         <li>{{word.arousal_level}}</li>
-        <li>{{word.frequency_id}}</li>
+        <li>{{word.frequency}}</li>
         <li>{{word.link_to_update}}</li> -->
     </ul>
     <!-- Modal Component -->

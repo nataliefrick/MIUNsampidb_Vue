@@ -169,7 +169,7 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
               example_of_use: 'Exempel på användning',
               sources: 'Källor',
               arousal_level: 'Upphetsnings- eller aktiveringsnivå',
-              frequency_id: 'Användningsfrekvens',
+              frequency: 'Användningsfrekvens',
               // Add more mappings as needed
           };
 

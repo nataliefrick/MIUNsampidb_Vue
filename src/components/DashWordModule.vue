@@ -72,8 +72,8 @@
                       </select>
                     </div>
                     <div class="flex-col">
-                      <label for="frequency_id">Frekvens:</label>
-                      <select v-model="formData.frequency_id" name="frequency_id">
+                      <label for="frequency">Frekvens:</label>
+                      <select v-model="formData.frequency" name="frequency">
                           <option value=1>Low</option>
                           <option value=2>Medium</option>
                           <option value=3>High</option>
@@ -136,7 +136,7 @@ import EventBus from '../util/event-bus';
           example_of_use: '',
           sources: '',
           arousal_level: '',
-          frequency_id: ''
+          frequency: ''
         }
       };
     },
@@ -263,7 +263,7 @@ import EventBus from '../util/event-bus';
             this.formData.example_of_use= "";
             this.formData.sources= "";
             this.formData.arousal_level= "";
-            this.formData.frequency_id= "";
+            this.formData.frequency= "";
             this.thankYouMsg=true;
 
             

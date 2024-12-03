@@ -1,5 +1,5 @@
 <template>
-    <!-- <div class="result-card" v-for="(word, index) in listWords" :key="index"> -->
+
 <div class="result-card">
       <div class="show-more" v-if="moreInfoAvailable">
         <button class="more" @click="openChangesModal">Föreslå ändringar</button>
@@ -8,16 +8,12 @@
             <ModalComponent 
             :word="word" 
             :show="showModal" 
-            @close-modal="closeChangesModal"
+            @close-modal="closeModal"
             @submit-form="handleSubmitForm"
             />
-          <button class="more" @click="toggleButtonAction($event)" v-if="showButton">
-              visa mer
-              <i class="fa-regular fa-square-plus"></i>
+          <button class="more" @click="toggleButtonAction($event)" v-if="showButton">visa mer<i class="fa-regular fa-square-plus"></i>
           </button>
-          <button class="less" @click="toggleButtonAction($event)" v-else>
-              visa mindre
-              <i class="fa-regular fa-square-minus"></i>
+          <button class="less" @click="toggleButtonAction($event)" v-else>visa mindre<i class="fa-regular fa-square-minus"></i>
           </button>
       </div>
       <ul class="sampi no-bullets"  v-show="word.word_sydsamiska">
@@ -33,13 +29,37 @@
           <li class="definition lato-regular">{{word.definition_norska}}</li>
       </ul>
       <ul class="more-info no-bullets" v-if="showMoreInfo">
-            <li v-show="word.synonyms"><strong>Synonyms:</strong> {{word.synonyms}}</li>
-            <li v-show="word.antonyms"><strong>Antonyms:</strong> {{word.antonyms}}</li>
-            <li v-show="word.example_of_use"><strong>Example of use:</strong> {{word.example_of_use}}</li>
+        <!-- <pre>{{ word }}</pre> -->
+            <li v-show="word.synonyms"><strong>Synonymer:</strong> {{word.synonyms}}</li>
+            <li v-show="word.antonyms"><strong>Antonymer:</strong> {{word.antonyms}}</li>
+            <li v-show="word.example_of_use"><strong>Exampel på användning:</strong> {{word.example_of_use}}</li>
 
-            <!-- <li v-show="word.sources">Källa: {{word.sources}}</li> -->
-            <li v-show="word.arousal_level"><strong>Arousel:</strong> {{word.arousal_level}}</li>
-            <li v-show="word.frequency_id"><strong>Frequency of use:</strong> {{word.frequency_id}}</li>
+            <li v-show="word.sources"><strong>Källa:</strong> {{word.sources}}</li>
+            <li v-show="word.arousal_level"><strong>Stimuleringsnivå/aktiveringsgrad:</strong> {{this.arousal}}</li>
+            <li v-show="word.frequency"><strong>Användningsfrekvens:</strong> {{this.frequency}}</li>
+            <li v-show="word.main_node"><strong>Nod:  </strong>
+                <span>
+                    {{word.main_node}} ><span class="button-link" @click="openPolarityModal">{{word.polarity_node}}</span>><span class="button-link" @click="openSubNodeModal">{{word.sub_node}}</span>
+
+                        <!-- Modal Component -->
+                        <PolarityModalComponent 
+                        :polarity="word.polarity_node" 
+                        :show="showPolarityModal" 
+                        @close-modal="closeModal"
+                        
+                        />
+
+                        <SubNodeModalComponent 
+                        :subnodeId="word.node_id" 
+                        :subnode="word.sub_node" 
+                        :mainnode="word.main_node"
+                        :polaritynode="word.polarity_node"
+                        :show="showSubNodeModal" 
+                        @close-modal="closeModal"
+                        
+                        />
+                </span>
+            </li>
 
             <li v-show="word.link_to_update">{{word.link_to_update}}</li>
       </ul>
@@ -53,6 +73,8 @@
 import { useFilterLanguagesStore } from '../stores/filterlanguages';
 import { useSearchTermStore } from '../stores/searchterms';
 import ModalComponent from './SuggestChangesModule.vue';
+import SubNodeModalComponent from './SubNodeModal.vue';
+import PolarityModalComponent from './PolarityModal.vue';
 
 export default {
     setup() {
@@ -62,7 +84,7 @@ export default {
         return { store, filter }
     },
     components: {
-        ModalComponent,
+        ModalComponent, PolarityModalComponent, SubNodeModalComponent
     },
     data() {
         return {
@@ -72,26 +94,52 @@ export default {
             showButton: true,
             searchTerm: this.store.searchTerm,
             showModal: false, // Controls whether the modal is visible
+            showSubNodeModal: false, // Controls whether the modal is visible
+            showPolarityModal: false, // Controls whether the modal is visible
             storeFilterLang: useFilterLanguagesStore(),
             selectedLanguages: this.filter.filter,
+            arousal: "",
+            frequency: "",
+    
         }
     },
     props: {
         word: Object
-
     },
     created : async function() {
         //   this.word.sources ||
-        if(this.word.synonyms || this.word.antonyms || this.word.example_of_use || this.word.arousal_level || this.word.frequency_id ) {
+        if (this.word.synonyms || this.word.antonyms || this.word.example_of_use || this.word.arousal_level || this.word.frequency || this.word.main_node) {
                     this.moreInfoAvailable = true;
                 }
+        switch (this.word.arousal_level) {
+            case 1: this.arousal = "låg"; break;
+            case 2: this.arousal = "medel"; break;
+            case 3: this.arousal = "hög"; break;
+            default: this.arousal = "";
+        }
+        switch (this.word.frequency) {
+            case 1: this.frequency = "låg"; break;
+            case 2: this.frequency = "medel"; break;
+            case 3: this.frequency = "hög"; break;
+            default: this.frequency = "";
+        }
+
+                
     },
     methods : {
+        openPolarityModal() {
+            this.showPolarityModal = true; // Show the modal
+        },
         openChangesModal() {
             this.showModal = true; // Show the modal
         },
-        closeChangesModal() {
+        openSubNodeModal() {
+            this.showSubNodeModal = true; // Show the modal
+        },
+        closeModal() {
             this.showModal = false; // Hide the modal
+            this.showPolarityModal = false; // Hide the modal
+            this.showSubNodeModal = false; // Hide the modal
         },
         handleSubmitForm(updatedWord) {
             // Handle form submission (e.g., save the updated word data)
@@ -140,6 +188,18 @@ export default {
 
 
 <style scoped>
+span.button-link {
+    color: #134da2;
+    text-decoration: underline;
+    padding: 4px 6px 6px 6px;
+}
+
+span.button-link:hover {
+    color: #134da2;  /* dk blue */
+    background-color: #fbd030;
+    cursor: pointer;
+}
+
 div.result-card {
     margin: 2%;
     background-color: #eeeeee;

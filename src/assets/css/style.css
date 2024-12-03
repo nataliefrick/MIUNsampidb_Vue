@@ -316,10 +316,10 @@ i {
 div#colors {
     background-color: #df2b26;  /* red */
     background-color: #087f47;  /* green */
-    background-color: #fbd030;  /* yellow */
     background-color: #c1daf3;  /* lt blue */
     background-color: #0d58a3;  /* dont use dk blue */
     background-color: #134da2;  /* dk blue */
+    background-color: #fbd030;  /* yellow */
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
