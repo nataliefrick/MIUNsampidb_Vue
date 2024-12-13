@@ -259,7 +259,7 @@ div.flex-container {
         justify-content: flex-start;
         align-items: center;
         gap: 5px;
-        width: 100%;
+        
     }
 
 

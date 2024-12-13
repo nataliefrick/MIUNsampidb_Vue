@@ -109,9 +109,13 @@
 
 <style scoped>
     
-    @media (max-width: 1140px) {}
-    @media (max-width: 576px) { section#hero-search { height: 652px; } }
-    @media (max-width: 448px) { section#hero-search { height: 572px; } }
+    section#hero-search { 
+        height: 600px; 
+    }
+    @media (max-width: 1640px) { section#hero-search { height: 400px; } }
+    @media (max-width: 1140px) { section#hero-search { height: 750px; } }
+    @media (max-width: 576px) { section#hero-search { height: 650px; } }
+    @media (max-width: 448px) { section#hero-search { height: 570px; } }
     @media (max-width: 405px) { section#hero-search { height: 650px; } }
     @media (max-width: 268px) { section#hero-search { height: 720px; } }
 
