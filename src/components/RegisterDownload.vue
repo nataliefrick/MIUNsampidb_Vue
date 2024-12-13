@@ -16,6 +16,8 @@
               <h2 class="lato-bold">Registrerar ditt projekt</h2>
               <p>Vi vill gärna veta mer om ditt projekt och hur vår data kommer att användas! Vänligen fyll i dina kontaktuppgifter och en beskrivning av projektet där datan kommer att användas.
               </p>
+
+              <p>searchterm: {{ this.searchTerm }}</p>
                 
               <!-- form ----------------- -->
               <form @submit.prevent="submitForm">
@@ -86,10 +88,19 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
     setup() {
         // const storeSearchTerms = useSearchTermStore()
         const useUrl = useUrlGet()
-        
         return { useUrl }
     },
-    props: ['show', 'searchTerm', 'words'], // Accepting `word` as a prop and controlling `show` for modal visibility
+    props: ['show', 'searchTerm', 'words', 'modalType'], // Accepting `word` as a prop and controlling `show` for modal visibility
+    computed: {
+    // Compute the words or data to show in the modal based on modalType
+      dataToDisplay() {
+        if (this.modalType === 'allData') {
+          // Return all data (entire database)
+          return this.words;
+        }
+        return [];
+      }
+    },
     data() {
       return {
         urlRegister: this.useUrl.urlGet + "/downloads", 
@@ -129,7 +140,6 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
         this.captcha.correctAnswer = this.captcha.num1 + this.captcha.num2;
         this.captcha.question = `${this.captcha.num1} + ${this.captcha.num2} = `;
       },
-
       closeModal() {
         // Emit event to close the modal in the parent component
         this.thankYouMsg=false;
@@ -137,7 +147,6 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
         this.captcha.userAnswer=null;
         this.$emit('closeModal');
       },
-
       async submitForm() {
         this.errorMessage = '';
         if (parseInt(this.captcha.userAnswer) === this.captcha.correctAnswer) {
@@ -151,7 +160,6 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
           this.generateCaptcha();  // Generate new CAPTCHA on failure
         }
       },
-
       downloadJsonAsExcel(data, searchTerm, fileName = 'miun_emotionalwords_data', title = 'Databas för sydsamiska känsloord och kulturella uttryck för lidande') {
          // Specify columns to exclude
           const excludeColumns = ['id', 'created_at', 'updated_at'];
@@ -159,11 +167,11 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
         // Define custom headers
           const customHeaders = {
               word_sydsamiska: 'Samiska',
-              definition_sydsamiska: 'Definitionen på Samiska',
+              definition_sydsamiska: 'Definition på Samiska',
               word_svenska: 'Svenska',
-              definition_svenska: 'Definitionen på Svenska',
+              definition_svenska: 'Definition på Svenska',
               word_norska: 'Norska',
-              definition_norska: 'Definitionen på Norska',
+              definition_norska: 'Definition på Norska',
               synonyms: 'Synonymer',
               antonyms: 'Antonymer',
               example_of_use: 'Exempel på användning',
@@ -201,7 +209,6 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
           // Download the file
           XLSX.writeFile(workbook, `${fileName}.xlsx`);
       },
-      
       async addChange() {
         // check first for content
         if(this.formData.description.length > 4 ) {
@@ -244,8 +251,7 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
           this.errorMessage = "Vi behöver mer info, vänligen utveckla ditt meddelande.";
         }
 
-    }
-
+      }
     },
   };
 </script>

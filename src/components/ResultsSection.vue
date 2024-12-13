@@ -2,16 +2,46 @@
     <section id="search-results">
         <div class="header-section" >
             <h2 class="lato-bold results-title">{{title}}</h2>
-            <button v-if="downloadAvailable" class="more" @click="openRegisterModal">Ladda ner resultat</button>
-                <!-- Modal Component -->
-                <modal-component 
-                :show="showModal" 
-                :words="words" 
-                :searchTerm="this.store.searchTerm" 
-                @close-modal="closeRegisterModal"
-                @submit-form="handleSubmitForm"
-                />
+            <!-- filter section -->
+            <div class="flex-row header-buttons">
+                <span class="language">Alternativ</span>
+                <div class="language-filter">
+                    <button 
+                    @click="toggleSwe($event)" 
+                    :class="{'selected': isActiveSwe, 'not-selected': !isActiveSwe}">
+                        <span :class="isActiveSwe ? 'hidden-label' : 'showing-label'">
+                            {{ isActiveSwe ? 'Dölj' : 'Visa' }}
+                        </span><br>
+                        <span :class="isActiveSwe ? 'hidden-style' : 'showing-style'">
+                            Svensk
+                        </span>
+                    </button>
+
+                    <button 
+                    @click="toggleNwg($event)" 
+                    :class="{'selected': isActiveNwg, 'not-selected': !isActiveNwg}">
+                        <span :class="isActiveNwg ? 'hidden-label' : 'showing-label'">
+                            {{ isActiveNwg ? 'Dölj' : 'Visa'  }}
+                        </span><br>
+                        <span :class="isActiveNwg ? 'hidden-style' : 'showing-style'">
+                            Norsk
+                        </span>
+                    </button>
+
+                   <button v-if="downloadAvailable" @click="openRegisterModal('searchTerm')"><span class="button-label">Ladda ner</span><br>Sökresultat</button>
+                <button @click="openRegisterModal('allData')"><span class="button-label">Ladda ner</span><br>Hela databasen</button>
+                </div>
+            </div>
         </div>
+        <!-- Modal Component -->
+        <modal-component 
+        :show="showModal" 
+        :words="words" 
+        :searchTerm="this.store.searchTerm" 
+        :modalType="modalType"
+        @close-modal="closeRegisterModal"
+        @submit-form="handleSubmitForm"
+        />
 
         <!-- <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller sökterm "{{ this.store.searchTerm }}"</h2>
         <h2 v-else class="lato-bold results-title">Tyvärr, inga resultat hittades i databasen.</h2> -->
@@ -25,8 +55,10 @@
 
 
 <script>
-import Word from "../components/SingleWord.vue";
+import { nextTick } from 'vue';  // Import nextTick for better timing of updates
+import { useFilterLanguagesStore } from '../stores/filterlanguages';
 import { useSearchTermStore } from '../stores/searchterms';
+import Word from "../components/SingleWord.vue";
 import { useUrlGet } from '../stores/urlGet';
 import ModalComponent from './RegisterDownload.vue';
 
@@ -35,6 +67,7 @@ export default {
         // const storeSearchTerms = useSearchTermStore()
         const useUrl = useUrlGet()
         const store = useSearchTermStore()
+        
         return { useUrl, store }
     },
     data() {
@@ -44,9 +77,14 @@ export default {
             urlGet: this.useUrl.urlGet + "/words", 
             urlChange: this.useUrl.urlGet + "/changes", 
             searchTerm: "this.store.searchTerm",
+            modalType: "",
             title: "",
             downloadAvailable: false,
             showModal: false, // Controls whether the modal is visible
+            selectedLanguages: [ true, true ], // [ swe, nor ],
+            isActiveSwe: true, // Default state
+            isActiveNwg: true, // Default state
+            storeFilterLang: useFilterLanguagesStore(),
         }
     },
     created() {
@@ -62,14 +100,43 @@ export default {
             }
         }
     },
-    emits: ["addChanges"],
+    emits: ["addChanges", "setFilterLang"],
     components: { ModalComponent, Word },
     methods: {
-        openRegisterModal() {
-            this.showModal = true; // Show the modal
+        toggleSwe() {
+            this.isActiveSwe = !this.isActiveSwe; // Toggle the class state
+            this.selectedLanguages[0] = this.isActiveSwe;
+            this.setFilterLang();
+        },
+        toggleNwg() {
+            this.isActiveNwg = !this.isActiveNwg; // Toggle the class state
+            this.selectedLanguages[1] = this.isActiveNwg;
+            this.setFilterLang();
+        },
+        async setFilterLang() {
+            // Access the Pinia store
+            const storeFilterLang = useFilterLanguagesStore();
+            // Only update if there's a new term to submit
+            storeFilterLang.setTerm(this.selectedLanguages);
+            // Use nextTick to ensure the store updates are processed before navigating
+            await nextTick();
+            try {
+                await this.$router.push('/results');  // Navigate to the results page
+            } catch (err) {
+                console.error("Navigation error:", err);  // Log any navigation errors
+            }
+        },
+        openRegisterModal(type) {
+            this.modalType = type;
+            if (this.modalType === 'allData') {
+                this.searchTerm = "allData";
+                this.getWords();
+            }
+            this.showModal = true;
         },
         closeRegisterModal() {
-            this.showModal = false; // Hide the modal
+            this.showModal = false;
+            this.modalType = null; // reset modal type when closing
         },
         handleSubmitForm(updatedWord) {
             // Handle form submission (e.g., save the updated word data)
@@ -77,29 +144,6 @@ export default {
             console.log(updatedWord);
             this.closeRegisterModal(); // Close the modal after submission
         },
-        // highlightSearchTerm() {
-        //     // Create a regex to search for the searchTerm, case-insensitive
-        //     let regex = new RegExp(this.searchTerm, 'gi');
-        //     // Loop through each key in the words object
-        //     Object.keys(this.words).forEach(key => {
-        //         let value = this.words[key];
-
-        //         // Check if the value is a string
-        //         if (typeof value === 'string') {
-        //             // Replace occurrences of searchTerm with a <span> around it
-        //             this.words[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
-        //         }
-        //         // If the value is an object, check its nested properties (optional)
-        //         else if (typeof value === 'object' && value !== null) {
-        //             Object.keys(value).forEach(nestedKey => {
-        //                 let nestedValue = value[nestedKey];
-        //                 if (typeof nestedValue === 'string') {
-        //                     value[nestedKey] = nestedValue.replace(regex, `<span>${this.searchTerm}</span>`);
-        //                 }
-        //             });
-        //         }
-        //     });
-        // },
         async updateResults() {
             this.title = "";
             if(this.store.searchTerm != "") {
@@ -108,21 +152,20 @@ export default {
                 if(data.length===0) {
                     this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så kan du kolla igenom dem.";
                 }
-            
         
-            this.words = data;
-            if (this.words.length > 0) {
-                // this.highlightSearchTerm();
-                this.title = this.words.length + " sökresultat innehåller sökterm '" + this.store.searchTerm + "'. ";
-                this.downloadAvailable=true;
-            } else {
-                this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så kan du kolla igenom dem.";
-                this.getWords();
-            }
+                this.words = data;
+                if (this.words.length > 0) {
+                    // this.highlightSearchTerm();
+                    this.title = "Sökresultat: " + this.words.length + " ord innehåller sökterm '" + this.store.searchTerm + "'. ";
+                    this.downloadAvailable=true;
+                } else {
+                    this.title = "Tyvärr, inga resultat hittades i databasen. Här är alla ord i databasen, så kan du kolla igenom dem.";
+                    this.getWords();
+                }
             
             } else {
                 this.getWords();
-                this.title = "Din sökterm var tom. Här är alla ord i databasen, så kan du kolla igenom dem.";
+                this.title = "Nu visas samtliga ord i databasen.";
                 
             }
             
@@ -130,7 +173,6 @@ export default {
             // this.searchTerm = "";
             // this.$emit("updateResults"); // reloads the parent page.
         },
-
         async getWords() {
             const response = await fetch(this.urlGet, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
@@ -158,16 +200,100 @@ section#search-results {
 }
  }
 
-
-h2.results-title {
-    margin-left: 20px;
-}
-
 #search-results div.header-section {
+    margin-left: 20px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
+div.flex-row{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.language-filter {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 5px;
+    }
+
+.checkbox-btn input[type="checkbox"] {
+    display: none; /* Hide the actual checkbox */
+}
+
+span.colon {
+    margin-right: 1%;
+}
+
+/* Disabled state */
+.disabled,
+.checkbox-btn:has(input[type="checkbox"]:disabled) 
+{
+    background-color: #c1daf3;
+    border: 1px solid #c1daf3;
+    color: #fff;
+} 
+
+/* Hover state - only apply to non-disabled checkboxes */
+.checkbox-btn:not(.disabled):hover {
+    background-color: #134da2;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+
+/* Default unselected button styling */
+.selected:hover,
+.not-selected {
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+
+/* Selected state */
+.not-selected:hover,
+.selected
+{
+    background-color: #134da2;
+    transition: background-color 0.3s;
+
+} 
+
+button:hover span.button-label,
+.not-selected:hover .showing-style, 
+.not-selected:hover .showing-label, 
+.selected .hidden-style, 
+.selected .hidden-label { color: #fff; }
+
+.selected:hover .hidden-style, 
+.selected:hover .hidden-label, 
+.not-selected .showing-style, 
+.not-selected .showing-label { color: #404040; }
+
+.hidden-label { 
+    text-transform: uppercase;
+    line-height: 0.6rem;
+    font-size: 0.7em;
+}
+
+.hidden-style {
+  font-weight: bold;
+   line-height: 0.6rem;
+}
+
+.showing-style {
+  font-weight: bold;
+   line-height: 0.6rem;
+}
+
+span.button-label,
+.showing-label {
+  text-transform: uppercase;
+  line-height: 0.6rem;
+  font-size: 0.7em;
+}
 
 </style>

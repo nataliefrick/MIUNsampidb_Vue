@@ -19,15 +19,11 @@
               <h2 class="lato-bold">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
               <h3 class="lato-regular-italic">South Sámi Emotion Words and Cultural Idioms of Distress Database (SSEID)</h3>
               <div class="search">
-                  <div>
-                      <span class="language">Filtrerar för</span>
-                      <div class="language-filter">
-                        <button class="disabled">Sydsamisk</button>
-                        <span class="colon">:</span>
-                        <button @click="toggleSwe($event)" :class="{'selected': isActiveSwe, 'not-selected': !isActiveSwe}">Svensk</button>
-                        <button @click="toggleNwg($event)" :class="{'selected': isActiveNwg, 'not-selected': !isActiveNwg}">Norsk</button>
-                      </div>
-                    </div>
+                <div>
+                    <button @click="getAll()" class="reverse">Se hela databasen</button>
+                    <button @click="getAll()" class="disabled">Föreslå nytt ord</button>
+                </div>
+
                   <form @submit.prevent="setSearchTerm()">
                       <div class="row-searchform">
                           <input type="text" placeholder="Ange sökterm" v-model="newTerm">
@@ -50,10 +46,9 @@
 
 <script>
 // import { defineComponent } from 'vue'
-import { nextTick } from 'vue';  // Import nextTick for better timing of updates
-import { useFilterLanguagesStore } from '../stores/filterlanguages';
 import { useSearchTermStore } from '../stores/searchterms';
 import { useUrlGet } from '../stores/urlGet';
+import { nextTick } from 'vue';  // Import nextTick for better timing of updates
 
 export default {
     setup() {
@@ -64,37 +59,22 @@ export default {
     data() {
         return {
             storeSearchTerms: useSearchTermStore(),
-            storeFilterLang: useFilterLanguagesStore(),
             urlGet: this.useUrl.urlGet + "/words",
             newTerm: "",
-            selectedLanguages: [ true, true ], // [ swe, nor ],
-            isActiveSwe: true, // Default state
-            isActiveNwg: true, // Default state
+
         }
     },
-    emit: ["setSearchTerm", "setFilterLang"],
+    emit: ["setSearchTerm"],
     methods: {
-        toggleSwe() {
-            this.isActiveSwe = !this.isActiveSwe; // Toggle the class state
-            this.selectedLanguages[0] = this.isActiveSwe;
-            this.setFilterLang();
-        },
-        toggleNwg() {
-            this.isActiveNwg = !this.isActiveNwg; // Toggle the class state
-            this.selectedLanguages[1] = this.isActiveNwg;
-            this.setFilterLang();
-        },
-        async setFilterLang() {
-            // Access the Pinia store
-            const storeFilterLang = useFilterLanguagesStore();
-            // Only update if there's a new term to submit
-            storeFilterLang.setTerm(this.selectedLanguages);
-            // Use nextTick to ensure the store updates are processed before navigating
-            await nextTick();
-            try {
-                await this.$router.push('/results');  // Navigate to the results page
-            } catch (err) {
-                console.error("Navigation error:", err);  // Log any navigation errors
+        async getAll() {
+            // If already on the results page, reload it
+            if (this.$route.path === '/results') {
+                this.storeSearchTerms.setTerm("");
+                // Force a refresh by pushing to the same route and resetting it
+                await this.$router.replace({ path: '/results', query: { refresh: Date.now() } });
+            } else {
+                // Navigate to the results page normally
+                await this.$router.push('/results');
             }
         },
         async setSearchTerm() {
@@ -375,58 +355,21 @@ export default {
         }
     }
 
-    span.language {
-        text-transform: uppercase;
-        font-size: x-small;
-    }
-
-    .language-filter {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 5px;
-    }
-
-    /* .checkbox-btn {
-        display: inline-block;
-        transition: background-color 0.3s;
-        user-select: none;
-        border: 1px solid #134da2;
-        flex: none;
-        font-family: Lato;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 27px;
-        padding: calc(10px + 0.5rem) calc(10px + 1rem);
-        margin-right: 1%;
-        border-radius: 15px;
-
-    } */
-
-    .checkbox-btn input[type="checkbox"] {
-        display: none; /* Hide the actual checkbox */
-    }
-
     span.colon {
         margin-right: 1%;
     }
 
     /* Default unselected button styling */
-    .selected:hover,
-    .not-selected,
-    .checkbox-btn {
+    .reverse:hover
+     {
         background-color: #fff;
         color: #404040;
         transition: background-color 0.3s;
     }
+    
 
     /* Selected state */
-    .not-selected:hover,
-    .selected,
-    .checkbox-btn:has(input[type="checkbox"]:checked) 
-    {
+    .reverse {
         background-color: #134da2;
         color: #fff;
         transition: background-color 0.3s;
