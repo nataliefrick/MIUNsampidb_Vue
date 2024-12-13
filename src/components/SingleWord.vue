@@ -1,7 +1,7 @@
 <template>
 
 <div class="result-card">
-      <div class="show-more" v-if="moreInfoAvailable">
+    <div class="show-more desktop" v-if="moreInfoAvailable">
         <button class="more" @click="openChangesModal">Föreslå ändringar</button>
 
             <!-- Modal Component -->
@@ -15,68 +15,84 @@
           </button>
           <button class="less" @click="toggleButtonAction($event)" v-else>visa mindre<i class="fa-regular fa-square-minus"></i>
           </button>
-      </div>
-      <ul class="sampi no-bullets"  v-show="word.word_sydsamiska">
-          <li class="word"><img src="../assets/img/flag_sampi.jpg" alt="sydsamiska flagga ikon"><span>: {{word.word_sydsamiska}}</span></li>
-          <li class="definition lato-regular">{{word.definition_sydsamiska}}</li>
-      </ul>
-      <ul v-if="this.filter.filter[0]" class="swe no-bullets"  v-show="word.word_svenska">
-          <li class="word"><img src="../assets/img/flag_sve.jpg" alt="svenska flagga ikon"><span>: {{word.word_svenska}}</span></li>
-          <li class="definition lato-regular">{{word.definition_svenska}}</li>
-      </ul>
-      <ul v-if="this.filter.filter[1]" class="nor no-bullets" v-show="word.word_norska">
-          <li class="word"><img src="../assets/img/flag_nwg.jpg" alt="norska flagga ikon"><span>: {{word.word_norska}}</span></li>
-          <li class="definition lato-regular">{{word.definition_norska}}</li>
-      </ul>
-      <ul class="more-info no-bullets" v-if="showMoreInfo">
-        <!-- <pre>{{ word }}</pre> -->
-            <li v-show="word.synonyms"><strong>Synonymer:</strong> {{word.synonyms}}</li>
-            <li v-show="word.antonyms"><strong>Antonymer:</strong> {{word.antonyms}}</li>
-            <li v-show="word.example_of_use"><strong>Exampel på användning:</strong> {{word.example_of_use}}</li>
-
-            <li v-show="word.sources"><strong>Källa:</strong> {{word.sources}}</li>
-            <li v-show="word.arousal_level"><strong>Stimuleringsnivå/aktiveringsgrad:</strong> {{this.arousal}}</li>
-            <li v-show="word.frequency"><strong>Användningsfrekvens:</strong> {{this.frequency}}</li>
-            <li v-show="word.main_node"><strong>Nod:  </strong>
-                <span>
-                    {{word.main_node}} ><span class="button-link" @click="openPolarityModal">{{word.polarity_node}}</span>><span class="button-link" @click="openSubNodeModal">{{word.sub_node}}</span>
-
-                        <!-- Modal Component -->
-                        <PolarityModalComponent 
-                        :polarity="word.polarity_node" 
-                        :show="showPolarityModal" 
-                        @close-modal="closeModal"
-                        
-                        />
-
-                        <SubNodeModalComponent 
-                        :subnodeId="word.node_id" 
-                        :subnode="word.sub_node" 
-                        :mainnode="word.main_node"
-                        :polaritynode="word.polarity_node"
-                        :show="showSubNodeModal" 
-                        @close-modal="closeModal"
-                        
-                        />
-                </span>
-            </li>
-
-            <li v-show="word.link_to_update">{{word.link_to_update}}</li>
-      </ul>
     </div>
+    <div>
+        <ul class="sampi no-bullets"  v-show="word.word_sydsamiska">
+            <li class="word"><img src="../assets/img/flag_sampi.jpg" alt="sydsamiska flagga ikon"><span>: {{word.word_sydsamiska}}</span></li>
+            <li class="definition lato-regular">{{word.definition_sydsamiska}}</li>
+        </ul>
+        <ul v-if="this.filter.filter[0]" class="swe no-bullets"  v-show="word.word_svenska">
+            <li class="word"><img src="../assets/img/flag_sve.jpg" alt="svenska flagga ikon"><span>: {{word.word_svenska}}</span></li>
+            <li class="definition lato-regular">{{word.definition_svenska}}</li>
+        </ul>
+        <ul v-if="this.filter.filter[1]" class="nor no-bullets" v-show="word.word_norska">
+            <li class="word"><img src="../assets/img/flag_nwg.jpg" alt="norska flagga ikon"><span>: {{word.word_norska}}</span></li>
+            <li class="definition lato-regular">{{word.definition_norska}}</li>
+        </ul>
+        <ul class="more-info no-bullets" v-if="showMoreInfo">
+          <!-- <pre>{{ word }}</pre> -->
+              <li v-show="word.synonyms"><strong>Synonymer:</strong> {{word.synonyms}}</li>
+              <li v-show="word.antonyms"><strong>Antonymer:</strong> {{word.antonyms}}</li>
+              <li v-show="word.example_of_use"><strong>Exampel på användning:</strong> {{word.example_of_use}}</li>
+    
+              <li v-show="word.sources"><strong>Källa:</strong> {{word.sources}}</li>
+              <li v-show="word.arousal_level"><strong>Stimuleringsnivå/aktiveringsgrad:</strong> {{this.arousal}}</li>
+              <li v-show="word.frequency"><strong>Användningsfrekvens:</strong> {{this.frequency}}</li>
+              <li v-show="word.main_node"><strong>Nod:  </strong>
+                  <span>
+                      {{word.main_node}} ><span class="button-link" @click="openPolarityModal">{{word.polarity_node}}</span>><span class="button-link" @click="openSubNodeModal">{{word.sub_node}}</span>
+    
+                          <!-- Modal Component -->
+                          <PolarityModalComponent 
+                          :polarity="word.polarity_node" 
+                          :show="showPolarityModal" 
+                          @close-modal="closeModal"
+                          
+                          />
+    
+                          <SubNodeModalComponent 
+                          :subnodeId="word.node_id" 
+                          :subnode="word.sub_node" 
+                          :mainnode="word.main_node"
+                          :polaritynode="word.polarity_node"
+                          :show="showSubNodeModal" 
+                          @close-modal="closeModal"
+                          
+                          />
+                  </span>
+              </li>
+              <li v-show="word.link_to_update">{{word.link_to_update}}</li>
+        </ul>
+    </div>
+    <div class="show-more mobile" v-if="moreInfoAvailable">
+        <button class="more" @click="openChangesModal">Föreslå ändringar</button>
+
+            <!-- Modal Component -->
+            <ModalComponent 
+            :word="word" 
+            :show="showModal" 
+            @close-modal="closeModal"
+            @submit-form="handleSubmitForm"
+            />
+          <button class="more" @click="toggleButtonAction($event)" v-if="showButton">visa mer<i class="fa-regular fa-square-plus"></i>
+          </button>
+          <button class="less" @click="toggleButtonAction($event)" v-else>visa mindre<i class="fa-regular fa-square-minus"></i>
+          </button>
+    </div>
+</div>
 
 
 
 </template>
 
 <script>
-import { useFilterLanguagesStore } from '../stores/filterlanguages';
-import { useSearchTermStore } from '../stores/searchterms';
-import ModalComponent from './SuggestChangesModule.vue';
-import SubNodeModalComponent from './SubNodeModal.vue';
-import PolarityModalComponent from './PolarityModal.vue';
+    import { useFilterLanguagesStore } from '../stores/filterlanguages';
+    import { useSearchTermStore } from '../stores/searchterms';
+    import ModalComponent from './SuggestChangesModule.vue';
+    import SubNodeModalComponent from './SubNodeModal.vue';
+    import PolarityModalComponent from './PolarityModal.vue';
 
-export default {
+    export default {
     setup() {
         // const storeSearchTerms = useSearchTermStore()
         const store = useSearchTermStore()
@@ -147,25 +163,6 @@ export default {
             console.log(updatedWord);
             this.closeChangesModal(); // Close the modal after submission
         },
-        // highlightSearchTerm() {
-        //     // Create a copy of the words object to avoid mutating the prop directly
-        //     // let highlightedWord = { ...this.word }; // Shallow copy
-        //     let highlightedWord = this.word; // Shallow copy
-
-        //     // Create a regex to search for the searchTerm, case-insensitive
-        //     let regex = new RegExp(this.searchTerm, 'gi');
-
-        //     // Loop through each key in the words object
-        //     Object.keys(highlightedWord).forEach(key => {
-        //         let value = highlightedWord[key];
-
-        //         // Check if the value is a string
-        //         if (typeof value === 'string') {
-        //             // Replace occurrences of searchTerm with a <span> around it
-        //             highlightedWord[key] = value.replace(regex, `<span>${this.searchTerm}</span>`);
-        //         }
-        //     });
-        // },
         toggleButtonAction() {
             if (this.toggleButton) {
                 this.showMoreInfo = false;
@@ -204,6 +201,8 @@ div.result-card {
     margin: 2%;
     background-color: #eeeeee;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
  }
 
 div.result-card:hover {
@@ -218,10 +217,31 @@ div.result-card ul {
     display: none;
 } */
 
+
+.desktop { display: flex; }
+.mobile { display: none; }
+
+@media (max-width: 576px) { 
+    .desktop { display: none; }
+    .mobile { display: flex; }
+}
+
 div.show-more {
-    display: flex;
     justify-content: flex-end;
 }
+
+
+@media (max-width: 358px) { 
+    div.show-more {
+        padding-top: 3%;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        gap: 5px;
+    }
+}
+
+
 
 ul.more-info li {
     font-family: "Lato", sans-serif;
