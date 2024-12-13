@@ -1,50 +1,51 @@
 <template>
-    <section id="search-results">
-        <div class="header-section" >
-            <h2 class="lato-bold results-title">{{title}}</h2>
-            <!-- filter section -->
-            <div class="flex-row header-buttons">
-                <span class="language">Alternativ</span>
-                <div class="language-filter">
-                    <button 
-                    @click="toggleSwe($event)" 
-                    :class="{'selected': isActiveSwe, 'not-selected': !isActiveSwe}">
-                        <span :class="isActiveSwe ? 'hidden-label' : 'showing-label'">
-                            {{ isActiveSwe ? 'Dölj' : 'Visa' }}
-                        </span><br>
-                        <span :class="isActiveSwe ? 'hidden-style' : 'showing-style'">
-                            Svensk
-                        </span>
-                    </button>
+    <section id="options">
+        <!-- filter section -->
+        <div class="flex-container">
+            <div class="button-flex-row">
+                <button 
+                @click="toggleSwe($event)" 
+                :class="['item', {'selected': isActiveSwe, 'not-selected': !isActiveSwe}]">
+                    <span :class="isActiveSwe ? 'hidden-label' : 'showing-label'">
+                        {{ isActiveSwe ? 'Dölj' : 'Visa' }}
+                    </span><br>
+                    <span :class="isActiveSwe ? 'hidden-style' : 'showing-style'">
+                        Svenska
+                    </span>
+                </button>
 
-                    <button 
-                    @click="toggleNwg($event)" 
-                    :class="{'selected': isActiveNwg, 'not-selected': !isActiveNwg}">
-                        <span :class="isActiveNwg ? 'hidden-label' : 'showing-label'">
-                            {{ isActiveNwg ? 'Dölj' : 'Visa'  }}
-                        </span><br>
-                        <span :class="isActiveNwg ? 'hidden-style' : 'showing-style'">
-                            Norsk
-                        </span>
-                    </button>
-
-                   <button v-if="downloadAvailable" @click="openRegisterModal('searchTerm')"><span class="button-label">Ladda ner</span><br>Sökresultat</button>
-                <button @click="openRegisterModal('allData')"><span class="button-label">Ladda ner</span><br>Hela databasen</button>
-                </div>
+                <button 
+                @click="toggleNwg($event)" 
+                :class="['item', {'selected': isActiveNwg, 'not-selected': !isActiveNwg}]">
+                    <span :class="isActiveNwg ? 'hidden-label' : 'showing-label'">
+                        {{ isActiveNwg ? 'Dölj' : 'Visa'  }}
+                    </span><br>
+                    <span :class="isActiveNwg ? 'hidden-style' : 'showing-style'">
+                        Norska
+                    </span>
+                </button>
             </div>
+            <div class="button-flex-row">
+                <button class="item" v-if="downloadAvailable" @click="openRegisterModal('searchTerm')"><span class="button-label">Ladda ner</span><br>Sökresultat</button>
+                <button class="item" @click="openRegisterModal('allData')"><span class="button-label">Ladda ner</span><br>Hela databasen</button>
+            </div>
+        </div>
+    </section>
+    <section id="search-results">
+
+        <div class="header-section" >
+            <h2 class="lato-bold results-title">Sökresultat</h2>
+            <p class="lato-regular results-title">{{title}}</p>
         </div>
         <!-- Modal Component -->
         <modal-component 
         :show="showModal" 
         :words="words" 
-        :searchTerm="this.store.searchTerm" 
+        :searchTerm="modalType === 'allData' ? 'allData' : this.store.searchTerm"
         :modalType="modalType"
         @close-modal="closeRegisterModal"
         @submit-form="handleSubmitForm"
         />
-
-        <!-- <h2 v-if="words.length > 0" class="lato-bold results-title">{{words.length}} sökresultat innehåller sökterm "{{ this.store.searchTerm }}"</h2>
-        <h2 v-else class="lato-bold results-title">Tyvärr, inga resultat hittades i databasen.</h2> -->
             
         <Word @updateWord="updateWord(word.id)" v-for="word in words" :word="word" :key="word.id" />
     
@@ -85,6 +86,7 @@ export default {
             isActiveSwe: true, // Default state
             isActiveNwg: true, // Default state
             storeFilterLang: useFilterLanguagesStore(),
+            storeSearchTerms: useSearchTermStore(),
         }
     },
     created() {
@@ -129,7 +131,7 @@ export default {
         openRegisterModal(type) {
             this.modalType = type;
             if (this.modalType === 'allData') {
-                this.searchTerm = "allData";
+                this.storeSearchTerms.setTerm("allData");
                 this.getWords();
             }
             this.showModal = true;
@@ -146,6 +148,7 @@ export default {
         },
         async updateResults() {
             this.title = "";
+            this.downloadAvailable=false;
             if(this.store.searchTerm != "") {
                 const response = await fetch(this.urlGet + "/search/" + this.store.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
@@ -190,14 +193,14 @@ export default {
 
 section#search-results {
     width: 40%;
-    margin: 6% auto;
+    margin: 2% auto 6% auto;
 }
 
 @media (max-width: 1140px) {
     section#search-results {
-    width: 80%;
-    margin: 6% auto;
-}
+        width: 80%;
+        margin: 2% auto 6% auto;
+    }
  }
 
 #search-results div.header-section {
@@ -206,19 +209,68 @@ section#search-results {
     flex-direction: column;
 }
 
-div.flex-row{
-    display: flex;
-    flex-direction: column;
-    
+p.results-title {
+    margin: 0;
+    font-style: italic;
+
 }
 
-.language-filter {
+section#options {
+    background-color: #eee;
+    padding: 1% 10%;
+}
+
+@media (max-width: 734px) { section#options { padding: 4% 10%; } }
+@media (max-width: 405px) { section#options { padding: 8% 10%; } }
+
+div.flex-container {
+    display: flex;
+    gap: 5px;
+}
+
+@media (min-width: 735px) {
+    div.flex-container {
+        flex-direction: row;
+        justify-content: space-between;
+        
+    }
+ }
+
+
+@media (max-width: 734px) {
+    div.flex-container {
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+    }
+ }
+
+
+.button-flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.button-flex-row {
         display: flex;
         flex-direction: row;
+        flex-wrap: nowrap;
         justify-content: flex-start;
         align-items: center;
         gap: 5px;
+        width: 100%;
     }
+
+
+.button-flex-row .item { flex-grow: 1; }
+
+@media (max-width: 734px) {
+    .button-flex-row .item { 
+        flex-grow: 1;
+        width: 35%
+    }
+ }
 
 .checkbox-btn input[type="checkbox"] {
     display: none; /* Hide the actual checkbox */

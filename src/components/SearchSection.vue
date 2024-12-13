@@ -19,7 +19,7 @@
               <h2 class="lato-bold">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
               <h3 class="lato-regular-italic">South Sámi Emotion Words and Cultural Idioms of Distress Database (SSEID)</h3>
               <div class="search">
-                <div>
+                <div class="flex-row">
                     <button @click="getAll()" class="reverse">Se hela databasen</button>
                     <button @click="getAll()" class="disabled">Föreslå nytt ord</button>
                 </div>
@@ -45,12 +45,12 @@
 </template>
 
 <script>
-// import { defineComponent } from 'vue'
-import { useSearchTermStore } from '../stores/searchterms';
-import { useUrlGet } from '../stores/urlGet';
-import { nextTick } from 'vue';  // Import nextTick for better timing of updates
+    // import { defineComponent } from 'vue'
+    import { useSearchTermStore } from '../stores/searchterms';
+    import { useUrlGet } from '../stores/urlGet';
+    import { nextTick } from 'vue';  // Import nextTick for better timing of updates
 
-export default {
+    export default {
     setup() {
         // const storeSearchTerms = useSearchTermStore()
         const useUrl = useUrlGet()
@@ -70,8 +70,9 @@ export default {
             // If already on the results page, reload it
             if (this.$route.path === '/results') {
                 this.storeSearchTerms.setTerm("");
+                this.newTerm = "";
                 // Force a refresh by pushing to the same route and resetting it
-                await this.$router.replace({ path: '/results', query: { refresh: Date.now() } });
+                await this.$router.replace({ path: '/results' });
             } else {
                 // Navigate to the results page normally
                 await this.$router.push('/results');
@@ -107,6 +108,14 @@ export default {
 </script>
 
 <style scoped>
+    
+    @media (max-width: 1140px) {}
+    @media (max-width: 576px) { section#hero-search { height: 652px; } }
+    @media (max-width: 448px) { section#hero-search { height: 572px; } }
+    @media (max-width: 405px) { section#hero-search { height: 650px; } }
+    @media (max-width: 268px) { section#hero-search { height: 720px; } }
+
+
     div.hero-background {
         display: flex;
     }
@@ -246,7 +255,7 @@ export default {
         }
     }
 
-    @media (max-width: 350px) {
+    @media (max-width: 405px) {
         div.colors-container picture { /* flag */
             height: 400px;
         }
@@ -255,6 +264,18 @@ export default {
             height: 100%;
             margin-left: 26%;
             transform: scale(1);
+        }
+    }
+
+    @media (max-width: 268px) {
+        div.colors-container picture { /* flag */
+            height: 470px;
+        }
+
+        div.colors-container picture img { /* flag */
+            height: 100%;
+            margin-left: 26%;
+            transform: scale(1.2);
         }
     }
 
@@ -267,6 +288,19 @@ export default {
         z-index: 2;
         display: flex;
     }
+
+    div.search div.flex-row {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+    
+    @media (max-width: 405px) { 
+        div.search div.flex-row {
+            flex-direction: column;
+        } 
+    }
+
 
     @media (min-width: 1141px) {
         div.hero-search-row {

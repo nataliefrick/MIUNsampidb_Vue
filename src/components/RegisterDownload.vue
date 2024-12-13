@@ -17,8 +17,6 @@
               <p>Vi vill gärna veta mer om ditt projekt och hur vår data kommer att användas! Vänligen fyll i dina kontaktuppgifter och en beskrivning av projektet där datan kommer att användas.
               </p>
 
-              <p>searchterm: {{ this.searchTerm }}</p>
-                
               <!-- form ----------------- -->
               <form @submit.prevent="submitForm">
                 <div class="contact-info">
@@ -57,7 +55,7 @@
                   </div>
                   <div class="flex-col">
                     <label for="description">Beskrivning</label>
-                    <textarea  class="lato-regular" placeholder="Vänligen skriv en kort beskrivning av projektet och den beräknade tidsramen för publicering." v-model="formData.description" rows="4" required></textarea>
+                    <textarea class="lato-regular" placeholder="Vänligen skriv en kort beskrivning av projektet och den beräknade tidsramen för publicering." v-model="formData.description" rows="4" required></textarea>
                   </div>
                 </div>
               </div>
@@ -91,16 +89,6 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
         return { useUrl }
     },
     props: ['show', 'searchTerm', 'words', 'modalType'], // Accepting `word` as a prop and controlling `show` for modal visibility
-    computed: {
-    // Compute the words or data to show in the modal based on modalType
-      dataToDisplay() {
-        if (this.modalType === 'allData') {
-          // Return all data (entire database)
-          return this.words;
-        }
-        return [];
-      }
-    },
     data() {
       return {
         urlRegister: this.useUrl.urlGet + "/downloads", 
