@@ -6,10 +6,20 @@
           <div class="sampi-db-logo module">
               <img src="../assets/img/Gaskeuniversiteete_logotyp_CMYK.png" alt="Mittuniversitet logotypen - sydsamiska version">
           </div>
-
+          
+          <!-- <h2 class="lato-bold"><pre>{{ this.words }}</pre></h2> -->
           <div>
-              <h2 class="lato-bold">{{this.title}} <span class='chosen-word lato-bold'> {{ this.node }}</span></h2>
-              <!-- <h2 class="lato-bold"><pre>{{ this.words }}</pre></h2> -->
+              <h2 class="lato-bold">{{this.title}} 
+                <span class='chosen-word lato-bold'> {{ this.mainnode }} > 
+                  <span>{{ this.polaritynode }} </span> > {{ this.subnode }}</span></h2>
+                  <!-- class="node-link" @click="openPolarityModal" -->
+                         
+              <!-- Modal Component -->
+              <!-- <PolarityModalComponent 
+                :polarity="polaritynode" 
+                :show="showPolarityModal" 
+                @close-modal="closeModal"
+              /> -->
 
               <div v-for="(word, index) in words" :key="index" class="data">
                 <div class="data-info">
@@ -62,161 +72,194 @@
 </template>
 
 <script>
-import { nextTick } from 'vue';  // Import nextTick for better timing of updates
-import { useUrlGet } from '../stores/urlGet';
-import { useSearchTermStore } from '../stores/searchterms';
-export default {
-  setup() {
-      // const storeSearchTerms = useSearchTermStore()
-      const useUrl = useUrlGet()
-      return { useUrl }
-  },
-  props: ['subnodeId', 'subnode', 'mainnode', 'polaritynode', 'show'], // Accepting `subnodes` as a prop and controlling `show` for modal visibility
-  data() {
-    return {
-      storeSearchTerms: useSearchTermStore(),
-      urlSubNodes: this.useUrl.urlGet + "/words/subnodes", 
-      title: "title",
-      words: [],
-      node: this.mainnode + " > " + this.polaritynode + " > " +  this.subnode,
-      newTerm: "",
-      };
-  },
-  emit: ["setSearchTerm"],
-  methods: {
-    closeModal() {
-      this.$emit('closeModal');
+  import { nextTick } from 'vue';  // Import nextTick for better timing of updates
+  import { useUrlGet } from '../stores/urlGet';
+  import { useSearchTermStore } from '../stores/searchterms';
+  // import PolarityModalComponent from './PolarityModal.vue';
+  export default {
+    setup() {
+        // const storeSearchTerms = useSearchTermStore()
+        const useUrl = useUrlGet()
+        return { useUrl }
     },
-
-    async getSubNodes() {
-      if(this.subnodeId != null) {
-        const response = await fetch(this.urlSubNodes + "/" + this.subnodeId, { method: "GET" });
-        let data = await response.json(); // save the data in sent through the response.
-        if(data.length <= 1) {
-            this.title = "Det är bara det här ord som finns i noden: ";
-        }
-        if(data.length > 1) {
-            this.title = "Andra ord som är också i noden: ";
-        }
-        this.words = data;
-            
-      }
-
+    // components: { PolarityModalComponent },
+    props: ['subnodeId', 'subnode', 'mainnode', 'polaritynode', 'show'], // Accepting `subnodes` as a prop and controlling `show` for modal visibility
+    data() {
+      return {
+        storeSearchTerms: useSearchTermStore(),
+        urlSubNodes: this.useUrl.urlGet + "/words/subnodes", 
+        title: "title",
+        words: [],
+        newTerm: "",
+        showModal: false, // Controls whether the modal is visible
+        showSubNodeModal: false, // Controls whether the modal is visible
+        showPolarityModal: false, // Controls whether the modal is visible
+        };
     },
-    async setSearchTerm(term) {
-      // Access the Pinia store
-      const storeSearchTerms = useSearchTermStore();
-      this.newTerm = term;
-      
-      // Only update if there's a new term to submit
-      if (this.newTerm) {
-          storeSearchTerms.setTerm(this.newTerm);
-
-          // Use nextTick to ensure the store updates are processed before navigating
-          await nextTick();
-          try {
-              await this.$router.push('/results');  // Navigate to the results page
-          } catch (err) {
-              console.error("Navigation error:", err);  // Log any navigation errors
+    emit: ["setSearchTerm"],
+    methods: {
+      closeModal() {
+        this.$emit('closeModal');
+        this.showPolarityModal = false; 
+        this.showSubNodeModal = false; 
+      },
+      openPolarityModal() {
+        this.showPolarityModal = true; 
+        this.showSubNodeModal = false; 
+      },
+      async getSubNodes() {
+        if(this.subnodeId != null) {
+          const response = await fetch(this.urlSubNodes + "/" + this.subnodeId, { method: "GET" });
+          let data = await response.json(); // save the data in sent through the response.
+          if(data.length <= 1) {
+              this.title = "Det är bara det här ord som finns i noden: ";
           }
-        } 
-        this.closeModal();
-    }
-  },
-  mounted() {
-          this.getSubNodes();
+          if(data.length > 1) {
+              this.title = "Andra ord som är också i noden: ";
+          }
+          this.words = data;
+              
+        }
+
+      },
+      async setSearchTerm(term) {
+        // Access the Pinia store
+        const storeSearchTerms = useSearchTermStore();
+        this.newTerm = term;
+        
+        // Only update if there's a new term to submit
+        if (this.newTerm) {
+            storeSearchTerms.setTerm(this.newTerm);
+
+            // Use nextTick to ensure the store updates are processed before navigating
+            await nextTick();
+            try {
+                await this.$router.push('/results');  // Navigate to the results page
+            } catch (err) {
+                console.error("Navigation error:", err);  // Log any navigation errors
+            }
+          } 
+          this.closeModal();
       }
-};
+    },
+    mounted() {
+            this.getSubNodes();
+        }
+  };
 </script>
 
 <style scoped>
-/* Basic styling for the modal */
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 3;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  max-width: 680px;
-  max-height: 880px;
-  /* height: 80vh; */
-  overflow-y: auto;
-  background-color: white;
-  padding: 20px 40px 60px 40px;
-  border-radius: 5px;
-  position: relative;
-}
-
-@media (min-width: 1201px) { 
-.modal-content { 
-  width: 80%;
-
-}}
-@media (max-width: 1200px) { 
-.modal-content { 
-  width: 60%; 
-}}
-
-.scrolling-content {
-  position: scrolling;
-}
-
-.close {
-  cursor: pointer;
-  padding: 4px 10px 6px 10px; 
-  border-radius: 15px;
-  border: 1px solid #134da2;
-  position: absolute;
-  top: 10px;
-  right: 20px;
-}
-
-span.close:hover {
-  background-color: #134da2;
-  color: #fff;
-  
-
-} 
-
-@media (max-width: 575px) {
-  div.sampi-db-logo.module {
-      margin: 0 auto;
-  }
-
-  div.sampi-db-logo.module img {
-      width: 137px;
-      height: auto;
-  }
-}
-
-
-div.modal h2 {
-      margin-top: 50px;
-  }
-
-  span.chosen-word {
-    color: #134da2;
-    font-style: italic;
-  }
-
-div.data {
-    background-color: #eeeeee;
-    padding: 20px;
-    MARGIN-BOTTOM: 1REM;
-  }
-
-div.data-info {
+  /* Basic styling for the modal */
+  .modal {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    max-width: 680px;
+    max-height: 880px;
+    /* height: 80vh; */
+    overflow-y: auto;
+    background-color: white;
+    padding: 20px 40px 60px 40px;
+    border-radius: 5px;
+    position: relative;
+  }
+
+  @media (min-width: 1201px) { 
+  .modal-content { 
+    width: 80%;
+
+  }}
+  @media (max-width: 1200px) { 
+  .modal-content { 
+    width: 60%; 
+  }}
+
+  .scrolling-content {
+    position: scrolling;
+  }
+
+  .close {
+    cursor: pointer;
+    padding: 4px 10px 6px 10px; 
+    border-radius: 15px;
+    border: 1px solid #134da2;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  span.close:hover {
+    background-color: #134da2;
+    color: #fff;
+    
+
+  } 
+
+  @media (max-width: 575px) {
+    div.sampi-db-logo.module {
+        margin: 0 auto;
+    }
+
+    div.sampi-db-logo.module img {
+        width: 137px;
+        height: auto;
+    }
+  }
+
+
+  div.modal h2 {
+        margin-top: 50px;
+    }
+
+    span.node-link,
+    span.chosen-word {
+      color: #134da2;
+      font-style: italic;
+      font-weight: bold;
+    }
+
+    span.node-link:hover {
+    color: #134da2;  /* dk blue */
+    background-color: #fbd030;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+    
+
+  div.data {
+      background-color: #eeeeee;
+      padding: 20px;
+      MARGIN-BOTTOM: 1REM;
+    }
+
+  div.data-info {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+  @media (max-width: 768px) {
+    div.data-info {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 510px) {
+    div.data-info {
+      gap: 5px;
+    }
   }
 
   div.lang {
@@ -229,6 +272,26 @@ div.data-info {
     align-items: flex-start;
     /* margin-left: auto;
     margin-right: auto; */
+  }
+
+  @media (max-width: 768px) {
+    div.lang {
+      flex-direction: row;
+      width: 100%;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 510px) {
+    div.lang {
+      flex-direction: column;
+      width: 100%;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #fff;
+    }
   }
 
   div.lang h3 {
@@ -263,12 +326,21 @@ div.data-info {
     align-items: center;
   }
 
+  @media (max-width: 768px) {
+    .word { min-width:125px; }
+  }
+
   div.flex-row.no-m {
     margin: 0;
   }
 
   p.label { margin-top: 20px; margin-bottom: 4px;}
   p.label-word { margin-top: 0; margin-bottom: 4px;}
+
+  @media (max-width: 768px) {
+    p.label { margin-top: 0px; margin-bottom: 4px;}
+  }
+
 
   p.label,
   p.label-word,
@@ -304,10 +376,17 @@ div.data-info {
     display: flex;
     justify-content: center;
   }
+
+    
+  @media (max-width: 510px) {
+    span.button-link {
+      margin: 5px auto 0 auto;
+    }
+  }
   
   span.button-link:hover {
     color: #134da2;  /* dk blue */
     text-decoration: underline;
     cursor: pointer;
-}
+ }
 </style>

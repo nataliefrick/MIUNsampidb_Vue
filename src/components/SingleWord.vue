@@ -180,7 +180,7 @@
     // mounted() {
     //     this.highlightSearchTerm();
     // }
-}
+ }
 </script>
 
 
