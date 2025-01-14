@@ -111,8 +111,11 @@
         if(this.subnodeId != null) {
           const response = await fetch(this.urlSubNodes + "/" + this.subnodeId, { method: "GET" });
           let data = await response.json(); // save the data in sent through the response.
-          if(data.length <= 1) {
-              this.title = "Det är bara det här ord som finns i noden: ";
+          if(data.length == 0) {
+              this.title = "För närvarande finns det inga ord i vår databas som är kategoriserade under noden: ";
+          }
+          if(data.length == 1) {
+              this.title = "Det är bara det här ordet som finns i noden: ";
           }
           if(data.length > 1) {
               this.title = "Andra ord som är också i noden: ";

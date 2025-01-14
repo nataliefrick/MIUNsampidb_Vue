@@ -61,7 +61,7 @@
                           />
                   </span>
               </li>
-              <li v-show="word.link_to_update">{{word.link_to_update}}</li>
+              <li v-show="word.expression">{{word.expression}}</li>
         </ul>
     </div>
     <div class="show-more mobile" v-if="moreInfoAvailable">
