@@ -7,7 +7,7 @@
             <!-- Modal Component -->
             <ModalComponent 
             :word="word" 
-            :show="showModal" 
+            :show="showChangesModal" 
             @close-modal="closeModal"
             @submit-form="handleSubmitForm"
             />
@@ -95,7 +95,7 @@
             <!-- Modal Component for making changes -->
             <ModalComponent 
             :word="word" 
-            :show="showModal" 
+            :show="showChangesModal" 
             @close-modal="closeModal"
             @submit-form="handleSubmitForm"
             />
@@ -135,7 +135,7 @@
             toggleButton: false,
             showButton: true,
             searchTerm: this.store.searchTerm,
-            showModal: false, // Controls whether the modal is visible
+            showChangesModal: false, // Controls whether the modal is visible
             showSubNodeModal: false, // Controls whether the modal is visible
             showPolarityModal: false, // Controls whether the modal is visible
             showExpressionsModal: false, // Controls whether the modal is visible
@@ -178,13 +178,13 @@
             this.showPolarityModal = true; // Show the modal
         },
         openChangesModal() {
-            this.showModal = true; // Show the modal
+            this.showChangesModal = true; // Show the modal
         },
         openSubNodeModal() {
             this.showSubNodeModal = true; // Show the modal
         },
         closeModal() {
-            this.showModal = false; // Hide the modal
+            this.showChangesModal = false; // Hide the modal
             this.showPolarityModal = false; // Hide the modal
             this.showSubNodeModal = false; // Hide the modal
             this.showExpressionsModal = false; // Hide the modal

@@ -21,7 +21,8 @@
                           <!-- Modal Component -->
                           <SingleWordModalComponent 
                           :word="word" 
-                          :show="showModal" 
+                          :words="words"
+                          :showSingle="showWordModal" 
                           @close-modal="closeModal"
                           />
                           
@@ -49,16 +50,15 @@ import SingleWordModalComponent from './SingleWordModal.vue';
     props: ['words', 'show'], // Accepting `words` as a prop and controlling `show` for modal visibility
     data() {
       return {
-        // showButton: true,
-        showModal: false, // Controls whether the modal is visible
+        showWordModal: false
       };
     },
     methods: {
       openWordModal() {
-        console.log("click");
-            this.showModal = true; // Show the modal
-        },
+        this.showWordModal = true; // Show the modal
+      },
       closeModal() {
+        this.showWordModal = false; // Show the modal
         // Emit event to close the modal in the parent component
         this.$emit('closeModal');
       }

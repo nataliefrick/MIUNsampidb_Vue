@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="modal">
+  <div v-if="showSingle" class="modal">
     <div class="modal-content">
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
@@ -7,18 +7,8 @@
                 <img src="../assets/img/Gaskeuniversiteete_logotyp_CMYK.png" alt="Mittuniversitet logotypen - sydsamiska version">
             </div>
             <!-- <pre>{{  word }}</pre> -->
-            <div class="show-more desktop">
-                <button class="more" >Föreslå ändringar</button>
 
-                    <!-- Modal Component -->
-                    <!-- @click="openChangesModal" -->
-                    <!-- <ModalComponent 
-                    :word="word" 
-                    :show="showModal" 
-                    @close-modal="closeModal"
-                    @submit-form="handleSubmitForm"
-                    /> -->
-            </div>
+            <h2>Sydsamiska ordet "{{word.word_sydsamiska}}"</h2>
             <div>
                 <ul class="sampi no-bullets"  v-show="word.word_sydsamiska">
                     <li class="word"><img src="../assets/img/flag_sampi.jpg" alt="sydsamiska flagga ikon"><span>: {{word.word_sydsamiska}}</span></li>
@@ -44,15 +34,14 @@
                                 <div><strong>Exempel uttryck: </strong>"{{word.expression}}"</div>
                                 <div><strong>Översättning: </strong>"{{word.translation}}"</div>
                             </div>
-                                <span class="button-link" >...se alla</span>
+                            <!-- <span class="button-link" @click="openExpressionsModal">...se alla</span>
 
-                                <!-- Modal Component -->
-                                <!-- @click="openExpressionsModal" -->
-                                <!-- <ExpressionsModalComponent 
-                                    :words="words" 
-                                    :show="showExpressionsModal" 
-                                    @close-modal="closeModal"
-                                    /> -->
+                            Modal Component
+                            <ExpressionsModalComponent 
+                                :words="words" 
+                                :show="backtoExpressionsModal" 
+                                @close-modal="closeModal"
+                                /> -->
                         </li>
                     
                     <hr>    
@@ -61,12 +50,12 @@
 
                         <li v-show="word.main_node"><strong>Nod: </strong>
                             <span>
-                                {{word.main_node}} ><span class="button-link" >{{word.polarity_node}}</span>><span class="button-link" >{{word.sub_node}}</span>
+                                {{word.main_node}} >
+                                <span class="button-link" @click="openPolarityModal">{{word.polarity_node}}</span>><span class="button-link" @click="openSubNodeModal">{{word.sub_node}}</span>
                 
                                     <!-- Modal Component -->
-                                    <!-- @click="openPolarityModal"
-                                    @click="openSubNodeModal" -->
-                                    <!-- <PolarityModalComponent 
+                                    <!-- @click="openPolarityModal" @click="openSubNodeModal" -->
+                                    <PolarityModalComponent 
                                     :polarity="word.polarity_node" 
                                     :show="showPolarityModal" 
                                     @close-modal="closeModal"
@@ -79,7 +68,7 @@
                                     :polaritynode="word.polarity_node"
                                     :show="showSubNodeModal" 
                                     @close-modal="closeModal"
-                                    /> -->
+                                    /> 
                             </span>
                         </li>
 
@@ -87,6 +76,18 @@
                         <li v-show="word.sources"><strong>Källan:</strong> {{word.sources}}</li>    
 
                 </ul>
+            </div>
+            <div class="show-more desktop">
+                <button class="more" >Föreslå ändringar</button>
+
+                    <!-- Modal Component -->
+                    <!-- @click="openChangesModal" -->
+                    <!-- <ModalComponent 
+                    :word="word" 
+                    :show="showModal" 
+                    @close-modal="closeModal"
+                    @submit-form="handleSubmitForm"
+                    /> -->
             </div>
             <div class="show-more mobile" v-if="moreInfoAvailable">
                 <button class="more" >Föreslå ändringar</button>
@@ -108,20 +109,21 @@
 
 <script>
     // import ModalComponent from './SuggestChangesModule.vue';
-    // import SubNodeModalComponent from './SubNodeModal.vue';
-    // import PolarityModalComponent from './PolarityModal.vue';
+    import SubNodeModalComponent from './SubNodeModal.vue';
+    import PolarityModalComponent from './PolarityModal.vue';
     // import ExpressionsModalComponent from './ExpressionsModal.vue';
 export default {
-    props: ['show', 'word'], 
-    // components: {
-    //     ModalComponent, PolarityModalComponent, SubNodeModalComponent
-    // },
+    components: { PolarityModalComponent, SubNodeModalComponent },
+    props: ['showSingle', 'word'], 
     data() {
         return {
             showButton: true,
             showModal: false, // Controls whether the modal is visible
+            // backtoExpressionsModal: false,
             arousal: "",
             frequency: "",
+            showPolarityModal:false,
+            showSubNodeModal:false
     
         }
     },
@@ -148,6 +150,17 @@ export default {
     methods : {
         closeModal() {
             this.showModal = false; // Hide the modal
+            this.showChangesModal = false; // Hide the modal
+            this.showSubNodeModal = false;
+            this.showPolarityModal = false;
+            // Emit event to close the modal in the parent component
+            this.$emit('closeModal');
+        }, 
+        openPolarityModal() {
+            this.showPolarityModal = true;
+        },
+        openSubNodeModal() {
+            this.showSubNodeModal = true;
         }
     }
 
@@ -202,6 +215,8 @@ export default {
     background-color: #134da2;
     color: #fff;
   } 
+
+
 
   @media (max-width: 575px) {
     div.sampi-db-logo.module {
