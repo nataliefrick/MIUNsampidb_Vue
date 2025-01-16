@@ -19,55 +19,80 @@
     <div>
         <ul class="sampi no-bullets"  v-show="word.word_sydsamiska">
             <li class="word"><img src="../assets/img/flag_sampi.jpg" alt="sydsamiska flagga ikon"><span>: {{word.word_sydsamiska}}</span></li>
-            <li class="definition lato-regular">{{word.definition_sydsamiska}}</li>
+            <li class="definition">{{word.definition_sydsamiska}}</li>
         </ul>
         <ul v-if="this.filter.filter[0]" class="swe no-bullets"  v-show="word.word_svenska">
             <li class="word"><img src="../assets/img/flag_sve.jpg" alt="svenska flagga ikon"><span>: {{word.word_svenska}}</span></li>
-            <li class="definition lato-regular">{{word.definition_svenska}}</li>
+            <li class="definition">{{word.definition_svenska}}</li>
         </ul>
         <ul v-if="this.filter.filter[1]" class="nor no-bullets" v-show="word.word_norska">
             <li class="word"><img src="../assets/img/flag_nwg.jpg" alt="norska flagga ikon"><span>: {{word.word_norska}}</span></li>
-            <li class="definition lato-regular">{{word.definition_norska}}</li>
+            <li class="definition">{{word.definition_norska}}</li>
         </ul>
         <ul class="more-info no-bullets" v-if="showMoreInfo">
           <!-- <pre>{{ word }}</pre> -->
-              <li v-show="word.synonyms"><strong>Synonymer:</strong> {{word.synonyms}}</li>
-              <li v-show="word.antonyms"><strong>Antonymer:</strong> {{word.antonyms}}</li>
-              <li v-show="word.example_of_use"><strong>Exampel på användning:</strong> {{word.example_of_use}}</li>
-    
-              <li v-show="word.sources"><strong>Källa:</strong> {{word.sources}}</li>
-              <li v-show="word.arousal_level"><strong>Stimuleringsnivå/aktiveringsgrad:</strong> {{this.arousal}}</li>
-              <li v-show="word.frequency"><strong>Användningsfrekvens:</strong> {{this.frequency}}</li>
-              <li v-show="word.main_node"><strong>Nod:  </strong>
-                  <span>
-                      {{word.main_node}} ><span class="button-link" @click="openPolarityModal">{{word.polarity_node}}</span>><span class="button-link" @click="openSubNodeModal">{{word.sub_node}}</span>
-    
-                          <!-- Modal Component -->
-                          <PolarityModalComponent 
-                          :polarity="word.polarity_node" 
-                          :show="showPolarityModal" 
-                          @close-modal="closeModal"
-                          
-                          />
-    
-                          <SubNodeModalComponent 
-                          :subnodeId="word.node_id" 
-                          :subnode="word.sub_node" 
-                          :mainnode="word.main_node"
-                          :polaritynode="word.polarity_node"
-                          :show="showSubNodeModal" 
-                          @close-modal="closeModal"
-                          
-                          />
-                  </span>
-              </li>
-              <li v-show="word.expression">{{word.expression}}</li>
+            <hr>
+                <li v-show="word.synonyms"><strong>Synonymer:</strong> {{word.synonyms}}</li>
+                <li v-show="word.antonyms"><strong>Antonymer:</strong> {{word.antonyms}}</li>
+                <li v-show="word.example_of_use"><strong>Exampel på användning:</strong> "{{word.example_of_use}}"</li>
+            <hr>    
+                <li class="flex-row expression" v-show="word.expression">
+                    <div class="flex-col">
+                        <div>
+                            <strong>Exempel uttryck: </strong>"{{word.expression}}"
+                        </div>
+                        <div>
+                            <strong>Översättning: </strong>"{{word.translation}}"
+                        </div>
+                    </div>
+                        <span class="button-link" @click="openExpressionsModal">...se alla</span>
+
+                        <!-- Modal Component -->
+                        <ExpressionsModalComponent 
+                            :words="words" 
+                            :show="showExpressionsModal" 
+                            @close-modal="closeModal"
+                            
+                            />
+                </li>
+            
+            <hr>    
+                <li v-show="word.arousal_level"><strong>Stimuleringsnivå/aktiveringsgrad:</strong> {{this.arousal}}</li>
+                <li v-show="word.frequency"><strong>Användningsfrekvens:</strong> {{this.frequency}}</li>
+
+                <li v-show="word.main_node"><strong>Nod: </strong>
+                    <span>
+                        {{word.main_node}} ><span class="button-link" @click="openPolarityModal">{{word.polarity_node}}</span>><span class="button-link" @click="openSubNodeModal">{{word.sub_node}}</span>
+        
+                            <!-- Modal Component -->
+                            <PolarityModalComponent 
+                            :polarity="word.polarity_node" 
+                            :show="showPolarityModal" 
+                            @close-modal="closeModal"
+                            
+                            />
+        
+                            <SubNodeModalComponent 
+                            :subnodeId="word.node_id" 
+                            :subnode="word.sub_node" 
+                            :mainnode="word.main_node"
+                            :polaritynode="word.polarity_node"
+                            :show="showSubNodeModal" 
+                            @close-modal="closeModal"
+                            
+                            />
+                    </span>
+                </li>
+
+            <hr>
+                <li v-show="word.sources"><strong>Källan:</strong> {{word.sources}}</li>    
+
         </ul>
     </div>
     <div class="show-more mobile" v-if="moreInfoAvailable">
         <button class="more" @click="openChangesModal">Föreslå ändringar</button>
 
-            <!-- Modal Component -->
+            <!-- Modal Component for making changes -->
             <ModalComponent 
             :word="word" 
             :show="showModal" 
@@ -91,6 +116,7 @@
     import ModalComponent from './SuggestChangesModule.vue';
     import SubNodeModalComponent from './SubNodeModal.vue';
     import PolarityModalComponent from './PolarityModal.vue';
+    import ExpressionsModalComponent from './ExpressionsModal.vue';
 
     export default {
     setup() {
@@ -100,7 +126,7 @@
         return { store, filter }
     },
     components: {
-        ModalComponent, PolarityModalComponent, SubNodeModalComponent
+        ModalComponent, PolarityModalComponent, SubNodeModalComponent, ExpressionsModalComponent
     },
     data() {
         return {
@@ -112,6 +138,7 @@
             showModal: false, // Controls whether the modal is visible
             showSubNodeModal: false, // Controls whether the modal is visible
             showPolarityModal: false, // Controls whether the modal is visible
+            showExpressionsModal: false, // Controls whether the modal is visible
             storeFilterLang: useFilterLanguagesStore(),
             selectedLanguages: this.filter.filter,
             arousal: "",
@@ -120,6 +147,7 @@
         }
     },
     props: {
+        words: Object,
         word: Object
     },
     created : async function() {
@@ -143,6 +171,9 @@
                 
     },
     methods : {
+        openExpressionsModal() {
+            this.showExpressionsModal = true; // Show the modal
+        },
         openPolarityModal() {
             this.showPolarityModal = true; // Show the modal
         },
@@ -156,6 +187,7 @@
             this.showModal = false; // Hide the modal
             this.showPolarityModal = false; // Hide the modal
             this.showSubNodeModal = false; // Hide the modal
+            this.showExpressionsModal = false; // Hide the modal
         },
         handleSubmitForm(updatedWord) {
             // Handle form submission (e.g., save the updated word data)
@@ -185,6 +217,30 @@
 
 
 <style scoped>
+  hr {
+    border: none;
+    border-top: 1px solid #134da250;
+    margin: 20px 0;
+  }
+li {
+    padding-left: 20px; 
+    padding-right: 20px; 
+}
+
+li.expression {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li.expression div.flex-col { line-height: 1.8em; }
+
+li.expression span.button-link {
+    padding: 0 6px;
+    margin: 0 12px;
+}
+
 span.button-link {
     color: #134da2;
     text-decoration: underline;
@@ -199,10 +255,11 @@ span.button-link:hover {
 
 div.result-card {
     margin: 2%;
-    background-color: #eeeeee;
-    padding: 1rem;
     display: flex;
     flex-direction: column;
+    background-color: #e3e3e330;
+    padding: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
  }
 
 div.result-card:hover {
@@ -247,8 +304,10 @@ ul.more-info li {
     font-family: "Lato", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-style: italic;
+    font-size: 0.9em;
     margin: 4px 0;
+    line-height: 1.5em;
+    color: #404040;
 }
 
 /* button.less  {
@@ -297,9 +356,14 @@ li.word:hover span {
 }
 
 li.definition {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 0.9em;
     padding-left: 40px;
     font-style: italic;
     margin-bottom: 0.4%;
+    color: #404040;
 }
 
 li img {

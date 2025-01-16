@@ -1,7 +1,8 @@
 <template>
+    <!-- filter toolbar section -->
     <section id="options">
-        <!-- filter section -->
         <div class="flex-container">
+            <!-- filter language buttons -->
             <div class="button-flex-row">
                 <button 
                 @click="toggleSwe($event)" 
@@ -25,6 +26,7 @@
                     </span>
                 </button>
             </div>
+            <!-- download button -->
             <div class="button-flex-row">
                 <button class="item" v-if="downloadAvailable" @click="openRegisterModal('searchTerm')"><span class="button-label">Ladda ner</span><br>Sökresultat</button>
                 <button class="item" @click="openRegisterModal('allData')"><span class="button-label">Ladda ner</span><br>Hela databasen</button>
@@ -37,8 +39,8 @@
             <h2 class="lato-bold results-title">Sökresultat</h2>
             <p class="lato-regular results-title">{{title}}</p>
         </div>
-        <!-- Modal Component -->
-        <modal-component 
+        <!-- Modal Component opens the register download form -->
+        <ModalComponent  
         :show="showModal" 
         :words="words" 
         :searchTerm="modalType === 'allData' ? 'allData' : this.store.searchTerm"
@@ -46,8 +48,9 @@
         @close-modal="closeRegisterModal"
         @submit-form="handleSubmitForm"
         />
-            
-        <Word @updateWord="updateWord(word.id)" v-for="word in words" :word="word" :key="word.id" />
+        
+        <!-- Component for each word in the results -->
+        <Word @updateWord="updateWord(word.id)" v-for="word in words" :words="words" :word="word" :key="word.id" />
     
         <!-- ErrorMessage Printout -->
         <!-- <div v-if="errorMessage"><p class="errormsg green-text">{{errorMessage}} </p></div> -->
