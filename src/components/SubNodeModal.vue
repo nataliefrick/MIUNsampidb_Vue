@@ -118,7 +118,7 @@
               this.title = "Det är bara det här ordet som finns i noden: ";
           }
           if(data.length > 1) {
-              this.title = "Andra ord som är också i noden: ";
+              this.title = "Föjlande ord har vi samlat i noden: ";
           }
           this.words = data;
               
@@ -169,7 +169,7 @@
   .modal-content {
     max-width: 680px;
     max-height: 880px;
-    /* height: 80vh; */
+    height: 80vh;
     overflow-y: auto;
     background-color: white;
     padding: 20px 40px 60px 40px;

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showSingle" class="modal">
+  <div class="modal">
     <div class="modal-content">
         <span class="close" @click="closeModal">&times;</span>
         <div class="scrolling-content">
@@ -114,7 +114,7 @@
     // import ExpressionsModalComponent from './ExpressionsModal.vue';
 export default {
     components: { PolarityModalComponent, SubNodeModalComponent },
-    props: ['showSingle', 'word'], 
+    props: ['word', 'index'], 
     data() {
         return {
             showButton: true,

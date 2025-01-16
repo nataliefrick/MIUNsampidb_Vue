@@ -15,15 +15,15 @@
                     <!-- {{ word }} -->
                       <div class="flex-row">
                         <div class="word">
-                          <span class="button-link" @click="openWordModal">{{ word.word_sydsamiska }} </span>
+                          <span class="button-link" @click="openWordModal(word, index)">{{ word.word_sydsamiska }} </span>
                         </div>
 
                           <!-- Modal Component -->
                           <SingleWordModalComponent 
-                          :word="word" 
-                          :words="words"
-                          :showSingle="showWordModal" 
-                          @close-modal="closeModal"
+                            v-if="showWordModal"
+                            :word="selectedWord" 
+                            :index="selectedIndex"
+                            @close-modal="closeModal"
                           />
                           
                         <div class="expression">
@@ -50,15 +50,21 @@ import SingleWordModalComponent from './SingleWordModal.vue';
     props: ['words', 'show'], // Accepting `words` as a prop and controlling `show` for modal visibility
     data() {
       return {
-        showWordModal: false
+        showWordModal: false,
+        selectedWord: null,
+        selectedIndex: null,
       };
     },
     methods: {
-      openWordModal() {
-        this.showWordModal = true; // Show the modal
+      openWordModal(word, index) {
+        this.selectedWord = word;
+        this.selectedIndex = index;
+        this.showWordModal = true;
       },
       closeModal() {
-        this.showWordModal = false; // Show the modal
+        this.showWordModal = false;
+        this.selectedWord = null;
+        this.selectedIndex = null;
         // Emit event to close the modal in the parent component
         this.$emit('closeModal');
       }
