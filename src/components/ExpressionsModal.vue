@@ -186,6 +186,7 @@ import SingleWordModalComponent from './SingleWordModal.vue';
     color: #134da2;
     text-decoration: underline;
     padding: 4px 6px 6px 6px;
+    border-radius: 5px;
 }
 
 span.button-link:hover {

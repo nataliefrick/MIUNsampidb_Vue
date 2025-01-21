@@ -3,12 +3,22 @@
 
 
 <!-- <p>just checking: {{ displayText }}</p> -->
-    <ul class="dasboard single-word no-bullets">
+    <ul v-if="change.status" class="dasboard single-word no-bullets">
         <li class="col-1">{{formatDate(change.created_at)}}</li>
-        <li class="col-2">{{change.word_sydsamiska}}</li>
+        <li v-if="change.word_sydsamiska" class="col-2">{{change.word_sydsamiska}}</li>
+        <li v-else class="col-2">nytt ord</li>
         <li class="col-3 sm-screen-hide">{{truncatedMessageByWords}}</li>
         <i id="eye" class="fa-regular fa-eye" @click=openChangeModal()></i>
     </ul>
+
+    <ul v-else class="dasboard single-word no-bullets bold">
+        <li class="col-1">{{formatDate(change.created_at)}}</li>
+        <li v-if="change.word_sydsamiska" class="col-2">{{change.word_sydsamiska}}</li>
+        <li v-else class="col-2">nytt ord</li>
+        <li class="col-3 sm-screen-hide">{{truncatedMessageByWords}}</li>
+        <i id="eye" class="fa-regular fa-eye" @click=openChangeModal()></i>
+    </ul>
+    
     <!-- Modal Component -->
     <ModalComponent 
         :change="change" 
@@ -82,6 +92,11 @@ export default {
         display: none;
     }
 }
+ul.bold li {
+    font-weight: bold;
+    background-color: #f1f1f1
+}
+
 
 div:hover {
     background-color: #eee;

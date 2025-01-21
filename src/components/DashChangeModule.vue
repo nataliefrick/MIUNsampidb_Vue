@@ -18,7 +18,7 @@
               <h2 class="lato-bold">Föreslagen ändring av ord i databasen</h2>
               <div class="data-on-file">
                 <div class="flex-row space-inbetween">
-                  <h3 class="lato-bold">Förslaget till ordet: <em>{{change.word_sydsamiska}}</em></h3>
+                  <h3 class="lato-bold">Förslaget: <em>{{change.word_sydsamiska}}</em></h3>
                   <!-- <h3>Förslaget till ordet: <em>{{ formData.word_id}}</em></h3> -->
                   <div class="flex-col">
                     <span class="label">Datum</span>
@@ -62,12 +62,12 @@
                       <label for="checked_by">Ansvarig</label>
                       <input v-model="formData.checked_by" name="checked_by">
                     </div>
-                    <div class="flex-col" v-if="formData.updated_at">
-                      <span class="label">Senaste uppdatering</span>
-                      <span class="data">{{formatDate(formData.updated_at)}}</span>
+                    <div class="flex-col" v-if="this.change.updated_at">
+                      <span class="label">Senaste status uppdatering</span>
+                      <span class="data">{{formatDate(this.change.updated_at)}}</span>
                     </div>
                     <div class="flex-col" v-else>
-                      <span class="label">Senaste uppdatering</span>
+                      <span class="label">Senaste status uppdatering</span>
                       <span class="data">-</span>
                     </div>
                   </div>
@@ -217,7 +217,7 @@ import EventBus from '../util/event-bus';
       },
       async updateChange() {
           let dataBody = this.formData;
-          console.log(JSON.stringify(dataBody));
+          // console.log(JSON.stringify(dataBody));
           const response = await fetch(this.urlChange + "/" + this.formData.id,  {
               method: "PUT",
               headers: {

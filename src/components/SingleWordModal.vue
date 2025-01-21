@@ -22,7 +22,7 @@
                     <li class="word"><img src="../assets/img/flag_nwg.jpg" alt="norska flagga ikon"><span>: {{word.word_norska}}</span></li>
                     <li class="definition">{{word.definition_norska}}</li>
                 </ul>
-                <ul class="more-info no-bullets">
+                <ul class="no-bullets">
                 <!-- <pre>{{ word }}</pre> -->
                     <hr>
                         <li v-show="word.synonyms"><strong>Synonymer:</strong> {{word.synonyms}}</li>
@@ -78,16 +78,16 @@
                 </ul>
             </div>
             <div class="show-more desktop">
-                <button class="more" >Föreslå ändringar</button>
+                <button class="more" @click="openChangesModal">Föreslår ändringar</button>
 
                     <!-- Modal Component -->
                     <!-- @click="openChangesModal" -->
-                    <!-- <ModalComponent 
+                    <ChangesModalComponent 
                     :word="word" 
-                    :show="showModal" 
+                    :show="showChangesModal" 
                     @close-modal="closeModal"
                     @submit-form="handleSubmitForm"
-                    /> -->
+                    />
             </div>
             <div class="show-more mobile" v-if="moreInfoAvailable">
                 <button class="more" >Föreslå ändringar</button>
@@ -108,12 +108,12 @@
 </template>
 
 <script>
-    // import ModalComponent from './SuggestChangesModule.vue';
+    import ChangesModalComponent from './SuggestChangesModule.vue';
     import SubNodeModalComponent from './SubNodeModal.vue';
     import PolarityModalComponent from './PolarityModal.vue';
     // import ExpressionsModalComponent from './ExpressionsModal.vue';
 export default {
-    components: { PolarityModalComponent, SubNodeModalComponent },
+    components: { PolarityModalComponent, SubNodeModalComponent, ChangesModalComponent },
     props: ['word', 'index'], 
     data() {
         return {
@@ -123,7 +123,8 @@ export default {
             arousal: "",
             frequency: "",
             showPolarityModal:false,
-            showSubNodeModal:false
+            showSubNodeModal:false,
+            showChangesModal:false
     
         }
     },
@@ -161,6 +162,9 @@ export default {
         },
         openSubNodeModal() {
             this.showSubNodeModal = true;
+        },
+        openChangesModal() {
+            this.showChangesModal = true;
         }
     }
 
@@ -254,14 +258,13 @@ li.expression {
 li.expression div.flex-col { line-height: 1.8em; }
 
 li.expression span.button-link {
-    padding: 0 6px;
-    margin: 0 12px;
+    padding: 4px 6px 6px 6px;
 }
 
 span.button-link {
     color: #134da2;
     text-decoration: underline;
-    padding: 4px 6px 6px 6px;
+    border-radius: 5px;
 }
 
 span.button-link:hover {
@@ -287,11 +290,6 @@ div.result-card ul {
     margin-bottom: 20px;
 }
 
-/* ul.more-info {
-    display: none;
-} */
-
-
 .desktop { display: flex; }
 .mobile { display: none; }
 
@@ -316,12 +314,10 @@ div.show-more {
 }
 
 
-
 ul.more-info li {
     font-family: "Lato", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 0.9em;
     margin: 4px 0;
     line-height: 1.5em;
     color: #404040;

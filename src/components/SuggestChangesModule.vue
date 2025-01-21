@@ -13,6 +13,7 @@
               </div>
 
             <div v-else>
+              <div v-if=formData.word_sydsamiska>
                 <h2 class="lato-bold">Föreslå ändringar till ordet <span class="chosen-word lato-bold">"{{ formData.word_sydsamiska }}"</span></h2>
                 <p>Har du hittat något i vår databas som inte stämmer? Vi vill gärna veta om det!</p>
                 <p>
@@ -28,6 +29,7 @@
                     Dölj data
                     <i class="fa-solid fa-angle-up"></i>
                 </button>
+                <!-- suggest changes to existing word -->
                 <div class="data" v-if="showData">
                   <div class="data-info">
                       <div class="lang">
@@ -75,13 +77,23 @@
                     <p class="data"> {{formData.example_of_use}} </p>
                   </div>
                 </div>   
+              </div>
+              <!-- suggest a new word -->
+              <div v-else>
+                <h2 class="lato-bold">Föreslår ett ordet </h2>
+                <p>Finns det ett eller flera ord som du tycker skulle förbättra vår databas och bidra till forskningen? Vi vill gärna veta det!</p>
+                <p>
+                  Använd fältet nedan för att skriva dina tankar kring ordet, översättningen, och vad det betyder för dig. Skriv gärna ett exempel på användningen av ordet.
+                </p>
+              </div>
+                
                 
                 <!-- form ----------------- -->
                 <form @submit.prevent="submitForm">
                   <!-- Text area for messages -->
                   <div class="msg flex-col">
                       <label for="message">Meddelande</label>
-                      <textarea  class="lato-regular" placeholder="Vänligen skriv dina synpunkter här. Ge så mycket information som möjligt, gärna ett förslag på användning av ordet i en mening." v-model="formData.message" rows="4"></textarea>
+                      <textarea  class="lato-regular" placeholder="Vänligen ge så mycket information som möjligt, gärna ett förslag på användning av ordet i en mening." v-model="formData.message" rows="4"></textarea>
                   </div>
                   <div class="contact-info">
                     <hr class="green">
@@ -213,6 +225,8 @@ import { useUrlGet } from '../stores/urlGet';
         }
       },
       async addChange() {
+        
+        
         // check first for content
         if(typeof this.formData.message === 'undefined' ) {
           this.formData.message = "";
@@ -220,6 +234,11 @@ import { useUrlGet } from '../stores/urlGet';
         }
         if(this.formData.message.length > 4 ) {
             this.errorMessage='';
+            if(typeof this.formData.id === 'undefined' ) {
+              this.formData.id = null;
+              
+            }
+
             let changeBody = {
               word_id: this.formData.id,
               name: this.formData.name,
@@ -227,15 +246,25 @@ import { useUrlGet } from '../stores/urlGet';
               telephone: this.formData.telephone,
               message: this.formData.message,
             };
-            const response = await fetch(this.urlChange, { 
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(changeBody)
-            });
 
-            await response.json();
+            try {
+              const response = await fetch(this.urlChange, { 
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(changeBody)
+              });
+
+              if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+
+              await response.json();
+              // console.log('Response Data:', data);
+            }  catch (error) {
+                console.error('Error fetching data:', error);
+            }
 
             // empty form
             this.formData.word_id= "";
@@ -245,11 +274,11 @@ import { useUrlGet } from '../stores/urlGet';
             this.formData.telephone= "";
             this.message= "";
             this.thankYouMsg=true;
-
+            console.log("done?");
             this.$emit("addChange"); // reloads the parent page.
         }
         else {
-          this.errorMessage = "Vi behöver mer info, vänligen utveckla ditt meddelande.";
+          this.errorMessage = "Vi behöver mer info, vänligen prova igen.";
         }
 
     }

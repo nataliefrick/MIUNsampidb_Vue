@@ -244,7 +244,8 @@ li.expression span.button-link {
 span.button-link {
     color: #134da2;
     text-decoration: underline;
-    padding: 4px 6px 6px 6px;
+    padding: 2px 6px 4px 6px;
+    border-radius: 5px;
 }
 
 span.button-link:hover {

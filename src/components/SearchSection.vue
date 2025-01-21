@@ -21,7 +21,14 @@
               <div class="search">
                 <div class="flex-row">
                     <button @click="getAll()" class="reverse">Se hela databasen</button>
-                    <button @click="getAll()" class="disabled">Föreslå nytt ord</button>
+                    <button class="see-all button-icon" @click="openNewWordModal()">Föreslå ett ord<i class="fa-solid fa-leaf i-margin"></i></button>
+                     <!-- Modal Component -->
+                        <NewWordModalComponent 
+                        :word=null 
+                        :show="showNewWordModal" 
+                        @close-modal="closeModal"
+                        @submit-form="handleSubmitForm"
+                        />
                 </div>
 
                   <form @submit.prevent="setSearchTerm()">
@@ -46,6 +53,7 @@
 
 <script>
     // import { defineComponent } from 'vue'
+    import NewWordModalComponent from './SuggestChangesModule.vue';
     import { useSearchTermStore } from '../stores/searchterms';
     import { useUrlGet } from '../stores/urlGet';
     import { nextTick } from 'vue';  // Import nextTick for better timing of updates
@@ -61,9 +69,11 @@
             storeSearchTerms: useSearchTermStore(),
             urlGet: this.useUrl.urlGet + "/words",
             newTerm: "",
+            showNewWordModal: false,
 
         }
     },
+    components: { NewWordModalComponent },
     emit: ["setSearchTerm"],
     methods: {
         async getAll() {
@@ -101,6 +111,20 @@
             // this.$emit("setSearchTerm"); // reloads the parent page.
             // Use Vue Router's push method to navigate without reloading
             
+        },
+        openNewWordModal() {
+            this.showNewWordModal = true;
+        },
+        closeModal() {
+            this.showNewWordModal = false; // Hide the modal
+            // Emit event to close the modal in the parent component
+            this.$emit('closeModal');
+        }, 
+        handleSubmitForm(updatedWord) {
+            // Handle form submission (e.g., save the updated word data)
+            // this.word = updatedWord;
+            console.log(updatedWord);
+            this.closeModal(); // Close the modal after submission
         },
 
     }
@@ -413,6 +437,10 @@
         transition: background-color 0.3s;
 
     } 
+
+    button.button-icon:hover i {
+        color: white;
+    }
     
     /* Disabled state */
     .disabled,
@@ -428,6 +456,10 @@
         background-color: #134da2;
         color: #fff;
         transition: background-color 0.3s;
+    }
+
+    .i-margin {
+        margin-left: 10px;
     }
 
     .row-searchform {

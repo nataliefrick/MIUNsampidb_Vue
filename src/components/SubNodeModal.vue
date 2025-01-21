@@ -10,8 +10,11 @@
           <!-- <h2 class="lato-bold"><pre>{{ this.words }}</pre></h2> -->
           <div>
               <h2 class="lato-bold">{{this.title}} 
-                <span class='chosen-word lato-bold'> {{ this.mainnode }} > 
-                  <span>{{ this.polaritynode }} </span> > {{ this.subnode }}</span></h2>
+                <span class="chosen-word"> {{ this.mainnode }} > 
+                  <span class="node-link">{{ this.polaritynode }}</span> >
+                  <span class="node-link">{{ this.subnode }}</span> 
+                  </span> 
+              </h2>
                   <!-- class="node-link" @click="openPolarityModal" -->
                          
               <!-- Modal Component -->
@@ -229,6 +232,8 @@
       color: #134da2;
       font-style: italic;
       font-weight: bold;
+      padding: 2px 6px 4px 6px;
+      border-radius: 5px;
     }
 
     span.node-link:hover {
