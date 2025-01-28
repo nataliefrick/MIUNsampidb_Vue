@@ -1,6 +1,13 @@
 <template>
 <div>
-    <ul class="dasboard single-word no-bullets">
+    <ul v-if="download.notes" class="dasboard single-word no-bullets">
+        <li class="lato-regular">{{formatDate(download.created_at)}}</li>
+        <li class="lato-regular sm-screen-hide">{{download.institution}}</li>
+        <li class="lato-regular sm-screen-hide">{{download.name}}</li>
+        <li class="lato-regular sm-screen-large">{{download.projectTitle}}</li>
+        <i id="eye" class="fa-regular fa-eye" @click=openDownloadModal()></i>
+    </ul>
+    <ul v-else class="dasboard single-word no-bullets bold">
         <li class="lato-regular">{{formatDate(download.created_at)}}</li>
         <li class="lato-regular sm-screen-hide">{{download.institution}}</li>
         <li class="lato-regular sm-screen-hide">{{download.name}}</li>
@@ -65,6 +72,11 @@ export default {
     .sm-screen-hide {
         display: none;
     }
+}
+
+ul.bold li {
+    font-weight: bold;
+    background-color: #f1f1f1
 }
 
 div:hover {

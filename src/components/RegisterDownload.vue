@@ -150,7 +150,7 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
       },
       downloadJsonAsExcel(data, searchTerm, fileName = 'miun_emotionalwords_data', title = 'Databas för sydsamiska känsloord och kulturella uttryck för lidande') {
          // Specify columns to exclude
-          const excludeColumns = ['id', 'created_at', 'updated_at'];
+          const excludeColumns = ['id', 'node_id', 'main_node', 'created_at', 'updated_at'];
 
         // Define custom headers
           const customHeaders = {
@@ -166,6 +166,10 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
               sources: 'Källor',
               arousal_level: 'Upphetsnings- eller aktiveringsnivå',
               frequency: 'Användningsfrekvens',
+              polarity_node: 'Polaritetsnod',
+              sub_node: 'Känslonod',
+              expression: 'Uttryck',
+              translation: 'Uttrycksöversättning',
               // Add more mappings as needed
           };
 
@@ -182,13 +186,47 @@ import * as XLSX from 'xlsx'; //to allow for downloading. plugin: SheetJS
           });
 
           // Convert data to worksheet with headers starting at A3
-          const worksheet = XLSX.utils.json_to_sheet(formattedData, { origin: 'A5' });
+          const worksheet = XLSX.utils.json_to_sheet(formattedData, { origin: 'A8' });
 
           // Add title at A1 and two empty rows at A2 and A3
           XLSX.utils.sheet_add_aoa(worksheet, [[title]], { origin: 'A1' });
-          XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: 'A2' });
+          XLSX.utils.sheet_add_aoa(worksheet, [[ ]], { origin: 'A2' });
           XLSX.utils.sheet_add_aoa(worksheet, [['Sökord: ' + searchTerm]], { origin: 'A3' });
-          XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: 'A4' });
+          
+          // Merge cells A4 and B4
+          worksheet['!merges'] = [
+            { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } } // Merge A4 (r: 3, c: 0) and B4 (r: 3, c: 1)
+          ];
+          
+          XLSX.utils.sheet_add_aoa(worksheet, [['Upphetsningsgrad förklaring:' ]], { origin: 'A4' });
+          XLSX.utils.sheet_add_aoa(worksheet, [[ '0: inga data | 1: låg | 2: medel | 3: hög' ]], { origin: 'C4' });
+
+          // Merge cells A5 and B5
+          worksheet['!merges'] = [
+            { s: { r: 4, c: 0 }, e: { r: 4, c: 1 } } // Merge A4 (r: 3, c: 0) and B4 (r: 3, c: 1)
+          ];
+          
+          XLSX.utils.sheet_add_aoa(worksheet, [['Användningsfrekvens förklaring:']], { origin: 'A5' });          
+          XLSX.utils.sheet_add_aoa(worksheet, [['0: inga data | 1: låg | 2: medel | 3: hög']], { origin: 'C5' });          
+          
+          XLSX.utils.sheet_add_aoa(worksheet, [[ ]], { origin: 'A6' });
+          XLSX.utils.sheet_add_aoa(worksheet, [[ ]], { origin: 'A7' });
+
+          const headerKeys = Object.keys(formattedData[0]);
+          headerKeys.forEach((_, colIndex) => {
+              const cellAddress = XLSX.utils.encode_cell({ r: 7, c: colIndex }); // Row 7, column colIndex
+              if (worksheet[cellAddress]) {
+                  worksheet[cellAddress].s = {
+                      font: {
+                          bold: true, // Apply bold styling to the header
+                      },
+                  };
+              }
+          });
+
+          // Apply styles
+          worksheet['A4', 'A5'].s = { font: { italic: true } }; // Italics for the first part
+          worksheet['C4', 'C5'].s = { font: { bold: true } };  // Bold for the second part
           
           // Create workbook and append worksheet
           const workbook = XLSX.utils.book_new();

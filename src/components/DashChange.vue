@@ -3,7 +3,7 @@
 
 
 <!-- <p>just checking: {{ displayText }}</p> -->
-    <ul v-if="change.status" class="dasboard single-word no-bullets">
+    <ul v-if="change.status || change.checked_by" class="dasboard single-word no-bullets">
         <li class="col-1">{{formatDate(change.created_at)}}</li>
         <li v-if="change.word_sydsamiska" class="col-2">{{change.word_sydsamiska}}</li>
         <li v-else class="col-2">nytt ord</li>
