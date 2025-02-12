@@ -13,7 +13,7 @@
 
             <div v-else>
                 <h2 class="lato-bold">Lägga till ett ord</h2>
-              
+
                 <!-- form ----------------- -->
                 <form @submit.prevent="submitForm">
                     <div class="flex-row">
@@ -27,7 +27,7 @@
                         <input class="definition" type="text" v-model="formData.definition_sydsamiska" name="definition_sydsamiska"/>
                       </div>
                     </div>
-              
+
                     <div class="flex-row">
                       <img src="../assets/img/flag_sve.jpg" alt="svenska flagga ikon">
                        <div class="flex-col">
@@ -39,7 +39,7 @@
                         <input class="definition" type="text" v-model="formData.definition_svenska" name="definition_svenska"/>
                       </div>
                     </div>
-              
+
                     <div class="flex-row">
                       <img src="../assets/img/flag_nwg.jpg" alt="norska flagga ikon">
                        <div class="flex-col">
@@ -55,22 +55,19 @@
                       <label for="example_of_use">Exampel på användning:</label>
                       <textarea id="example_of_use" v-model="formData.example_of_use" rows="4"></textarea>
                     </div>
-                    <div class="spacer"></div>
-                    <div class="flex-col">
-                    <label for="sources">Källor:</label>
-                    <textarea v-model="formData.sources" name="sources" rows="4"></textarea>
-                  </div>
+                    <hr>
+
                   <div class="flex-row">
-                    <div class="flex-col">
-                      <label for="arousal_level">Arousal Level (Aktiveringsnivå):</label>
+                    <div class="flex-col halv">
+                      <label for="arousal_level">Stimuleringsnivå/Aktiveringsgrad:</label>
                       <select v-model="formData.arousal_level" name="arousal_level">
                           <option value=1>Low</option>
                           <option value=2>Medium</option>
                           <option value=3>High</option>
                       </select>
                     </div>
-                    <div class="flex-col">
-                      <label for="frequency">Frekvens:</label>
+                    <div class="flex-col halv">
+                      <label for="frequency">Användningsfrekvens:</label>
                       <select v-model="formData.frequency" name="frequency">
                           <option value=1>Low</option>
                           <option value=2>Medium</option>
@@ -78,6 +75,59 @@
                       </select>
                     </div>
                   </div>
+
+                    <div class="flex-col spacing-top-sm">
+                      <label for="synonyms">Synonymer:</label>
+                      <input class="definition" name="synonyms" type="text" v-model="formData.synonyms" />
+                    </div>
+                    <div class="flex-col spacing-top-sm">
+                      <label for="antonyms">Antonymer:</label>
+                      <input class="definition" name="antonyms" type="text" v-model="formData.antonyms" />
+                    </div>
+
+                    <hr>
+
+                    <p>Nodes</p>
+                    <div class="flex-row">
+                    <div class="flex-col halv">
+                      <label for="polarity_node">Polarity nod:</label>
+                      <select v-model="this.formData.polarity_node" name="polarity_node">
+                          <option v-for="(node, index) in uniquePolarityNodes" :key="index" :value="node">
+                            {{ node }}
+                          </option>
+                      </select>
+                    </div>
+                    <div class="flex-col halv">
+                      <label for="sub_node">Sub-nod:</label>
+                      <select v-model="this.formData.node_id" name="sub_node">
+                        <option v-for="(sub, index) in filteredSubNodes" :key="index" :value="sub.id">
+                          {{ sub.sub_node }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                    <hr>
+
+                    <div class="flex-col spacing-top">
+                      <label for="expression">Uttryck:</label>
+                      <input class="definition" name="expression" type="text" v-model="formData.expression" />
+                    </div>
+                    <div class="flex-col spacing-top-sm">
+                      <label for="translation">Översättning av uttryck:</label>
+                      <input class="definition" name="translation" type="text" v-model="formData.translation" />
+                    </div>
+
+                    <hr>
+                    <!-- <div class="spacer"></div> -->
+                    <div class="flex-col spacing-top">
+                    <label for="sources">Källor:</label>
+                    <textarea v-model="formData.sources" name="sources" rows="4"></textarea>
+                  </div>
+
+                  <div class="spacer"></div>
+
+                  <!-- submit section -->
                   <div>
                     <div class="submit-section" v-if="!areYouSure">
                       <span class="delete-button" @click="justChecking()">Stäng</span>
@@ -97,7 +147,7 @@
       </div>
     </div>
 </template>
-  
+
 <script>
 import { useUrlGet } from '../stores/urlGet';
 import EventBus from '../util/event-bus';
@@ -109,7 +159,9 @@ import EventBus from '../util/event-bus';
     },
     data() {
       return {
-        urlChange: this.useUrl.urlGet + "/words", 
+        urlChange: this.useUrl.urlGet + "/words",
+        urlNodes: this.useUrl.urlGet + "/nodes",
+        nodes: [],
         toggleButton: false,
         showButton: true,
         showData: false,
@@ -131,7 +183,11 @@ import EventBus from '../util/event-bus';
           example_of_use: '',
           sources: '',
           arousal_level: '',
-          frequency: ''
+          frequency: '',
+          expression: '',
+          translation: '',
+          // polarity_node: '',
+          node_id: '',
         }
       };
     },
@@ -146,6 +202,17 @@ import EventBus from '../util/event-bus';
       }
     },
     computed: {
+      uniquePolarityNodes() {
+        return [...new Set(this.nodes.map(node => node.polarity_node))];
+      },
+      filteredSubNodes() {
+        return this.nodes
+          .filter(node => node.polarity_node === this.formData.polarity_node)
+          .map(node => ({
+              id:       node.id,
+              sub_node: node.sub_node
+          }));
+      },
       displayText() {
         // Check if word has been passed in, otherwise display a fallback message
         return `  Existing Word: ${this.existingWord}    AreYouSure: ${this.areYouSure }`;
@@ -191,6 +258,11 @@ import EventBus from '../util/event-bus';
       justChecking() {
         this.areYouSure = true;
       },
+      async getNodes() {
+        const response = await fetch(this.urlNodes, { method: "GET" });
+            const data = await response.json(); // save the data in sent through the response.
+            this.nodes = data;
+      },
       async deleteWord() {
         const response = await fetch(this.urlChange + "/" + this.formData.id,  {
               method: "DELETE",
@@ -201,7 +273,7 @@ import EventBus from '../util/event-bus';
 
           await response.json();
           this.message="Ordet är nu raderat från databasen.";
-          
+
           // Emit event to notify DashWordsSection
           EventBus.emit('change-to-database');
           this.areYouSure=false;
@@ -222,7 +294,7 @@ import EventBus from '../util/event-bus';
           });
 
           await response.json();
-          
+
           // Emit event to notify DashWordsSection
           EventBus.emit('change-to-database');
           this.thankYouMsg=true;
@@ -230,14 +302,14 @@ import EventBus from '../util/event-bus';
           this.existingWord=false;
           this.areYouSure=false;
           this.$emit("updateWord"); // reloads the parent page.
-          
+
       },
       async addNewWord() {
         // check first for content
         if(this.formData.word_sydsamiska.length > 3 ) {
             this.errorMessage='';
             let dataBody = this.formData;
-            const response = await fetch(this.urlChange, { 
+            const response = await fetch(this.urlChange, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -246,7 +318,7 @@ import EventBus from '../util/event-bus';
             });
 
             await response.json();
-            
+
             // empty form
             this.formData.word_sydsamiska= "";
             this.formData.definition_sydsamiska= "";
@@ -262,10 +334,10 @@ import EventBus from '../util/event-bus';
             this.formData.frequency= "";
             this.thankYouMsg=true;
 
-            
+
             // Emit event to notify DashWordsSection
             EventBus.emit('change-to-database');
-            
+
             this.thankYouMsg=true;
             this.message="Ordet finns nu i databasen";
             this.existingWord=false;
@@ -277,14 +349,35 @@ import EventBus from '../util/event-bus';
           this.errorMessage = "Vi behöver mer info, vänligen kolla formuläret.";
         }
       }
-  }
+  },
+  mounted() {
+        this.getNodes();
+    }
 };
 </script>
-  
+
 
 <style scoped>
 div.spacer {
   margin: 20px;
+}
+
+.spacing-top {
+  margin-top: 1.5em;
+}
+
+.spacing-top-sm {
+  margin-top: 0.5em;
+}
+
+.halv {
+  width: 450%;
+}
+
+hr {
+  margin-top: 30px;
+  border: none;
+  border-bottom: 1px solid #eee;
 }
 
 span.red-text {
@@ -311,7 +404,7 @@ span.red-text {
       height: 30px;
       margin-top: 12px;
       margin-right: 0;
-  } 
+  }
   /* Basic styling for the modal */
   .modal {
     display: flex;
@@ -337,14 +430,14 @@ span.red-text {
     position: relative;
   }
 
-  @media (min-width: 1201px) { 
-  .modal-content { 
+  @media (min-width: 1201px) {
+  .modal-content {
     width: 80%;
 
   }}
-  @media (max-width: 1200px) { 
-  .modal-content { 
-    width: 60%; 
+  @media (max-width: 1200px) {
+  .modal-content {
+    width: 60%;
   }}
 
   .scrolling-content {
@@ -354,7 +447,7 @@ span.red-text {
   .close-thkyou,
   .close {
     cursor: pointer;
-    padding: 4px 10px 6px 10px; 
+    padding: 4px 10px 6px 10px;
     border-radius: 15px;
     border: 1px solid #134da2;
   }
@@ -374,9 +467,9 @@ span.red-text {
   span.close:hover {
     background-color: #134da2;
     color: #fff;
-    
 
-  } 
+
+  }
 
   @media (max-width: 575px) {
     div.sampi-db-logo.module {
@@ -422,7 +515,7 @@ span.red-text {
     margin: 1.5em 0;
   }
 
-  @media (max-width: 1025px) { 
+  @media (max-width: 1025px) {
     div.flex-row {
       flex-direction: column;
       align-items: flex-start;
@@ -461,11 +554,11 @@ span.red-text {
     padding-right: 10px;
     background-color: #134da220;
   }
-  
+
   input.contact-info:focus,
   input[type='text']:focus,
   textarea:focus {
-        outline: 1px solid #134da2; 
+        outline: 1px solid #134da2;
     }
 
   input.contact-info {
@@ -474,7 +567,7 @@ span.red-text {
     line-height: 2.5em;
   }
 
-  @media (max-width: 1025px) { 
+  @media (max-width: 1025px) {
     input.contact-info {
       /* width: 85%; */
       flex-grow: 1;
@@ -486,7 +579,7 @@ span.red-text {
     flex-grow: 1;
   }
 
-  @media (max-width: 1025px) { 
+  @media (max-width: 1025px) {
     .flex-grow {
       width: 100%;
     }

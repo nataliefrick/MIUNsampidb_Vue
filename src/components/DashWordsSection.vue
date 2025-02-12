@@ -12,6 +12,7 @@
         @submit-form="handleSubmitForm"
         />
         <p>Här kan du administrera alla ord i databasen. Sektionen visar de senaste 3 orden som lagts till.</p>
+
     <div class="filter">
         <form @submit.prevent="filterWords()">
             <div class="flex-row">

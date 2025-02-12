@@ -16,11 +16,33 @@
                 <a class="email" href="mailto:anna.leiler@miun.se" aria-label="Email Anna"><i class="fa-regular fa-envelope"></i><span>anna.leiler@miun.se</span></a>
             </div>
         </div>
+        <div class="natalie">
+            <p><a href="https://nataliefrick.se/" target="_blank" rel="noopener noreferrer">Utvecklade av Natalie Frick</a></p>
+        </div>
     </footer>
     
     </template>
     
     <style scoped>
+    div.natalie {
+        text-align: center;
+        padding: 1px 0;
+        background: #ddd;
+    }
+    div.natalie p {
+        line-height: 1em;
+        font-size: 0.8em;
+        margin: 0.5em 0;
+    }
+
+    div.natalie a {
+        color: #00000060;
+        text-decoration: none;
+    }
+
+    div.natalie a:hover {
+        color: #333333;
+    }
 
     footer {
         background-image: url("../assets/img/hoofprints2.png");

@@ -56,29 +56,80 @@
                       <label for="example_of_use">Exampel på användning:</label>
                       <textarea id="example_of_use" v-model="formData.example_of_use" rows="4"></textarea>
                     </div>
-                    <div class="spacer"></div>
-                    <div class="flex-col">
+
+                    <hr>
+                    
+                    <div class="flex-row">
+                      <div class="flex-col halv">
+                        <label for="arousal_level">Stimuleringsnivå/Aktiveringsgrad:</label>
+                        <select v-model="formData.arousal_level" name="arousal_level">
+                            <option value=1>Low</option>
+                            <option value=2>Medium</option>
+                            <option value=3>High</option>
+                        </select>
+                      </div>
+                      <div class="flex-col halv">
+                        <label for="frequency">Användningsfrekvens:</label>
+                        <select v-model="formData.frequency" name="frequency">
+                            <option value=1>Low</option>
+                            <option value=2>Medium</option>
+                            <option value=3>High</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="flex-col spacing-top-sm">
+                      <label for="synonyms">Synonymer:</label>
+                      <input class="definition" name="synonyms" type="text" v-model="formData.synonyms" />
+                    </div>
+                    <div class="flex-col spacing-top-sm">
+                      <label for="antonyms">Antonymer:</label>
+                      <input class="definition" name="antonyms" type="text" v-model="formData.antonyms" />
+                    </div>
+
+                    <hr>
+
+                    <p>Nodes</p>
+                    <div class="flex-row"> 
+                    <div class="flex-col halv">
+                      <label for="polarity_node">Polarity nod:</label>
+                      <select v-model="this.formData.polarity_node" name="polarity_node">
+                          <option v-for="(node, index) in uniquePolarityNodes" :key="index" :value="node">
+                            {{ node }}
+                          </option>
+                      </select>
+                    </div>
+                    <div class="flex-col halv">
+                      <label for="sub_node">Sub-nod:</label>
+                      <select v-model="this.formData.sub_node" name="sub_node">
+                        <option v-for="(sub, index) in filteredSubNodes" :key="index" :value="sub">
+                          {{ sub }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                    <hr>
+                    
+                    <div class="flex-col spacing-top">
+                      <label for="expression">Uttryck:</label>
+                      <input class="definition" name="expression" type="text" v-model="formData.expression" />
+                    </div>
+                    <div class="flex-col spacing-top-sm">
+                      <label for="translation">Översättning av uttryck:</label>
+                      <input class="definition" name="translation" type="text" v-model="formData.translation" />
+                    </div>
+
+                    <hr>
+                    <!-- <div class="spacer"></div> -->
+                    <div class="flex-col spacing-top">
                     <label for="sources">Källor:</label>
                     <textarea v-model="formData.sources" name="sources" rows="4"></textarea>
                   </div>
-                  <div class="flex-row">
-                    <div class="flex-col">
-                      <label for="arousal_level">Arousal Level (Aktiveringsnivå):</label>
-                      <select v-model="formData.arousal_level" name="arousal_level">
-                          <option value=1>Low</option>
-                          <option value=2>Medium</option>
-                          <option value=3>High</option>
-                      </select>
-                    </div>
-                    <div class="flex-col">
-                      <label for="frequency">Frekvens:</label>
-                      <select v-model="formData.frequency" name="frequency">
-                          <option value=1>Low</option>
-                          <option value=2>Medium</option>
-                          <option value=3>High</option>
-                      </select>
-                    </div>
-                  </div>
+
+                  <div class="spacer"></div>
+
+                  <!-- submit section -->
                   <div>
                     <div class="submit-section" v-if="!areYouSure">
                       <span class="delete-button" @click="justChecking()">Radera</span>
@@ -110,6 +161,8 @@ import EventBus from '../util/event-bus';
     data() {
       return {
         urlChange: this.useUrl.urlGet + "/words", 
+        urlNodes: this.useUrl.urlGet + "/nodes", 
+        nodes: [],
         toggleButton: false,
         showButton: true,
         showData: false,
@@ -145,9 +198,17 @@ import EventBus from '../util/event-bus';
       }
     },
     computed: {
+      uniquePolarityNodes() {
+        return [...new Set(this.nodes.map(node => node.polarity_node))];
+      },
+      filteredSubNodes() {
+        return this.nodes
+          .filter(node => node.polarity_node === this.formData.polarity_node)
+          .map(node => node.sub_node);
+      },
       displayText() {
         // Check if word has been passed in, otherwise display a fallback message
-        return `  Existing Word: ${this.existingWord}    AreYouSure: ${this.areYouSure }`;
+        return `  Existing Word: ${this.formData}    AreYouSure: ${this.areYouSure }`;
         // return this.word ? `Word: ${JSON.stringify(this.word)}` : "No word provided";
       }
     },
@@ -160,7 +221,6 @@ import EventBus from '../util/event-bus';
       word: {
         handler(newVal) {
           this.formData = { ...newVal };
-          // this.existingWord = true;
         },
         immediate: true // Update immediately if the word prop is already set
       }
@@ -183,6 +243,11 @@ import EventBus from '../util/event-bus';
       },
       justChecking() {
         this.areYouSure = true;
+      },
+      async getNodes() {
+        const response = await fetch(this.urlNodes, { method: "GET" });
+            const data = await response.json(); // save the data in sent through the response.
+            this.nodes = data;
       },
       async deleteWord() {
         const response = await fetch(this.urlChange + "/" + this.formData.id,  {
@@ -223,12 +288,36 @@ import EventBus from '../util/event-bus';
           
       }
       
+  },
+  mounted() {
+        this.getNodes();
   }
 };
 </script>
   
 
 <style scoped>
+div.spacer {
+  margin: 20px;
+}
+
+.spacing-top {
+  margin-top: 1.5em;
+}
+
+.spacing-top-sm {
+  margin-top: 0.5em;
+}
+
+.halv {
+  width: 450%;
+}
+
+hr {
+  margin-top: 30px;
+  border: none;
+  border-bottom: 1px solid #eee;
+}
 div.spacer {
   margin: 20px;
 }

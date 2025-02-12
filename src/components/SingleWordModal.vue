@@ -125,7 +125,6 @@ export default {
             showPolarityModal:false,
             showSubNodeModal:false,
             showChangesModal:false
-    
         }
     },
     created : async function() {
