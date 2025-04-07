@@ -2,7 +2,10 @@
 <section id="words">
     <div class="title">
         <h3 class="lato-bold">Översikt över ord i databasen</h3>
-        <button class="see-all button-icon" @click="openModal()">Nytt ord<i class="fa-solid fa-leaf"></i></button> <!-- add new word -->
+        <div>
+            <button class="see-all button-icon" @click="openNodeModal()">Ny nod<i class="fa-solid fa-circle-nodes"></i></button> <!-- add new word -->
+            <button class="see-all button-icon" @click="openModal()">Nytt ord<i class="fa-solid fa-leaf"></i></button> <!-- add new word -->
+        </div>
     </div>
     <!-- Modal Component -->
         <ModalComponent 
@@ -10,6 +13,12 @@
         :existingWord="false" 
         @close-modal="closeModal"
         @submit-form="handleSubmitForm"
+        />
+    <!-- Modal Component -->
+        <ModalNodeComponent 
+        :show="showNodeModal"
+        @close-modal="closeModal"
+        @submit-form="handleSubmitFormNode"
         />
         <p>Här kan du administrera alla ord i databasen. Sektionen visar de senaste 3 orden som lagts till.</p>
 
@@ -38,6 +47,7 @@
 import Word from "../components/DashSingleWord.vue";
 import { useUrlGet } from '../stores/urlGet';
 import ModalComponent from './DashWordModuleAdd.vue';
+import ModalNodeComponent from './DashWordModuleAddNode.vue';
 import EventBus from '../util/event-bus';
 export default {
     setup() {
@@ -50,13 +60,14 @@ export default {
             urlGet: this.useUrl.urlGet + "/words", 
             urlChange: this.useUrl.urlGet + "/changes", 
             showModal: false, // Controls whether the modal is visible
+            showNodeModal: false, // Controls whether the modal is visible
             existingWord: false,
             searchTerm: "",
             title: ""
         }
     },
     emits: ["addNewWord", "updateWord"],
-    components: { ModalComponent, Word },
+    components: { ModalComponent, ModalNodeComponent, Word },
     methods: {
         async getWords() {
             this.title = "";
@@ -78,8 +89,17 @@ export default {
         },
         closeModal() {
             this.showModal = false; // Hide the modal
+            this.showNodeModal = false;
+            window.location.reload(); // Refresh the page
+        },
+        openNodeModal() {
+            this.showNodeModal = true; // Show the modal
         },
         handleSubmitForm() {
+            // Handle form submission (e.g., save the updated word data)
+            this.closeModal(); // Close the modal after submission
+        },
+        handleSubmitFormNode() {
             // Handle form submission (e.g., save the updated word data)
             this.closeModal(); // Close the modal after submission
         },

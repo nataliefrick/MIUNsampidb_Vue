@@ -306,6 +306,7 @@ import EventBus from '../util/event-bus';
       },
       async addNewWord() {
         // check first for content
+        console.log(this.urlChange);
         if(this.formData.word_sydsamiska.length > 3 ) {
             this.errorMessage='';
             let dataBody = this.formData;
@@ -318,6 +319,7 @@ import EventBus from '../util/event-bus';
             });
 
             await response.json();
+            console.log("response");
 
             // empty form
             this.formData.word_sydsamiska= "";
