@@ -5,43 +5,23 @@ The project consists of a Vue.js frontend and a Laravel REST API backend connect
 
 # Project Overview
 The application provides a web interface for:
-*Searching and browsing Sámi words
-*Viewing word information and related nodes
-*Searching words by text
-*Browsing nodes and their polarity
-*Managing changes to the database
-*Managing registered downloads
-*User registration and login
-*Suggesting changes to the database
-*Administrative functionality for managing words, nodes, changes, and downloads
+-Searching and browsing Sámi words
+-Viewing word information and related nodes
+-Searching words by text
+-Browsing nodes and their polarity
+-Managing changes to the database
+-Managing registered downloads
+-User registration and login
+-Suggesting changes to the database
+-Administrative functionality for managing words, nodes, changes, and downloads
 
 The application was developed as part of the research project "Feeling in your own words" at Mid Sweden University (Mittuniversitetet).
 
 ### Architecture
 The application is divided into three main parts:
-
-┌─────────────────────────┐
-│      Vue.js Frontend    │
-│                         │
-│  Vue 3 + Vite + Pinia   │
-│      Vue Router          │
-└────────────┬────────────┘
-             │
-             │ HTTP / REST API
-             ▼
-┌─────────────────────────┐
-│     Laravel Backend     │
-│                         │
-│      Laravel 10         │
-│      Laravel Sanctum    │
-│      PHP 8.1+           │
-└────────────┬────────────┘
-             │
-             │ MySQL
-             ▼
-┌─────────────────────────┐
-│      MySQL Database     │
-└─────────────────────────┘
+Vue.js Frontend -> Vue 3 + Vite + Pinia -> Vue Router 
+HTTP / REST API - Laravel Backend->Laravel 10-> Laravel Sanctum->PHP 8.1+  
+MySQL - MySQL Database
 
 ### Deployment
 The current deployment uses:
