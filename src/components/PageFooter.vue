@@ -3,7 +3,7 @@
         <div id="divider"></div> 
         <div id="footer">
             <h2 class="lato-bold">Databas för sydsamiska känsloord och kulturella uttryck för lidande</h2>
-            <h3 class="lato-regular-italic">South Sámi Emotion Words and Cultural Idioms of Distress Database (SSEID)</h3>
+            <h3 class="lato-regular-italic">South Saami Emotion Words and Cultural Idioms of Distress Database (SSEID)</h3>
             <div class="spacer"></div>
 
             <h3 class="lato-bold researchers">Kontakta oss!</h3>

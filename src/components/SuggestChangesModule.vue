@@ -80,7 +80,7 @@
               </div>
               <!-- suggest a new word -->
               <div v-else>
-                <h2 class="lato-bold">Föreslår ett ordet </h2>
+                <h2 class="lato-bold">Föreslå ett ord </h2>
                 <p>Finns det ett eller flera ord som du tycker skulle förbättra vår databas och bidra till forskningen? Vi vill gärna veta det!</p>
                 <p>
                   Använd fältet nedan för att skriva dina tankar kring ordet, översättningen, och vad det betyder för dig. Skriv gärna ett exempel på användningen av ordet.
@@ -93,13 +93,13 @@
                   <!-- Text area for messages -->
                   <div class="msg flex-col">
                       <label for="message">Meddelande</label>
-                      <textarea  class="lato-regular" placeholder="Vänligen ge så mycket information som möjligt, gärna ett förslag på användning av ordet i en mening." v-model="formData.message" rows="4"></textarea>
+                      <textarea  class="lato-regular" placeholder="Vänligen ange så mycket information som möjligt, gärna ett förslag på användning av ordet i en mening." v-model="formData.message" rows="4"></textarea>
                   </div>
                   <div class="contact-info">
                     <hr class="green">
                     <h3 class="lato-bold">Får vi kontakta dig?</h3>
-                    <p>Som forskare vill vi gärna förstår skillnaden mellan vårt arbete och din kunskap. Fyll gärna i dina kontaktuppgifter om det går bra att vi kontaktar dig. </p>
-                    <p><strong><em>Om du vill inte att vi kontakta dig, </em></strong>vänligen beskriva så mycket du kan i fältet övan om dina tankar kring de föreslagna uppdateringarna, så att vi kan kolla upp och leta efter källor.</p>
+                    <p>Som forskare vill vi gärna förstå ordens betydelse i sin helhet.  Fyll gärna i dina kontaktuppgifter om vi får kontakta dig. </p>
+                    <p><strong><em>Om du inte vill att vi kontaktar dig, </em></strong>vänligen beskriv orden så mycket som möjligt i fältet ovan för att hjälpa oss att förstå dem bättre.</p>
                     <div class="flex-row">
                       <div class="flex-col">
                           <label for="name">Namn</label>
@@ -131,6 +131,8 @@
                     <button type="submit">Skicka</button>
                   </div> 
                 </form>
+
+                <div><p>Genom att fylla i dina kontaktuppgifter godkänner du att Mittuniversitetet behandlar dina personuppgifter. Information om hur Mittuniversitetet behandlar personuppgifter hittar du här: <a href="https://www.miun.se/personuppgifter" target="_blank" rel="noopener noreferrer">https://www.miun.se/personuppgifter</a></p></div>
             </div>
         </div>
       </div>

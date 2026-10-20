@@ -28,7 +28,7 @@
                     <img src="../assets/img/divider-5.png" alt="">
                     <h3 class="lato-bold">Till dig som är forskare</h3>
                 </div>
-                <p>Om du som forskare vill få tillgång till hela databasen, är du välkommen att skicka en förfrågan här. Vid användning av databasen i publikationer eller presentationer, vänligen referera till följande: [referens].</p>
+                <p>Om du som forskare vill få tillgång till hela databasen, är du välkommen att skicka en förfrågan här. Vid användning av databasen i publikationer eller presentationer, vänligen referera till följande: Leiler, A., & Champoux-Larsson, M.-F. (2024, October). The Southern Sámi Emotion Words and Cultural Idioms of Distress Database. Oral presentation at Insight and outlook – Conference on Sábmie related research, Umeå, Sweden.</p>
             </div>
         </section>
     </div>
