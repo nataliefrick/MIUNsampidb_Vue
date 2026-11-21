@@ -2,9 +2,10 @@
 <section id="words">
     <div class="title">
         <h3 class="lato-bold">Översikt över ord i databasen</h3>
-        <div>
+        <div class="title-buttons">
             <button class="see-all button-icon" @click="openNodeModal()">Ny nod<i class="fa-solid fa-circle-nodes"></i></button> <!-- add new word -->
             <button class="see-all button-icon" @click="openModal()">Nytt ord<i class="fa-solid fa-leaf"></i></button> <!-- add new word -->
+            <button class="see-all button-icon" @click="openImportModal()">Importera<i class="fa-solid fa-file-csv"></i></button> <!-- import words from csv -->
         </div>
     </div>
     <!-- Modal Component -->
@@ -19,6 +20,11 @@
         :show="showNodeModal"
         @close-modal="closeModal"
         @submit-form="handleSubmitFormNode"
+        />
+    <!-- Import Component -->
+        <ModalImportComponent
+        :show="showImportModal"
+        @close-modal="closeModal"
         />
         <p>Här kan du administrera alla ord i databasen. Sektionen visar de senaste 3 orden som lagts till.</p>
 
@@ -48,6 +54,7 @@ import Word from "../components/DashSingleWord.vue";
 import { useUrlGet } from '../stores/urlGet';
 import ModalComponent from './DashWordModuleAdd.vue';
 import ModalNodeComponent from './DashWordModuleAddNode.vue';
+import ModalImportComponent from './DashWordModuleImport.vue';
 import EventBus from '../util/event-bus';
 export default {
     setup() {
@@ -61,13 +68,14 @@ export default {
             urlChange: this.useUrl.urlGet + "/changes", 
             showModal: false, // Controls whether the modal is visible
             showNodeModal: false, // Controls whether the modal is visible
+            showImportModal: false, // Controls whether the import modal is visible
             existingWord: false,
             searchTerm: "",
             title: ""
         }
     },
     emits: ["addNewWord", "updateWord"],
-    components: { ModalComponent, ModalNodeComponent, Word },
+    components: { ModalComponent, ModalNodeComponent, ModalImportComponent, Word },
     methods: {
         async getWords() {
             this.title = "";
@@ -90,7 +98,11 @@ export default {
         closeModal() {
             this.showModal = false; // Hide the modal
             this.showNodeModal = false;
+            this.showImportModal = false;
             window.location.reload(); // Refresh the page
+        },
+        openImportModal() {
+            this.showImportModal = true; // Show the import modal
         },
         openNodeModal() {
             this.showNodeModal = true; // Show the modal
@@ -160,6 +172,19 @@ section#words div {
 }
 
 div.title { gap: 1rem; }
+
+/* Three buttons in two rows: two on top, Importera below */
+section#words div.title-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0.5rem;
+    justify-content: end;
+    justify-items: stretch;
+}
+
+section#words div.title-buttons button {
+    white-space: nowrap;
+}
 
 div.flex-row {
     display: flex;
