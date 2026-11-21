@@ -8,9 +8,15 @@ import RegDownloadsSection from '../components/DashRegDownloadsSect.vue';
     <main class="content">
         <h2 class="lato-bold title">SSEID Dashboard</h2>
         <div class="sections">
-            <RegDownloadsSection />
-            <ChangesSection />
-            <WordsSection />
+            <!-- Left column: downloads on top, suggested changes below -->
+            <div class="dash-column">
+                <RegDownloadsSection />
+                <ChangesSection />
+            </div>
+            <!-- Right column: words -->
+            <div class="dash-column">
+                <WordsSection />
+            </div>
         </div>
     </main>
 </template>
@@ -29,6 +35,20 @@ div.sections {
     flex-wrap: wrap;
     justify-content:space-between;
     margin: 0 auto 3rem auto;
+    align-items: flex-start;
+}
+
+div.dash-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* Narrow screens: one column, sections stacked (downloads, changes, words) */
+@media (max-width: 1450px) {
+    div.sections { flex-direction: column; }
+    div.dash-column { width: 100%; flex: none; }
 }
 
 @media (min-width: 1841px) { div.sections { width: 75%; }}
