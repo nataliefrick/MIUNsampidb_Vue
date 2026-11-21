@@ -63,6 +63,7 @@
 
 <script>
 import { useUrlGet } from '../stores/urlGet';
+import { authFetch } from '../util/authFetch';
 import EventBus from '../util/event-bus';
   export default {
     setup() {
@@ -136,7 +137,7 @@ import EventBus from '../util/event-bus';
         this.areYouSure = true;
       },
       async getNodes() {
-        const response = await fetch(this.urlNodes, { method: "GET" });
+        const response = await authFetch(this.urlNodes, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.nodes = data;
       },
@@ -149,7 +150,7 @@ import EventBus from '../util/event-bus';
               main_node: 'känslor'
             };
 
-            const response = await fetch(this.urlNodes, {
+            const response = await authFetch(this.urlNodes, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

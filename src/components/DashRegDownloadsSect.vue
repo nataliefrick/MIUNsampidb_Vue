@@ -142,6 +142,7 @@ div.header div.column span {
 <script>
 import RegDownload from "./DashRegDownload.vue";
 import { useUrlGet } from '../stores/urlGet';
+import { authFetch } from '../util/authFetch';
 import EventBus from '../util/event-bus';
 export default {
     setup() {
@@ -169,14 +170,14 @@ export default {
         async getDownloads() {
             this.title = "";
             this.searchTerm = "";
-            const response = await fetch(this.urlRegister, { method: "GET" });
+            const response = await authFetch(this.urlRegister, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.downloads = data;
             this.title = "Visar alla registrerade nedladdningar i databasen.";
         },
 
         async getlast3() {
-            const response = await fetch(this.urlRegister + "/latest", { method: "GET" });
+            const response = await authFetch(this.urlRegister + "/latest", { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.downloads = data;
             this.title = "";
@@ -198,7 +199,7 @@ export default {
         },
         async filterDownloads() {
             if(this.searchTerm != "") {
-                const response = await fetch(this.urlRegister + "/filter/" + this.searchTerm, { method: "GET" });
+                const response = await authFetch(this.urlRegister + "/filter/" + this.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
                 if(data.length===0) {
                     this.title = "sökterm gav inga resultat.";

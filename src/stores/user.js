@@ -21,7 +21,7 @@ export const useUserStore = defineStore('newuser', {
             // Store user data in local storage
             localStorage.setItem('user', JSON.stringify(this.user.username));
             localStorage.setItem('token', JSON.stringify(this.user.token));
-            localStorage.setItem('userId', JSON.stringify(this.user.Id));
+            localStorage.setItem('userId', JSON.stringify(this.user.userId));
             localStorage.setItem('userEmail', JSON.stringify(this.user.email));
             console.log("user is now logged in");
         },

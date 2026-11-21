@@ -46,6 +46,7 @@
 <script>
 import { useUrlGet } from '../stores/urlGet';
 import { useUserStore } from '../stores/user';
+import { getToken } from '../util/authFetch';
 import { nextTick } from 'vue';  // Import nextTick for better timing of updates
 
 
@@ -78,6 +79,16 @@ import { nextTick } from 'vue';  // Import nextTick for better timing of updates
       async logoutUser() {
           // Access the Pinia store
           const userStore = useUserStore();
+          // Revoke the login token on the server too (ignore errors, e.g. already expired)
+          const token = getToken();
+          if (token) {
+            try {
+              await fetch(this.useUrl.urlGet + "/logout", {
+                method: "POST",
+                headers: { Accept: "application/json", Authorization: "Bearer " + token }
+              });
+            } catch (e) { /* offline or server asleep: log out locally anyway */ }
+          }
           userStore.logout();
           console.log(localStorage.getItem('user'));
           this.closeModal();

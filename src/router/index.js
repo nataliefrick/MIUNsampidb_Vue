@@ -32,8 +32,12 @@ const router = createRouter({
 })
 
 // Add the beforeEach hook here
+// The dashboard is only for logged-in users (the API also refuses requests without a login)
 router.beforeEach((to, from, next) => {
-  // console.log(`Navigating to ${to.name} from ${from.name}`);
+  if (to.name === 'dashboard' && !localStorage.getItem('token')) {
+    next({ name: 'home' });
+    return;
+  }
   next();
 });
 

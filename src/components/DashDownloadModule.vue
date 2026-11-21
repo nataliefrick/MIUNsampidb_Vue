@@ -94,6 +94,7 @@
 
 <script>
 import { useUrlGet } from '../stores/urlGet';
+import { authFetch } from '../util/authFetch';
 import EventBus from '../util/event-bus';
   export default {
     setup() {
@@ -194,7 +195,7 @@ import EventBus from '../util/event-bus';
         this.areYouSure = true;
       },
       async deleteDownload() {
-        const response = await fetch(this.urlChange + "/" + this.formData.id,  {
+        const response = await authFetch(this.urlChange + "/" + this.formData.id,  {
               method: "DELETE",
               headers: {
                   "Content-Type": "application/json"
@@ -215,7 +216,7 @@ import EventBus from '../util/event-bus';
       async updateDownload() {
           let dataBody = this.formData;
           // console.log(JSON.stringify(dataBody));
-          const response = await fetch(this.urlChange + "/" + this.formData.id,  {
+          const response = await authFetch(this.urlChange + "/" + this.formData.id,  {
               method: "PUT",
               headers: {
                   "Content-Type": "application/json"
@@ -239,7 +240,7 @@ import EventBus from '../util/event-bus';
         if(this.formData.word_sydsamiska.length > 3 ) {
             this.errorMessage='';
             let dataBody = this.formData;
-            const response = await fetch(this.urlChange, { 
+            const response = await authFetch(this.urlChange, { 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

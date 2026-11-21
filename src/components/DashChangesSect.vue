@@ -27,6 +27,7 @@
 <script>
 import Change from "./DashChange.vue";
 import { useUrlGet } from '../stores/urlGet';
+import { authFetch } from '../util/authFetch';
 import EventBus from '../util/event-bus';
 export default {
     setup() {
@@ -54,14 +55,14 @@ export default {
         async getChanges() {
             this.title = "";
             this.searchTerm = "";
-            const response = await fetch(this.urlChanges, { method: "GET" });
+            const response = await authFetch(this.urlChanges, { method: "GET" });
             this.changes = await response.json(); // save the data in sent through the response.
             this.title = "Visar alla förslag i databasen.";
         },
 
         
         async getlast3Changes() {
-            const response = await fetch(this.urlChanges + "/latest", { method: "GET" });
+            const response = await authFetch(this.urlChanges + "/latest", { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.changes = data;
             this.title = "";
@@ -83,7 +84,7 @@ export default {
         },
         async filterChanges() {
             if(this.searchTerm != "") {
-                const response = await fetch(this.urlChanges + "/filter/" + this.searchTerm, { method: "GET" });
+                const response = await authFetch(this.urlChanges + "/filter/" + this.searchTerm, { method: "GET" });
                 let data = await response.json(); // save the data in sent through the response.
                 console.log(data);
                 if(data.length===0) {

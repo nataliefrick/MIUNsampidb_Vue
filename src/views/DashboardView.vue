@@ -2,6 +2,7 @@
 import WordsSection from '../components/DashWordsSection.vue';
 import ChangesSection from '../components/DashChangesSect.vue';
 import RegDownloadsSection from '../components/DashRegDownloadsSect.vue';
+import UsersSection from '../components/DashUsersSection.vue';
 </script>
 
 <template>
@@ -13,9 +14,10 @@ import RegDownloadsSection from '../components/DashRegDownloadsSect.vue';
                 <RegDownloadsSection />
                 <ChangesSection />
             </div>
-            <!-- Right column: words -->
+            <!-- Right column: words, admin users below -->
             <div class="dash-column">
                 <WordsSection />
+                <UsersSection />
             </div>
         </div>
     </main>

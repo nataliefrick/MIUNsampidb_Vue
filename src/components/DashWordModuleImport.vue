@@ -65,6 +65,7 @@
 import * as XLSX from 'xlsx';
 import { useUrlGet } from '../stores/urlGet';
 import EventBus from '../util/event-bus';
+import { authFetch, getToken } from '../util/authFetch';
 
 export default {
   setup() {
@@ -104,17 +105,9 @@ export default {
       return { blob: new Blob([csv], { type: 'text/csv;charset=utf-8' }), name: 'import.csv' };
     },
 
-    getToken() {
-      try {
-        return JSON.parse(localStorage.getItem('token'));
-      } catch {
-        return null;
-      }
-    },
-
     async upload(dryRun) {
       if (!this.file) return;
-      const token = this.getToken();
+      const token = getToken();
       if (!token) {
         this.errorMessage = 'Du måste vara inloggad för att importera ord.';
         return;
@@ -128,15 +121,12 @@ export default {
         formData.append('file', blob, name);
         formData.append('dry_run', dryRun ? '1' : '0');
 
-        const response = await fetch(this.urlImport, {
-          method: 'POST',
-          headers: { Accept: 'application/json', Authorization: 'Bearer ' + token },
-          body: formData
-        });
+        // authFetch adds the login token and handles an expired login
+        const response = await authFetch(this.urlImport, { method: 'POST', body: formData });
         const data = await response.json().catch(() => ({}));
 
         if (response.status === 401) {
-          this.errorMessage = 'Din inloggning har gått ut. Logga in igen och försök på nytt.';
+          return; // authFetch has already logged out and redirected
         } else if (!response.ok) {
           this.errorMessage = data.message || 'Något gick fel vid importen (felkod ' + response.status + ').';
         } else {

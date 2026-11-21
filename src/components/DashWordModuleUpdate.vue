@@ -151,6 +151,7 @@
   
 <script>
 import { useUrlGet } from '../stores/urlGet';
+import { authFetch } from '../util/authFetch';
 import EventBus from '../util/event-bus';
   export default {
     setup() {
@@ -245,12 +246,12 @@ import EventBus from '../util/event-bus';
         this.areYouSure = true;
       },
       async getNodes() {
-        const response = await fetch(this.urlNodes, { method: "GET" });
+        const response = await authFetch(this.urlNodes, { method: "GET" });
             const data = await response.json(); // save the data in sent through the response.
             this.nodes = data;
       },
       async deleteWord() {
-        const response = await fetch(this.urlChange + "/" + this.formData.id,  {
+        const response = await authFetch(this.urlChange + "/" + this.formData.id,  {
               method: "DELETE",
               headers: {
                   "Content-Type": "application/json"
@@ -268,7 +269,7 @@ import EventBus from '../util/event-bus';
       },
       async updateWord() {
           let dataBody = this.formData;
-          const response = await fetch(this.urlChange + "/" + this.formData.id,  {
+          const response = await authFetch(this.urlChange + "/" + this.formData.id,  {
               method: "PUT",
               headers: {
                   "Content-Type": "application/json"
